@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JFrame;
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -24,6 +25,8 @@ import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import java.awt.event.MouseMotionAdapter;
@@ -85,14 +88,8 @@ public class Whiteboard {
 	}
 	
 	public BufferedImage createImage(JPanel panel) {
-
-	    int w = panel.getWidth();
-	    int h = panel.getHeight();
-	    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-	    Graphics2D g = bi.createGraphics();
-	    panel.paint(g);
-	    g.dispose();
-	    return bi;
+	   
+	    return null;
 	}
 
 	/**
@@ -100,7 +97,8 @@ public class Whiteboard {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 748, 555);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 783, 576);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JButton btnPencil = new JButton("");
@@ -123,30 +121,40 @@ public class Whiteboard {
 		btnEraser.setIcon(new ImageIcon(Whiteboard.class.getResource("/icons/icons8-eraser-24.png")));
 		
 		JPanel panel = new JPanel();
+		BufferedImage bi = new BufferedImage(660, 465, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g_bi = (Graphics2D) bi.getGraphics();
+		g_bi.setColor(Color.WHITE);
+		g_bi.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+		
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
-				panel.setDoubleBuffered(true);
+//				panel.setDoubleBuffered(true);
 				Graphics2D g = (Graphics2D) panel.getGraphics();
+		        Graphics2D g_bi = (Graphics2D) bi.getGraphics();
 				g.setColor(Color.BLACK);
+				g_bi.setColor(Color.BLACK);
 				int x = arg0.getX();
 				int y = arg0.getY();
-
 				switch (currCommand) {
 					case "pencil":
 						g.setStroke(new BasicStroke(thickness/2, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
 						g.drawLine(x, y, old_x, old_y);
+						g_bi.setStroke(new BasicStroke(thickness/2, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
+						g_bi.drawLine(x, y, old_x, old_y);
 						old_x = x;
 						old_y = y;
 						break;
 					case "eraser":
 						g.setColor(Color.WHITE);
+						g_bi.setColor(Color.WHITE);
 						g.fillOval(x, y, thickness, thickness);
+						g_bi.fillOval(x, y, thickness, thickness);
 						break;
 					default:
 						
 				}
-				panel.paint(g);
+				panel.paintComponents(g);
 				
 			}
 		});
@@ -157,19 +165,25 @@ public class Whiteboard {
 			public void mouseClicked(MouseEvent arg0) {
 
 				Graphics2D g = (Graphics2D) panel.getGraphics();
-
+				Graphics2D g_bi = (Graphics2D) bi.getGraphics();
+				g.setColor(Color.BLACK);
+				g_bi.setColor(Color.BLACK);
 				switch (currCommand) {
 					case "circle":
 						Ellipse2D.Double circle = new Ellipse2D.Double((arg0.getX()-thickness*3/2), (arg0.getY()-thickness*3/2), thickness*3, thickness*3);
 						g.fill(circle);
+						g_bi.fill(circle);
 						break;
 					case "text":
 						g.drawString("ILOVEU", arg0.getX(), arg0.getY());
+						g_bi.drawString("ILOVEU", arg0.getX(), arg0.getY());
 						break;
 					default:
 						System.out.println("mouse clicked: " + arg0);
 				}
-				g.getPaint();
+				///////
+				panel.paintComponents(g);
+				
 			}
 			
 			@Override
@@ -198,7 +212,6 @@ public class Whiteboard {
 					default:
 						frame.setCursor(frame.DEFAULT_CURSOR);
 				}
-				
 			}
 			
 			@Override
@@ -252,32 +265,30 @@ public class Whiteboard {
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(btnCurrentMember, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addGap(5))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(slider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+									.addComponent(slider, GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED))
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-									.addPreferredGap(ComponentPlacement.RELATED)))
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE)))
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+										.addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+										.addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+										.addComponent(btnText, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+									.addGap(5)))
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 660, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(22)
+					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnText, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
@@ -287,9 +298,9 @@ public class Whiteboard {
 							.addComponent(btnEraser)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCircle, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
 							.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCurrentMember))
 		);
@@ -316,7 +327,16 @@ public class Whiteboard {
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
+				System.out.println("save btn pressed");
+			    try {
+					File outputfile = new File("saved.png");
+					ImageIO.write(bi, "png", outputfile);
+					System.out.println("image saved!");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		mnFile.add(mntmSave);
@@ -329,5 +349,7 @@ public class Whiteboard {
 		
 		JMenu mnColor = new JMenu("Color");
 		menuBar.add(mnColor);
+		
+//		frame.pack();
 	}
 }

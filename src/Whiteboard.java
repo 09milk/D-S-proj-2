@@ -1,46 +1,9 @@
-import java.awt.EventQueue;
-import java.awt.Font;
-
-import javax.swing.JFrame;
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JEditorPane;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import java.awt.Color;
-
-import static java.awt.Frame.CROSSHAIR_CURSOR;
-import static java.awt.Frame.TEXT_CURSOR;
-
-import java.awt.BasicStroke;
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JFrame;
-import java.awt.event.MouseMotionAdapter;
-import javax.swing.ImageIcon;
-import javax.swing.JSlider;
-import javax.swing.SwingConstants;
-import javax.swing.JToolBar;
-import javax.swing.JTabbedPane;
-import javax.swing.JDesktopPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Button;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 
 public class Whiteboard {
 
@@ -50,8 +13,7 @@ public class Whiteboard {
 	private int thickness = 5;
 	private int old_x;
 	private int old_y;
-	private Paint currPaint;
-	   
+
 	/**
 	 * Launch the application.
 	 */
@@ -67,15 +29,7 @@ public class Whiteboard {
 			}
 		});
 	}
-
-//   public void paint(Graphics g) {
-//      Graphics2D g2 = (Graphics2D) g;
-//      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//         RenderingHints.VALUE_ANTIALIAS_ON);
-//      Font font = new Font("Serif", Font.PLAIN, 24);
-//      g2.setFont(font);
-//      g2.drawString("Welcome to TutorialsPoint", 50, 70); 
-//   }
+	
 	   
 	/**
 	 * Create the application.
@@ -133,21 +87,17 @@ public class Whiteboard {
 				int y = arg0.getY();
 
 				switch (currCommand) {
+					case "eraser":
+						g.setColor(Color.WHITE);
 					case "pencil":
-						g.setStroke(new BasicStroke(thickness/2, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
+						g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
 						g.drawLine(x, y, old_x, old_y);
 						old_x = x;
 						old_y = y;
 						break;
-					case "eraser":
-						g.setColor(Color.WHITE);
-						g.fillOval(x, y, thickness, thickness);
-						break;
 					default:
 						
 				}
-				panel.paint(g);
-				
 			}
 		});
 
@@ -160,8 +110,7 @@ public class Whiteboard {
 
 				switch (currCommand) {
 					case "circle":
-						Ellipse2D.Double circle = new Ellipse2D.Double((arg0.getX()-thickness*3/2), (arg0.getY()-thickness*3/2), thickness*3, thickness*3);
-						g.fill(circle);
+						g.fillOval(arg0.getX() - thickness/2, arg0.getY() - thickness/2, thickness, thickness);
 						break;
 					case "text":
 						g.drawString("ILOVEU", arg0.getX(), arg0.getY());
@@ -169,7 +118,6 @@ public class Whiteboard {
 					default:
 						System.out.println("mouse clicked: " + arg0);
 				}
-				g.getPaint();
 			}
 			
 			@Override
@@ -188,22 +136,22 @@ public class Whiteboard {
 			public void mouseEntered(MouseEvent e) {
 				switch (currCommand) {
 					case "pencil":
-						frame.setCursor(frame.CROSSHAIR_CURSOR);
+						panel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 						break;
 					case "eraser":
 						break;
 					case "text":
-						frame.setCursor(frame.TEXT_CURSOR);
+						panel.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 						break;
 					default:
-						frame.setCursor(frame.DEFAULT_CURSOR);
+						panel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				}
 				
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				frame.setCursor(frame.DEFAULT_CURSOR);
+				panel.setCursor(Cursor.getDefaultCursor());
 			}
 		});
 		panel.setBackground(Color.WHITE);

@@ -1,6 +1,10 @@
 package Client;
 
-import Client.MouseListeners.PencilListener;
+import Client.MouseListeners.MenuBar.ColorSelectionListener;
+import Client.MouseListeners.ToolButton.EraserListener;
+import Client.MouseListeners.ToolButton.OvalListener;
+import Client.MouseListeners.ToolButton.PencilListener;
+import Client.MouseListeners.ToolButton.TextListener;
 
 import javax.swing.*;
 import java.awt.event.MouseListener;
@@ -18,18 +22,12 @@ public class WhiteboardClient {
     private void addMouseListenerToButton() {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         //TODO: remove null and add real listener
-        whiteboardClientGUI.btnText.addMouseListener(null);
+        whiteboardClientGUI.btnText.addMouseListener(new TextListener(drawingPanel));
         whiteboardClientGUI.btnPencil.addMouseListener(new PencilListener(drawingPanel));
-        whiteboardClientGUI.btnEraser.addMouseListener(null);
-        whiteboardClientGUI.btnCircle.addMouseListener(null);
+        whiteboardClientGUI.btnEraser.addMouseListener(new EraserListener(drawingPanel));
+        whiteboardClientGUI.btnCircle.addMouseListener(new OvalListener(drawingPanel));
+
+        whiteboardClientGUI.mnColor.addMouseListener(new ColorSelectionListener(drawingPanel));
     }
 
-    public static void clearDrawingListener(JPanel drawingPanel) {
-        for(MouseListener listener : drawingPanel.getMouseListeners()){
-            drawingPanel.removeMouseListener(listener);
-        }
-        for(MouseMotionListener listener : drawingPanel.getMouseMotionListeners()){
-            drawingPanel.removeMouseMotionListener(listener);
-        }
-    }
 }

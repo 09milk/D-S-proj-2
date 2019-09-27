@@ -33,7 +33,7 @@ public class WhiteboardClientGUI {
 
 
     private String currCommand;
-    private int thickness = 5;
+    private int size = 5;
     private int old_x;
     private int old_y;
 
@@ -87,93 +87,16 @@ public class WhiteboardClientGUI {
 		drawingPanel = new DrawingPanel();
 		drawingPanel.setBackground(Color.WHITE);
 		drawingPanel.setDoubleBuffered(true);
-		/*
-		drawingPanel.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent arg0) {
-				Graphics2D g = (Graphics2D) drawingPanel.getGraphics();
-				g.setColor(Color.BLACK);
-				int x = arg0.getX();
-				int y = arg0.getY();
+		drawingPanel.setFocusable(true);
 
-				switch (currCommand) {
-					case "eraser":
-						g.setColor(Color.WHITE);
-					case "pencil":
-						g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
-						g.drawLine(x, y, old_x, old_y);
-						old_x = x;
-						old_y = y;
-						break;
-					default:
-						
-				}
-			}
-		});
-
-		drawingPanel.addMouseListener(new MouseAdapter() {
-			// mouse listener for the canvas
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-
-				Graphics2D g = (Graphics2D) drawingPanel.getGraphics();
-
-				switch (currCommand) {
-					case "circle":
-						g.fillOval(arg0.getX() - thickness/2, arg0.getY() - thickness/2, thickness, thickness);
-						break;
-					case "text":
-						g.drawString("ILOVEU", arg0.getX(), arg0.getY());
-						break;
-					default:
-						System.out.println("mouse clicked: " + arg0);
-				}
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				System.out.println("mouse released: " + e);
-
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				old_x = arg0.getX();
-				old_y = arg0.getY();
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				switch (currCommand) {
-					case "pencil":
-						drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-						break;
-					case "eraser":
-						break;
-					case "text":
-						drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-						break;
-					default:
-						drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				drawingPanel.setCursor(Cursor.getDefaultCursor());
-			}
-		});
-
-		*/
 
 		jSlider = new JSlider();
 		jSlider.setPaintTicks(true);
 		jSlider.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				// thickness jSlider
-				thickness = jSlider.getValue();
+				// size jSlider
+				size = jSlider.getValue();
 			}
 		});
 		jSlider.setValue(10);

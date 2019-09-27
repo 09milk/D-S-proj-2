@@ -1,4 +1,4 @@
-package Client.MouseListeners;
+package Client.MouseListeners.ToolButton;
 
 import Client.DrawActions.PencilDraw;
 import Client.DrawingPanel;
@@ -17,12 +17,18 @@ public class PencilListener extends AbstractToolButtonListener {
     }
 
     @Override
+    public void mouseClicked(MouseEvent event){
+        super.mouseClicked(event);
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    @Override
     protected MouseInputAdapter getDrawingListener() {
         return new PencilDrawingListener();
     }
 
 
-    private class PencilDrawingListener extends MouseInputAdapter{
+    protected class PencilDrawingListener extends MouseInputAdapter{
 
         @Override
         public void mousePressed(MouseEvent event){
@@ -35,16 +41,11 @@ public class PencilListener extends AbstractToolButtonListener {
             int x = event.getX();
             int y = event.getY();
 
-            drawingPanel.drawActions.add(new PencilDraw(drawingPanel.color, oldX, oldY, x, y, drawingPanel.thickness));
+            drawingPanel.drawActions.add(new PencilDraw(drawingPanel.color, oldX, oldY, x, y, drawingPanel.size));
             drawingPanel.repaint();
 
             oldX = x;
             oldY = y;
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent event){
-            drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
     }
 }

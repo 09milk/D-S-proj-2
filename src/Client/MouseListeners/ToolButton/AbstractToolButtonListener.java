@@ -1,4 +1,4 @@
-package Client.MouseListeners;
+package Client.MouseListeners.ToolButton;
 
 import Client.DrawingPanel;
 import Client.WhiteboardClient;
@@ -16,19 +16,16 @@ public abstract class AbstractToolButtonListener extends MouseInputAdapter {
     }
 
     @Override
-    public void mouseReleased(MouseEvent event) {
-        WhiteboardClient.clearDrawingListener(this.drawingPanel);
+    public void mouseClicked(MouseEvent event) {
+        drawingPanel.clearDrawingListener();
+        drawingPanel.toolChanged();
 
         drawingPanel.addMouseListener(getDrawingListener());
         drawingPanel.addMouseMotionListener(getDrawingListener());
     }
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        drawingPanel.setCursor(Cursor.getDefaultCursor());
-    }
 
     abstract protected MouseInputAdapter getDrawingListener();
 
-    //abstract public void draw(Object drawAction);
+    public void toolChanged(){};
 }

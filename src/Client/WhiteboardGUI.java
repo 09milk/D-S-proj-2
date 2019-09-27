@@ -1,3 +1,5 @@
+package Client;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -5,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class Whiteboard {
+public class WhiteboardGUI {
 
 	private JFrame frame;
 	
@@ -21,7 +23,7 @@ public class Whiteboard {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Whiteboard window = new Whiteboard();
+					WhiteboardGUI window = new WhiteboardGUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +36,7 @@ public class Whiteboard {
 	/**
 	 * Create the application.
 	 */
-	public Whiteboard() {
+	public WhiteboardGUI() {
 		initialize();
 	}
 	
@@ -65,7 +67,7 @@ public class Whiteboard {
 			}
 		});
 		
-		btnPencil.setIcon(new ImageIcon(Whiteboard.class.getResource("/icons/icons8-pencil-24.png")));
+		btnPencil.setIcon(new ImageIcon(WhiteboardGUI.class.getResource("/icons/icons8-pencil-24.png")));
 		
 		JButton btnEraser = new JButton("");
 		btnEraser.addMouseListener(new MouseAdapter() {
@@ -74,7 +76,7 @@ public class Whiteboard {
 				currCommand = "eraser";
 			}
 		});
-		btnEraser.setIcon(new ImageIcon(Whiteboard.class.getResource("/icons/icons8-eraser-24.png")));
+		btnEraser.setIcon(new ImageIcon(WhiteboardGUI.class.getResource("/icons/icons8-eraser-24.png")));
 		
 		JPanel panel = new JPanel();
 		panel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -180,7 +182,7 @@ public class Whiteboard {
 				currCommand = "circle";
 			}
 		});
-		btnCircle.setIcon(new ImageIcon(Whiteboard.class.getResource("/icons/icons8-filled-circle-24.png")));
+		btnCircle.setIcon(new ImageIcon(WhiteboardGUI.class.getResource("/icons/icons8-filled-circle-24.png")));
 		
 		JButton btnText = new JButton("");
 		btnText.addActionListener(new ActionListener() {
@@ -193,7 +195,7 @@ public class Whiteboard {
 				currCommand = "text";
 			}
 		});
-		btnText.setIcon(new ImageIcon(Whiteboard.class.getResource("/icons/icons8-text-24.png")));
+		btnText.setIcon(new ImageIcon(WhiteboardGUI.class.getResource("/icons/icons8-text-24.png")));
 		
 		JButton btnCurrentMember = new JButton("Current member(3)");
 		btnCurrentMember.setText("current member(4)");

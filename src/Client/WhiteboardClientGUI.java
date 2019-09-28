@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class WhiteboardClientGUI {
 
@@ -29,16 +27,12 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmSaveAs;
     public JMenuItem mntmExit;
 
-    public JMenu mnColor;
+	public JMenu mnStyle;
+	public JMenuItem mntmColor;
+	public JMenuItem mntmFont;
 
 
-    private String currCommand;
-    private int size = 5;
-    private int old_x;
-    private int old_y;
-
-
-    public WhiteboardClientGUI() {
+	public WhiteboardClientGUI() {
         initializeGUI();
 		initializeGroupLayout();
         initializeMenuBar(mainFrame);
@@ -46,6 +40,7 @@ public class WhiteboardClientGUI {
 
     public void startGUI() {
         mainFrame.setVisible(true);
+        drawingPanel.requestFocusInWindow();
     }
 
     private void initializeGUI() {
@@ -60,28 +55,16 @@ public class WhiteboardClientGUI {
 		mainFrame.setBounds(100, 100, 748, 555);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
-        jFrame.addWindowListener(new WindowAdapter() {
+        mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
 
             }
         });*/
 
 		btnPencil = new JButton();
-		btnPencil.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				currCommand = "pencil";
-			}
-		});
 		btnPencil.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-pencil-24.png")));
 
 		btnEraser = new JButton();
-		btnEraser.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				currCommand = "eraser";
-			}
-		});
 		btnEraser.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-eraser-24.png")));
 
 		drawingPanel = new DrawingPanel();
@@ -92,34 +75,15 @@ public class WhiteboardClientGUI {
 
 		jSlider = new JSlider();
 		jSlider.setPaintTicks(true);
-		jSlider.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// size jSlider
-				size = jSlider.getValue();
-			}
-		});
-		jSlider.setValue(10);
-		jSlider.setMaximum(50);
-		jSlider.setMinimum(1);
+		jSlider.setValue(ClientConstants.DEFAULT_SIZE);
+		jSlider.setMaximum(ClientConstants.SLIDER_MAX);
+		jSlider.setMinimum(ClientConstants.SLIDER_MIN);
 		jSlider.setOrientation(SwingConstants.VERTICAL);
 
 		btnCircle = new JButton("");
-		btnCircle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				currCommand = "circle";
-			}
-		});
 		btnCircle.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-filled-circle-24.png")));
 
 		btnText = new JButton();
-		btnText.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				currCommand = "text";
-			}
-		});
 		btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
 
 		btnCurrentMember = new JButton("Current member(--)");
@@ -179,6 +143,7 @@ public class WhiteboardClientGUI {
         menuBar = new JMenuBar();
         jFrame.setJMenuBar(menuBar);
 
+
         mnFile = new JMenu("File");
         menuBar.add(mnFile);
 
@@ -197,7 +162,15 @@ public class WhiteboardClientGUI {
         mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);
 
-        mnColor = new JMenu("Color");
-        menuBar.add(mnColor);
+
+        mnStyle = new JMenu("Style");
+        menuBar.add(mnStyle);
+
+        mntmColor = new JMenuItem("Color");
+		mnStyle.add(mntmColor);
+		/*
+		mntmFont = new JMenuItem("Font");
+		mnStyle.add(mntmFont);*/
+
     }
 }

@@ -22,7 +22,7 @@ public class TextDraw implements IDrawAction, Serializable {
     @Override
     public void draw(Graphics2D graphics) {
         graphics.setColor(color);
-        graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
+        graphics.setFont(graphics.getFont().deriveFont((float) size));
         graphics.drawString(string, x, y);
     }
 }

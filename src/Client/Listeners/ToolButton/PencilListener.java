@@ -1,10 +1,11 @@
-package Client.MouseListeners.ToolButton;
+package Client.Listeners.ToolButton;
 
 import Client.DrawActions.PencilDraw;
 import Client.DrawingPanel;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 public class PencilListener extends AbstractToolButtonListener {
@@ -17,8 +18,8 @@ public class PencilListener extends AbstractToolButtonListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent event){
-        super.mouseClicked(event);
+    public void actionPerformed(ActionEvent event){
+        super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 

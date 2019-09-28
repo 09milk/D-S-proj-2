@@ -1,15 +1,12 @@
-package Client.MouseListeners.ToolButton;
+package Client.Listeners.ToolButton;
 
-import Client.DrawActions.PencilDraw;
 import Client.DrawActions.TextDraw;
 import Client.DrawingPanel;
 
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayDeque;
 
 public class TextListener extends AbstractToolButtonListener {
@@ -23,14 +20,15 @@ public class TextListener extends AbstractToolButtonListener {
     private TextDraw tmpDrawAction;
 
     private TextDrawingListener textDrawingListener = new TextDrawingListener();
+    private TextFocusListener textFocusListener = new TextFocusListener();
 
     public TextListener(DrawingPanel drawingPanel){
         super(drawingPanel);
     }
 
     @Override
-    public void mouseClicked(MouseEvent event){
-        super.mouseClicked(event);
+    public void actionPerformed(ActionEvent event){
+        super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         drawingPanel.toolChangeObservers.add(this);
     }
@@ -57,6 +55,7 @@ public class TextListener extends AbstractToolButtonListener {
                 drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
                 textString.clear();
                 drawingPanel.addKeyListener(keyListener);
+                drawingPanel.addFocusListener(textFocusListener);
             }
         }
 
@@ -64,6 +63,7 @@ public class TextListener extends AbstractToolButtonListener {
             writing = false;
             drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             drawingPanel.removeKeyListener(keyListener);
+            drawingPanel.removeFocusListener(textFocusListener);
             drawingPanel.tmpDrawAction = null;
             if (!textString.isEmpty()){
                 drawingPanel.drawActions.add(tmpDrawAction);
@@ -106,9 +106,11 @@ public class TextListener extends AbstractToolButtonListener {
     }
 
 
-    @Override
-    public void toolChanged(){
-        textDrawingListener.endTextDrawing();
-        drawingPanel.toolChangeObservers.remove(this);
+
+    protected class TextFocusListener extends FocusAdapter {
+        @Override
+        public void focusLost(FocusEvent event){
+            textDrawingListener.endTextDrawing();
+        }
     }
 }

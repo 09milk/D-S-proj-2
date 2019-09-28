@@ -1,4 +1,4 @@
-package Client.MouseListeners.ToolButton;
+package Client.Listeners.ToolButton;
 
 import Client.DrawActions.PencilDraw;
 import Client.DrawingPanel;
@@ -13,12 +13,6 @@ public class EraserListener extends AbstractToolButtonListener {
 
     public EraserListener(DrawingPanel drawingPanel){
         super(drawingPanel);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent event){
-        super.mouseClicked(event);
-        //drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     @Override

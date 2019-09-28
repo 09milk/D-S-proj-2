@@ -1,21 +1,21 @@
-package Client.MouseListeners.MenuBar;
+package Client.Listeners.MenuBar.Style;
 
 import Client.DrawingPanel;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import java.awt.*;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class ColorSelectionListener extends MouseInputAdapter {
+public class ColorSelectionListener implements ActionListener {
     private DrawingPanel drawingPanel;
 
     public ColorSelectionListener(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 
+
     @Override
-    public void mouseClicked(MouseEvent event){
+    public void actionPerformed(ActionEvent event) {
         drawingPanel.color = JColorChooser.showDialog(null, "Select color", drawingPanel.color);
     }
 }

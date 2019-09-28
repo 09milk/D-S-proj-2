@@ -1,3 +1,7 @@
+# Custom extension of our whiteboard application
+*.wbd
+
+
 Copy from:
 https://gist.github.com/dedunumax/54e82214715e35439227
 

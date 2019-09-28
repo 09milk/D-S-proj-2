@@ -2,8 +2,7 @@ package Client;
 
 
 import Client.DrawActions.IDrawAction;
-import Client.MouseListeners.ToolButton.AbstractToolButtonListener;
-import com.sun.jmx.remote.internal.ArrayQueue;
+import Client.Listeners.ToolButton.AbstractToolButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public class DrawingPanel extends JPanel {
 
     public Color color = Color.BLACK;
-    public int size = 10;
+    public int size = ClientConstants.DEFAULT_SIZE;
     public ArrayList<IDrawAction> drawActions = new ArrayList<>();
     public IDrawAction tmpDrawAction;
     public ArrayDeque<AbstractToolButtonListener> toolChangeObservers = new ArrayDeque<>();
@@ -46,10 +45,4 @@ public class DrawingPanel extends JPanel {
         }
     }
 
-    public void toolChanged(){
-        AbstractToolButtonListener toolChangeObserver;
-        while ( (toolChangeObserver = toolChangeObservers.poll()) != null ){
-            toolChangeObserver.toolChanged();
-        }
-    }
 }

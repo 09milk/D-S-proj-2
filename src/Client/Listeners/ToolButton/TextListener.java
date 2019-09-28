@@ -29,7 +29,6 @@ public class TextListener extends AbstractToolButtonListener {
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        drawingPanel.toolChangeObservers.add(this);
     }
 
     @Override

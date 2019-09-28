@@ -2,13 +2,11 @@ package Client;
 
 
 import Client.DrawActions.IDrawAction;
-import Client.Listeners.ToolButton.AbstractToolButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class DrawingPanel extends JPanel {
@@ -17,7 +15,6 @@ public class DrawingPanel extends JPanel {
     public int size = ClientConstants.DEFAULT_SIZE;
     public ArrayList<IDrawAction> drawActions = new ArrayList<>();
     public IDrawAction tmpDrawAction;
-    public ArrayDeque<AbstractToolButtonListener> toolChangeObservers = new ArrayDeque<>();
     public String currentEditingFilename = null;
 
     @Override
@@ -36,6 +33,7 @@ public class DrawingPanel extends JPanel {
 
     private void draw(Graphics2D graphics, IDrawAction drawAction) {
         drawAction.draw(graphics);
+        System.out.println(drawAction.getTimestamp());
     }
 
     public void clearDrawingListener() {

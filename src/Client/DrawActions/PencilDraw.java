@@ -24,7 +24,7 @@ public class PencilDraw implements IDrawAction, Serializable {
     @Override
     public void draw(Graphics2D graphics) {
         graphics.setColor(color);
-        graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
+        graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         graphics.drawLine(x, y, oldX, oldY);
     }
 }

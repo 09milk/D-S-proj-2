@@ -15,12 +15,12 @@ public class OvalListener extends AbstractToolButtonListener {
 
     private OvalDraw tmpDrawAction;
 
-    public OvalListener(DrawingPanel drawingPanel){
+    public OvalListener(DrawingPanel drawingPanel) {
         super(drawingPanel);
     }
 
     @Override
-    public void actionPerformed(ActionEvent event){
+    public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
@@ -31,16 +31,16 @@ public class OvalListener extends AbstractToolButtonListener {
     }
 
 
-    protected class OvalDrawingListener extends MouseInputAdapter{
+    protected class OvalDrawingListener extends MouseInputAdapter {
 
         @Override
-        public void mousePressed(MouseEvent event){
+        public void mousePressed(MouseEvent event) {
             originalX = event.getX();
             originalY = event.getY();
         }
 
         @Override
-        public void mouseDragged(MouseEvent event){
+        public void mouseDragged(MouseEvent event) {
             int currentX = event.getX();
             int currentY = event.getY();
             int width = Math.abs(currentX - originalX);
@@ -55,7 +55,7 @@ public class OvalListener extends AbstractToolButtonListener {
         }
 
         @Override
-        public void mouseReleased(MouseEvent event){
+        public void mouseReleased(MouseEvent event) {
             drawingPanel.tmpDrawAction = null;
             drawingPanel.drawActions.add(tmpDrawAction);
             drawingPanel.repaint();

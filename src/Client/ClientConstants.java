@@ -1,8 +1,6 @@
 package Client;
 
 public class ClientConstants {
-    public static Object debugGlobal = null;
-
     public static final int DEFAULT_SIZE = 10;
     public static final int SLIDER_MAX = 50;
     public static final int SLIDER_MIN = 1;

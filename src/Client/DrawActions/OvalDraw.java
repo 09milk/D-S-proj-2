@@ -26,10 +26,10 @@ public class OvalDraw implements IDrawAction, Serializable {
     @Override
     public void draw(Graphics2D graphics) {
         graphics.setColor(color);
-        if(isFill) {
+        if (isFill) {
             graphics.fillOval(upperLeftX, upperLeftY, width, height);
-        } else{
-            graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND ,BasicStroke.JOIN_ROUND));
+        } else {
+            graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             graphics.drawOval(upperLeftX, upperLeftY, width, height);
         }
     }

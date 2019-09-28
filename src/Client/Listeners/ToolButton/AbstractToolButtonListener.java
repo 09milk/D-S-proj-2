@@ -5,12 +5,11 @@ import Client.DrawingPanel;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 public abstract class AbstractToolButtonListener implements ActionListener {
     protected DrawingPanel drawingPanel;
 
-    public AbstractToolButtonListener(DrawingPanel drawingPanel){
+    public AbstractToolButtonListener(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
     }
 

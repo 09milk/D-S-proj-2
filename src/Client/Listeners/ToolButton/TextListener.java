@@ -3,7 +3,6 @@ package Client.Listeners.ToolButton;
 import Client.DrawActions.TextDraw;
 import Client.DrawingPanel;
 
-import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,12 +21,12 @@ public class TextListener extends AbstractToolButtonListener {
     private TextDrawingListener textDrawingListener = new TextDrawingListener();
     private TextFocusListener textFocusListener = new TextFocusListener();
 
-    public TextListener(DrawingPanel drawingPanel){
+    public TextListener(DrawingPanel drawingPanel) {
         super(drawingPanel);
     }
 
     @Override
-    public void actionPerformed(ActionEvent event){
+    public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         drawingPanel.toolChangeObservers.add(this);
@@ -38,15 +37,22 @@ public class TextListener extends AbstractToolButtonListener {
         return textDrawingListener;
     }
 
+    private String buildString(ArrayDeque<Character> textString) {
+        StringBuilder stringBuilder = new StringBuilder(textString.size());
+        for (Character c : textString) {
+            stringBuilder.append(c);
+        }
+        return stringBuilder.toString();
+    }
 
-    protected class TextDrawingListener extends MouseInputAdapter{
+    protected class TextDrawingListener extends MouseInputAdapter {
 
         @Override
-        public void mouseClicked(MouseEvent event){
-            if(writing){
+        public void mouseClicked(MouseEvent event) {
+            if (writing) {
                 //TODO: do this again when changing draw tool
                 endTextDrawing();
-            }else{
+            } else {
                 drawingPanel.requestFocusInWindow();
                 writing = true;
                 x = event.getX();
@@ -59,13 +65,13 @@ public class TextListener extends AbstractToolButtonListener {
             }
         }
 
-        private void endTextDrawing(){
+        private void endTextDrawing() {
             writing = false;
             drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             drawingPanel.removeKeyListener(keyListener);
             drawingPanel.removeFocusListener(textFocusListener);
             drawingPanel.tmpDrawAction = null;
-            if (!textString.isEmpty()){
+            if (!textString.isEmpty()) {
                 drawingPanel.drawActions.add(tmpDrawAction);
             }
             drawingPanel.repaint();
@@ -80,14 +86,14 @@ public class TextListener extends AbstractToolButtonListener {
 
 
         @Override
-        public void keyTyped(KeyEvent event){
+        public void keyTyped(KeyEvent event) {
             Character character = event.getKeyChar();
             int keyCode = (int) character;
-            if (keyCode == KeyEvent.VK_BACK_SPACE){
+            if (keyCode == KeyEvent.VK_BACK_SPACE) {
                 textString.pollLast();
-            }else if (keyCode == KeyEvent.VK_ESCAPE){
+            } else if (keyCode == KeyEvent.VK_ESCAPE) {
                 textString.clear();
-            }else if (character != KeyEvent.CHAR_UNDEFINED){
+            } else if (character != KeyEvent.CHAR_UNDEFINED) {
                 textString.addLast(character);
             }
             tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.size, buildString(textString));
@@ -97,19 +103,9 @@ public class TextListener extends AbstractToolButtonListener {
         }
     }
 
-    private String buildString(ArrayDeque<Character> textString){
-        StringBuilder stringBuilder = new StringBuilder(textString.size());
-        for (Character c : textString){
-            stringBuilder.append(c);
-        }
-        return stringBuilder.toString();
-    }
-
-
-
     protected class TextFocusListener extends FocusAdapter {
         @Override
-        public void focusLost(FocusEvent event){
+        public void focusLost(FocusEvent event) {
             textDrawingListener.endTextDrawing();
         }
     }

@@ -14,7 +14,7 @@ import javax.swing.*;
 public class WhiteboardClient {
     public WhiteboardClientGUI whiteboardClientGUI;
 
-    public WhiteboardClient(){
+    public WhiteboardClient() {
         whiteboardClientGUI = new WhiteboardClientGUI();
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();

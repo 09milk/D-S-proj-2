@@ -20,16 +20,17 @@ public class DrawingPanel extends JPanel {
     public ArrayDeque<AbstractToolButtonListener> toolChangeObservers = new ArrayDeque<>();
 
     @Override
-    protected void paintComponent(Graphics graphics){
+    protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        for(IDrawAction drawAction : drawActions){
-            this.draw((Graphics2D)graphics, drawAction);
+        for (IDrawAction drawAction : drawActions) {
+            this.draw((Graphics2D) graphics, drawAction);
         }
 
         try {
             this.draw((Graphics2D) graphics, tmpDrawAction);
-        } catch(NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     private void draw(Graphics2D graphics, IDrawAction drawAction) {
@@ -37,10 +38,10 @@ public class DrawingPanel extends JPanel {
     }
 
     public void clearDrawingListener() {
-        for(MouseListener listener : this.getMouseListeners()){
+        for (MouseListener listener : this.getMouseListeners()) {
             this.removeMouseListener(listener);
         }
-        for(MouseMotionListener listener : this.getMouseMotionListeners()){
+        for (MouseMotionListener listener : this.getMouseMotionListeners()) {
             this.removeMouseMotionListener(listener);
         }
     }

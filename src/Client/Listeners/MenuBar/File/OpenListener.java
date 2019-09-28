@@ -8,10 +8,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class OpenListener implements ActionListener {
     private JFrame mainFrame;
@@ -27,28 +28,28 @@ public class OpenListener implements ActionListener {
 
     private void addChoosableFileFilter() {
         jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConstants.CUSTOM_EXTENSION_DESCRIPTION,
-                                                                        ClientConstants.CUSTOM_EXTENSION));
+                ClientConstants.CUSTOM_EXTENSION));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         int result = jFileChooser.showOpenDialog(mainFrame);
-        if (result == JFileChooser.APPROVE_OPTION){
+        if (result == JFileChooser.APPROVE_OPTION) {
             loadFile();
         }
     }
 
     private void loadFile() {
         File selectedFile = jFileChooser.getSelectedFile();
-        String extension = ((FileNameExtensionFilter)jFileChooser.getFileFilter()).getExtensions()[0];
-        if(extension.equals(ClientConstants.CUSTOM_EXTENSION)){
+        String extension = ((FileNameExtensionFilter) jFileChooser.getFileFilter()).getExtensions()[0];
+        if (extension.equals(ClientConstants.CUSTOM_EXTENSION)) {
             loadCustomFile(selectedFile);
         }
     }
 
     private void loadCustomFile(File selectedFile) {
         ObjectInputStream objectInputStream;
-        try (FileInputStream fileInputStream = new FileInputStream(selectedFile)){
+        try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
             objectInputStream = new ObjectInputStream(fileInputStream);
             drawingPanel.drawActions = (ArrayList<IDrawAction>) objectInputStream.readObject();
             drawingPanel.repaint();

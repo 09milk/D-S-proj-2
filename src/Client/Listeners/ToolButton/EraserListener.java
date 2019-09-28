@@ -11,7 +11,7 @@ public class EraserListener extends AbstractToolButtonListener {
     private int oldX;
     private int oldY;
 
-    public EraserListener(DrawingPanel drawingPanel){
+    public EraserListener(DrawingPanel drawingPanel) {
         super(drawingPanel);
     }
 
@@ -21,16 +21,16 @@ public class EraserListener extends AbstractToolButtonListener {
     }
 
 
-    private class EraserDrawingListener extends MouseInputAdapter{
+    private class EraserDrawingListener extends MouseInputAdapter {
 
         @Override
-        public void mousePressed(MouseEvent event){
+        public void mousePressed(MouseEvent event) {
             oldX = event.getX();
             oldY = event.getY();
         }
 
         @Override
-        public void mouseDragged(MouseEvent event){
+        public void mouseDragged(MouseEvent event) {
             int x = event.getX();
             int y = event.getY();
 

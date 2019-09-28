@@ -13,12 +13,12 @@ public class PencilListener extends AbstractToolButtonListener {
     private int oldX;
     private int oldY;
 
-    public PencilListener(DrawingPanel drawingPanel){
+    public PencilListener(DrawingPanel drawingPanel) {
         super(drawingPanel);
     }
 
     @Override
-    public void actionPerformed(ActionEvent event){
+    public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
@@ -29,16 +29,16 @@ public class PencilListener extends AbstractToolButtonListener {
     }
 
 
-    protected class PencilDrawingListener extends MouseInputAdapter{
+    protected class PencilDrawingListener extends MouseInputAdapter {
 
         @Override
-        public void mousePressed(MouseEvent event){
+        public void mousePressed(MouseEvent event) {
             oldX = event.getX();
             oldY = event.getY();
         }
 
         @Override
-        public void mouseDragged(MouseEvent event){
+        public void mouseDragged(MouseEvent event) {
             int x = event.getX();
             int y = event.getY();
 

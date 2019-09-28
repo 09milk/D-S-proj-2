@@ -1,5 +1,6 @@
 package Client.Listeners.MenuBar.File;
 
+import Client.ActionQueue;
 import Client.ClientConstants;
 import Client.DrawActions.IDrawAction;
 import Client.DrawingPanel;
@@ -53,7 +54,7 @@ public class OpenListener implements ActionListener {
         try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
             objectInputStream = new ObjectInputStream(fileInputStream);
             mainFrame.setTitle(selectedFile.getName());
-            drawingPanel.drawActions = (ArrayList<IDrawAction>) objectInputStream.readObject();
+            drawingPanel.drawActions = (ActionQueue) objectInputStream.readObject();
             drawingPanel.repaint();
         } catch (Exception e) {
             e.printStackTrace();

@@ -69,7 +69,7 @@ public class TextListener extends AbstractToolButtonListener {
             drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             drawingPanel.removeKeyListener(keyListener);
             drawingPanel.removeFocusListener(textFocusListener);
-            drawingPanel.tmpDrawAction = null;
+            drawingPanel.resetTmpDrawAction();
             if (!textString.isEmpty()) {
                 drawingPanel.drawActions.add(tmpDrawAction);
             }
@@ -96,7 +96,7 @@ public class TextListener extends AbstractToolButtonListener {
                 textString.addLast(character);
             }
             tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.size, buildString(textString));
-            drawingPanel.tmpDrawAction = tmpDrawAction;
+            drawingPanel.setTmpDrawAction(tmpDrawAction);
 
             drawingPanel.repaint();
         }

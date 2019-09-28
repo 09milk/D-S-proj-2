@@ -7,14 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 
 public class DrawingPanel extends JPanel {
 
     public Color color = Color.BLACK;
     public int size = ClientConstants.DEFAULT_SIZE;
-    public ArrayList<IDrawAction> drawActions = new ArrayList<>();
-    public IDrawAction tmpDrawAction;
+    public ActionQueue drawActions = new ActionQueue();
+    private IDrawAction tmpDrawAction;
     public String currentEditingFilename = null;
 
     @Override
@@ -33,7 +32,6 @@ public class DrawingPanel extends JPanel {
 
     private void draw(Graphics2D graphics, IDrawAction drawAction) {
         drawAction.draw(graphics);
-        System.out.println(drawAction.getTimestamp());
     }
 
     public void clearDrawingListener() {
@@ -43,6 +41,14 @@ public class DrawingPanel extends JPanel {
         for (MouseMotionListener listener : this.getMouseMotionListeners()) {
             this.removeMouseMotionListener(listener);
         }
+    }
+
+    public void setTmpDrawAction(IDrawAction tmpDrawAction){
+        this.tmpDrawAction = tmpDrawAction;
+    }
+
+    public void resetTmpDrawAction(){
+        setTmpDrawAction(null);
     }
 
 }

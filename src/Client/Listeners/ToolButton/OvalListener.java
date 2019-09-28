@@ -49,14 +49,14 @@ public class OvalListener extends AbstractToolButtonListener {
             int upperLeftY = Math.min(currentY, originalY);
 
             tmpDrawAction = new OvalDraw(drawingPanel.color, upperLeftX, upperLeftY, width, height, drawingPanel.size, true);
-            drawingPanel.tmpDrawAction = tmpDrawAction;
+            drawingPanel.setTmpDrawAction(tmpDrawAction);
 
             drawingPanel.repaint();
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
-            drawingPanel.tmpDrawAction = null;
+            drawingPanel.resetTmpDrawAction();
             drawingPanel.drawActions.add(tmpDrawAction);
             drawingPanel.repaint();
         }

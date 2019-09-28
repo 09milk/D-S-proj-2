@@ -18,20 +18,32 @@ public class SaveAsListener implements ActionListener {
     private DrawingPanel drawingPanel;
     private JFileChooser jFileChooser = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
 
-    public SaveAsListener(JFrame mainFrame, DrawingPanel drawingPanel) {
+    public SaveAsListener(JFrame mainFrame, DrawingPanel drawingPanel){
+        this(mainFrame, drawingPanel, false);
+    }
+
+    public SaveAsListener(JFrame mainFrame, DrawingPanel drawingPanel, boolean customExtensionOnly) {
         this.mainFrame = mainFrame;
         this.drawingPanel = drawingPanel;
         jFileChooser.setAcceptAllFileFilterUsed(false);
-        addChoosableFileFilter();
+        if (customExtensionOnly){
+            addCustomExtensionFileFilter();
+        }else {
+            addChoosableFileFilter();
+        }
     }
 
     private void addChoosableFileFilter() {
+        addCustomExtensionFileFilter();
+    }
+
+    private void addCustomExtensionFileFilter(){
         jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConstants.CUSTOM_EXTENSION_DESCRIPTION,
                 ClientConstants.CUSTOM_EXTENSION));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
         int result = jFileChooser.showSaveDialog(mainFrame);
         if (result == JFileChooser.APPROVE_OPTION) {
             saveAsFile();
@@ -53,10 +65,14 @@ public class SaveAsListener implements ActionListener {
         if (!regexPattern.matcher(filename).find()) {
             filename = filename + "." + ClientConstants.CUSTOM_EXTENSION;
         }
+        saveCustomFileWithName(filename);
+    }
 
+    void saveCustomFileWithName(String filename){
         try (FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(drawingPanel.drawActions);
+            mainFrame.setTitle(filename);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to Save.");

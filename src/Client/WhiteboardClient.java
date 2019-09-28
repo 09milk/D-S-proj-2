@@ -1,7 +1,6 @@
 package Client;
 
-import Client.Listeners.MenuBar.File.OpenListener;
-import Client.Listeners.MenuBar.File.SaveAsListener;
+import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.EraserListener;
@@ -12,12 +11,16 @@ import Client.Listeners.ToolButton.TextListener;
 import javax.swing.*;
 
 public class WhiteboardClient {
+    public static int newFileCount = 0;
+
     public WhiteboardClientGUI whiteboardClientGUI;
 
     public WhiteboardClient() {
         whiteboardClientGUI = new WhiteboardClientGUI();
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
+        whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
+        newFileCount++;
     }
 
     private void addMouseListenerToButton() {
@@ -32,9 +35,11 @@ public class WhiteboardClient {
         whiteboardClientGUI.jSlider.addMouseListener(new SliderListener(drawingPanel));
 
 
+        whiteboardClientGUI.mntmNew.addActionListener(new NewListener(mainFrame));
         whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel));
-        whiteboardClientGUI.mntmSave.addActionListener(null);
+        whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));
+        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
     }

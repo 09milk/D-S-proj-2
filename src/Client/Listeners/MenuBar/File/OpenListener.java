@@ -32,7 +32,7 @@ public class OpenListener implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
         int result = jFileChooser.showOpenDialog(mainFrame);
         if (result == JFileChooser.APPROVE_OPTION) {
             loadFile();
@@ -42,6 +42,7 @@ public class OpenListener implements ActionListener {
     private void loadFile() {
         File selectedFile = jFileChooser.getSelectedFile();
         String extension = ((FileNameExtensionFilter) jFileChooser.getFileFilter()).getExtensions()[0];
+        drawingPanel.currentEditingFilename = selectedFile.getName();
         if (extension.equals(ClientConstants.CUSTOM_EXTENSION)) {
             loadCustomFile(selectedFile);
         }
@@ -51,6 +52,7 @@ public class OpenListener implements ActionListener {
         ObjectInputStream objectInputStream;
         try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
             objectInputStream = new ObjectInputStream(fileInputStream);
+            mainFrame.setTitle(selectedFile.getName());
             drawingPanel.drawActions = (ArrayList<IDrawAction>) objectInputStream.readObject();
             drawingPanel.repaint();
         } catch (Exception e) {

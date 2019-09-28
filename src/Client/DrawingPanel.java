@@ -18,6 +18,7 @@ public class DrawingPanel extends JPanel {
     public ArrayList<IDrawAction> drawActions = new ArrayList<>();
     public IDrawAction tmpDrawAction;
     public ArrayDeque<AbstractToolButtonListener> toolChangeObservers = new ArrayDeque<>();
+    public String currentEditingFilename = null;
 
     @Override
     protected void paintComponent(Graphics graphics) {

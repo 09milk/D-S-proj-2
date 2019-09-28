@@ -2,7 +2,6 @@ package Client.Listeners.MenuBar.File;
 
 import Client.ActionQueue;
 import Client.ClientConstants;
-import Client.DrawActions.IDrawAction;
 import Client.DrawingPanel;
 
 import javax.swing.*;
@@ -13,7 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class OpenListener implements ActionListener {
     private JFrame mainFrame;

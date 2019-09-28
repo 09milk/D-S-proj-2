@@ -15,8 +15,11 @@ public class WhiteboardClient {
 
     public WhiteboardClientGUI whiteboardClientGUI;
 
-    public WhiteboardClient() {
+    public ClientNetworkController clientNetworkController;
+
+    public WhiteboardClient(ClientNetworkController clientNetworkController) {
         whiteboardClientGUI = new WhiteboardClientGUI();
+        whiteboardClientGUI.drawingPanel.setDrawActions(new ActionQueue(clientNetworkController));
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
@@ -35,7 +38,7 @@ public class WhiteboardClient {
         whiteboardClientGUI.jSlider.addMouseListener(new SliderListener(drawingPanel));
 
 
-        whiteboardClientGUI.mntmNew.addActionListener(new NewListener(mainFrame));
+        whiteboardClientGUI.mntmNew.addActionListener(new NewListener(mainFrame, clientNetworkController));
         whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));

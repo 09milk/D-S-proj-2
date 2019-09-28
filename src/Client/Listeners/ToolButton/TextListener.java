@@ -49,7 +49,6 @@ public class TextListener extends AbstractToolButtonListener {
         @Override
         public void mouseClicked(MouseEvent event) {
             if (writing) {
-                //TODO: do this again when changing draw tool
                 endTextDrawing();
             } else {
                 drawingPanel.requestFocusInWindow();

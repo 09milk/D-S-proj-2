@@ -12,9 +12,9 @@ public class DrawingPanel extends JPanel {
 
     public Color color = Color.BLACK;
     public int size = ClientConstants.DEFAULT_SIZE;
-    public ActionQueue drawActions = new ActionQueue();
-    private IDrawAction tmpDrawAction;
+    public ActionQueue drawActions;
     public String currentEditingFilename = null;
+    private IDrawAction tmpDrawAction;
 
     @Override
     protected void paintComponent(Graphics graphics) {
@@ -43,12 +43,15 @@ public class DrawingPanel extends JPanel {
         }
     }
 
-    public void setTmpDrawAction(IDrawAction tmpDrawAction){
+    public void setTmpDrawAction(IDrawAction tmpDrawAction) {
         this.tmpDrawAction = tmpDrawAction;
     }
 
-    public void resetTmpDrawAction(){
+    public void resetTmpDrawAction() {
         setTmpDrawAction(null);
     }
 
+    public void setDrawActions(ActionQueue drawActions) {
+        this.drawActions = drawActions;
+    }
 }

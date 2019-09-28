@@ -1,7 +1,5 @@
 package Client.Listeners.MenuBar.File;
 
-import Client.WhiteboardClient;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

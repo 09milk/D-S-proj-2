@@ -17,9 +17,9 @@ public class SaveListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if(drawingPanel.currentEditingFilename != null) {
+        if (drawingPanel.currentEditingFilename != null) {
             saveFile();
-        } else{
+        } else {
             (new SaveAsListener(mainFrame, drawingPanel, true)).actionPerformed(null);
         }
     }

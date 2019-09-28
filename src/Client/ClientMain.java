@@ -6,6 +6,16 @@ public class ClientMain {
     }
 
     public static void startWhiteboard() {
-        new WhiteboardClient();
+        ClientNetworkController clientNetworkController = new ClientNetworkController(
+                ClientConstants.SERVER_ADDRESS,
+                ClientConstants.SERVER_PORT,
+                ClientConstants.DEFAULT_BOARD_NAME);
+        try {
+            clientNetworkController.startCommunication();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+        new WhiteboardClient(clientNetworkController);
     }
 }

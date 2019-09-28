@@ -18,7 +18,7 @@ public class SaveAsListener implements ActionListener {
     private DrawingPanel drawingPanel;
     private JFileChooser jFileChooser = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
 
-    public SaveAsListener(JFrame mainFrame, DrawingPanel drawingPanel){
+    public SaveAsListener(JFrame mainFrame, DrawingPanel drawingPanel) {
         this(mainFrame, drawingPanel, false);
     }
 
@@ -26,9 +26,9 @@ public class SaveAsListener implements ActionListener {
         this.mainFrame = mainFrame;
         this.drawingPanel = drawingPanel;
         jFileChooser.setAcceptAllFileFilterUsed(false);
-        if (customExtensionOnly){
+        if (customExtensionOnly) {
             addCustomExtensionFileFilter();
-        }else {
+        } else {
             addChoosableFileFilter();
         }
     }
@@ -37,7 +37,7 @@ public class SaveAsListener implements ActionListener {
         addCustomExtensionFileFilter();
     }
 
-    private void addCustomExtensionFileFilter(){
+    private void addCustomExtensionFileFilter() {
         jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConstants.CUSTOM_EXTENSION_DESCRIPTION,
                 ClientConstants.CUSTOM_EXTENSION));
     }
@@ -68,7 +68,7 @@ public class SaveAsListener implements ActionListener {
         saveCustomFileWithName(filename);
     }
 
-    void saveCustomFileWithName(String filename){
+    void saveCustomFileWithName(String filename) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(drawingPanel.drawActions);

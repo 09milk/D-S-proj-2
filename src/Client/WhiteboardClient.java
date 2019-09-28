@@ -7,6 +7,7 @@ import Client.Listeners.ToolButton.EraserListener;
 import Client.Listeners.ToolButton.OvalListener;
 import Client.Listeners.ToolButton.PencilListener;
 import Client.Listeners.ToolButton.TextListener;
+import Client.Listeners.mainFrameWindowListener;
 
 import javax.swing.*;
 
@@ -18,8 +19,12 @@ public class WhiteboardClient {
     public ClientNetworkController clientNetworkController;
 
     public WhiteboardClient(ClientNetworkController clientNetworkController) {
+        this.clientNetworkController = clientNetworkController;
+        this.clientNetworkController.setWhiteboardClient(this);
+
         whiteboardClientGUI = new WhiteboardClientGUI();
-        whiteboardClientGUI.drawingPanel.setDrawActions(new ActionQueue(clientNetworkController));
+        DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
+        drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
@@ -29,6 +34,8 @@ public class WhiteboardClient {
     private void addMouseListenerToButton() {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         JFrame mainFrame = whiteboardClientGUI.mainFrame;
+
+        mainFrame.addWindowListener(new mainFrameWindowListener(clientNetworkController));
 
         whiteboardClientGUI.btnText.addActionListener(new TextListener(drawingPanel));
         whiteboardClientGUI.btnPencil.addActionListener(new PencilListener(drawingPanel));

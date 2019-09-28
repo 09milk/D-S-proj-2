@@ -13,6 +13,7 @@ public class ClientNetworkController extends NetworkController {
     private int port;
 
     private ActionQueue actionQueue;
+    private WhiteboardClient whiteboardClient;
 
 
     public ClientNetworkController(String address, int port, String boardName) {
@@ -28,11 +29,11 @@ public class ClientNetworkController extends NetworkController {
         } catch (IOException e) {
             throw new Exception("Failed to start socket");
         }
-        super.setIOStream(socket);
+        this.setIOStream(socket);
 
-        startSending(new NetworkPackage(this.boardName));
+        startSending(new NetworkPackage(ActionType.CONNECT, this.boardName));
 
-        super.startReading();
+        this.startReading();
     }
 
     @Override
@@ -42,15 +43,26 @@ public class ClientNetworkController extends NetworkController {
             case DRAW:
                 actionQueue.addRealAction(networkPackage.drawAction);
                 break;
+            case MEMBER_AMOUNT:
+                int amount = networkPackage.amountOfMembers;
+                String text = String.format(ClientConstants.CURRENT_MEMBER_STRING, amount);
+                try {
+                    whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
+                }catch(NullPointerException ignored){}
+                break;
             case REDO:
             default:
                 break;
         }
-        super.startReading();
+        this.startReading();
     }
 
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;
+    }
+
+    public void setWhiteboardClient(WhiteboardClient whiteboardClient) {
+        this.whiteboardClient = whiteboardClient;
     }
 }

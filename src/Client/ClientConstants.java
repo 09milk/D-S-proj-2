@@ -11,4 +11,6 @@ public class ClientConstants {
     public static final String SERVER_ADDRESS = "localhost";
     public static final int SERVER_PORT = 7777;
     public static final String DEFAULT_BOARD_NAME = "default board";
+
+    public static final String CURRENT_MEMBER_STRING = "Current member(%2d)";
 }

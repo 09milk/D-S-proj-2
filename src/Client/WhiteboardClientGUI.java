@@ -86,7 +86,8 @@ public class WhiteboardClientGUI {
         btnText = new JButton();
         btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
 
-        btnCurrentMember = new JButton("Current member(--)");
+        String currentMemberText = String.format(ClientConstants.CURRENT_MEMBER_STRING, 0);
+        btnCurrentMember = new JButton(currentMemberText);
     }
 
     /**********************************************************************************************************

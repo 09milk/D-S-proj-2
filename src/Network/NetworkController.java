@@ -9,15 +9,15 @@ import java.net.Socket;
 
 public abstract class NetworkController {
 
-    protected String boardName;
+    public String boardName;
 
     protected ObjectInputStream inputStream;
     protected ObjectOutputStream outputStream;
 
     public void setIOStream(Socket socket) throws Exception {
         try {
-            this.inputStream = new ObjectInputStream(socket.getInputStream());
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+            this.inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             throw new Exception("Failed to get I/O stream");
         }
@@ -25,7 +25,12 @@ public abstract class NetworkController {
 
     public void sendPackage(IDrawAction drawAction) {
         NetworkPackage networkPackage = new NetworkPackage(ActionType.DRAW, drawAction);
+        sendPackage(networkPackage);
+    }
+
+    public void sendPackage(NetworkPackage networkPackage){
         startSending(networkPackage);
+        System.out.println("Sending: " + networkPackage);
     }
 
     abstract public void receivedPackage(NetworkPackage networkPackage);
@@ -42,8 +47,11 @@ public abstract class NetworkController {
         @Override
         public void run() {
             try {
-                receivedPackage((NetworkPackage) inputStream.readObject());
-            } catch (Exception ignored) {
+                synchronized (inputStream) {
+                    receivedPackage((NetworkPackage) inputStream.readObject());
+                }
+            } catch (ClassNotFoundException | IOException e) {
+                System.out.println("networkInputHandler: " + e.getMessage());
             }
         }
     }
@@ -58,8 +66,11 @@ public abstract class NetworkController {
         @Override
         public void run() {
             try {
-                outputStream.writeObject(networkPackage);
-            } catch (Exception ignored) {
+                synchronized (outputStream) {
+                    outputStream.writeObject(networkPackage);
+                }
+            } catch (IOException e) {
+                System.out.println("networkOutputHandler: " + e.getMessage());
             }
         }
     }

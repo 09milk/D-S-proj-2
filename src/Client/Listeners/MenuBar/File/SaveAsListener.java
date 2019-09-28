@@ -71,7 +71,7 @@ public class SaveAsListener implements ActionListener {
     void saveCustomFileWithName(String filename) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(drawingPanel.drawActions);
+            objectOutputStream.writeObject(drawingPanel.drawActions.getRealQueue());
             mainFrame.setTitle(filename);
         } catch (Exception e) {
             e.printStackTrace();

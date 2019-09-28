@@ -2,6 +2,7 @@ package Client.Listeners.MenuBar.File;
 
 import Client.ActionQueue;
 import Client.ClientConstants;
+import Client.DrawActions.IDrawAction;
 import Client.DrawingPanel;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class OpenListener implements ActionListener {
     private JFrame mainFrame;
@@ -52,7 +54,7 @@ public class OpenListener implements ActionListener {
         try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
             objectInputStream = new ObjectInputStream(fileInputStream);
             mainFrame.setTitle(selectedFile.getName());
-            drawingPanel.drawActions = (ActionQueue) objectInputStream.readObject();
+            drawingPanel.drawActions.setRealQueue((ArrayList<IDrawAction>) objectInputStream.readObject());
             drawingPanel.repaint();
         } catch (Exception e) {
             e.printStackTrace();

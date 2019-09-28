@@ -1,7 +1,11 @@
 package Network;
 
-public enum ActionType {
+import java.io.Serializable;
+
+public enum ActionType implements Serializable {
     DRAW,
     REDO,
-    BOARD_CONNECTION
+    CONNECT,
+    DISCONNECT,
+    MEMBER_AMOUNT
 }

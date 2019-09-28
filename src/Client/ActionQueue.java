@@ -16,10 +16,12 @@ public class ActionQueue implements Iterable<IDrawAction>, Serializable {
     private ArrayList<IDrawAction> realQueue = new ArrayList<>();
 
     private ClientNetworkController clientNetworkController;
+    private DrawingPanel drawingPanel;
 
-    public ActionQueue(ClientNetworkController clientNetworkController) {
+    public ActionQueue(ClientNetworkController clientNetworkController, DrawingPanel drawingPanel) {
         this.clientNetworkController = clientNetworkController;
         this.clientNetworkController.setActionQueue(this);
+        this.drawingPanel = drawingPanel;
     }
 
     public void add(IDrawAction drawAction) {
@@ -35,10 +37,20 @@ public class ActionQueue implements Iterable<IDrawAction>, Serializable {
 
     public synchronized void synchronizeRealAndLocal() {
         localQueue = new ArrayList<>(realQueue);
+        drawingPanel.repaint();
     }
 
     @Override
     public Iterator<IDrawAction> iterator() {
         return localQueue.iterator();
+    }
+
+    public ArrayList<IDrawAction> getRealQueue(){
+        return this.realQueue;
+    }
+
+    public void setRealQueue(ArrayList<IDrawAction> realQueue) {
+        this.realQueue = realQueue;
+        synchronizeRealAndLocal();
     }
 }

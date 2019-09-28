@@ -22,25 +22,25 @@ public class RequestHandler implements Runnable {
         serverNetworkController = new ServerNetworkController(this);
     }
 
-    public void linkWhiteboard(String boardName){
+    public void linkWhiteboard(String boardName) {
         serverWhiteboard = whiteboardManager.getWhiteboard(boardName);
         serverWhiteboard.addListener(handlerListener);
     }
 
-    public void unlinkWhiteboard(){
+    public void unlinkWhiteboard() {
         serverWhiteboard.removeListener(handlerListener);
     }
 
-    public void addDrawAction(IDrawAction drawAction){
+    public void addDrawAction(IDrawAction drawAction) {
         serverWhiteboard.addDrawAction(drawAction);
     }
 
     public class HandlerListener {
-        public void newDrawAction(IDrawAction drawAction){
+        public void newDrawAction(IDrawAction drawAction) {
             serverNetworkController.sendPackage(drawAction);
         }
 
-        public void sendAmountOfMember(int amountOfMembers){
+        public void sendAmountOfMember(int amountOfMembers) {
             serverNetworkController.sendPackage(amountOfMembers);
         }
     }

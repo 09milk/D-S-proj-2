@@ -28,7 +28,7 @@ public abstract class NetworkController {
         sendPackage(networkPackage);
     }
 
-    public void sendPackage(NetworkPackage networkPackage){
+    public void sendPackage(NetworkPackage networkPackage) {
         startSending(networkPackage);
         System.out.println("Sending: " + networkPackage);
     }

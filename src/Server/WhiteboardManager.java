@@ -7,21 +7,22 @@ public class WhiteboardManager {
     private static WhiteboardManager instance = new WhiteboardManager();
     private ConcurrentHashMap<String, ServerWhiteboard> allWhiteboard = new ConcurrentHashMap<>();
 
-    private WhiteboardManager() {}
+    private WhiteboardManager() {
+    }
 
     public static WhiteboardManager getInstance() {
         return instance;
     }
 
-    public ServerWhiteboard newWhiteboard(String name){
+    public ServerWhiteboard newWhiteboard(String name) {
         ServerWhiteboard whiteboard = allWhiteboard.putIfAbsent(name, new ServerWhiteboard());
-        if (whiteboard == null){
+        if (whiteboard == null) {
             whiteboard = allWhiteboard.get(name);
         }
         return whiteboard;
     }
 
-    public ServerWhiteboard getWhiteboard(String name){
+    public ServerWhiteboard getWhiteboard(String name) {
         return newWhiteboard(name);
     }
 

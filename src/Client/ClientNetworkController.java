@@ -48,7 +48,8 @@ public class ClientNetworkController extends NetworkController {
                 String text = String.format(ClientConstants.CURRENT_MEMBER_STRING, amount);
                 try {
                     whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
-                }catch(NullPointerException ignored){}
+                } catch (NullPointerException ignored) {
+                }
                 break;
             case REDO:
             default:

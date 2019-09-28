@@ -45,7 +45,7 @@ public class ActionQueue implements Iterable<IDrawAction>, Serializable {
         return localQueue.iterator();
     }
 
-    public ArrayList<IDrawAction> getRealQueue(){
+    public ArrayList<IDrawAction> getRealQueue() {
         return this.realQueue;
     }
 

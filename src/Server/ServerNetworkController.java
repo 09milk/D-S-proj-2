@@ -27,7 +27,7 @@ public class ServerNetworkController extends NetworkController {
     public void receivedPackage(NetworkPackage networkPackage) {
         System.out.println(networkPackage.actionType.toString());
         ActionType actionType = networkPackage.actionType;
-        switch (actionType){
+        switch (actionType) {
             case CONNECT:
                 requestHandler.linkWhiteboard(networkPackage.boardName);
                 break;

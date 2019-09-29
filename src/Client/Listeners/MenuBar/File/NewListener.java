@@ -2,6 +2,8 @@ package Client.Listeners.MenuBar.File;
 
 import Client.ClientNetworkController;
 import Client.WhiteboardClient;
+import Network.ActionType;
+import Network.NetworkPackage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,9 @@ public class NewListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        new WhiteboardClient(clientNetworkController);
+        WhiteboardClient.newFileCount++;
+        clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
+        new WhiteboardClient(clientNetworkController, oldMainFrame.getX(), oldMainFrame.getY());
         oldMainFrame.dispose();
     }
 }

@@ -3,6 +3,7 @@ package Client;
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
+import Network.UserName;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -11,15 +12,17 @@ public class ClientNetworkController extends NetworkController {
 
     private String address;
     private int port;
+    public UserName userName;
 
     private ActionQueue actionQueue;
     private WhiteboardClient whiteboardClient;
 
 
-    public ClientNetworkController(String address, int port, String boardName) {
+    public ClientNetworkController(String address, int port, String roomName, UserName userName) {
         this.address = address;
         this.port = port;
-        this.boardName = boardName;
+        this.roomName = roomName;
+        this.userName = userName;
     }
 
     public void startCommunication() throws Exception {
@@ -31,13 +34,14 @@ public class ClientNetworkController extends NetworkController {
         }
         this.setIOStream(socket);
 
-        startSending(new NetworkPackage(ActionType.CONNECT, this.boardName));
+        startSending(new NetworkPackage(ActionType.CONNECT, userName, this.roomName));
 
         this.startReading();
     }
 
     @Override
     public void receivedPackage(NetworkPackage networkPackage) {
+        super.receivedPackage(networkPackage);
         ActionType actionType = networkPackage.actionType;
         switch (actionType) {
             case DRAW:
@@ -45,14 +49,25 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case MEMBER_AMOUNT:
                 int amount = networkPackage.amountOfMembers;
-                String text = String.format(ClientConstants.CURRENT_MEMBER_STRING, amount);
+                String text = String.format(ClientConfig.CURRENT_MEMBER_STRING, amount);
                 try {
                     whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
                 } catch (NullPointerException ignored) {
                 }
                 break;
-            case REDO:
+            case CHANGE_LOCAL_NAME:
+                whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.roomName, true);
+                break;
+            case SET_QUEUE:
+                actionQueue.setRealQueue(networkPackage.realQueue);
+                break;
+            case NEW_BOARD:
+                JFrameNetwork oldFrame = whiteboardClient.whiteboardClientGUI.mainFrame;
+                new WhiteboardClient(this, false, oldFrame.getX(), oldFrame.getY());
+                oldFrame.dispose();
+                break;
             default:
+                System.out.println("Unexpected action type: " + actionType.name());
                 break;
         }
         this.startReading();

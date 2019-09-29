@@ -1,5 +1,7 @@
 package Client;
 
+import Network.UserName;
+
 public class ClientMain {
     public static void main(String[] args) {
         startWhiteboard();
@@ -7,9 +9,10 @@ public class ClientMain {
 
     public static void startWhiteboard() {
         ClientNetworkController clientNetworkController = new ClientNetworkController(
-                ClientConstants.SERVER_ADDRESS,
-                ClientConstants.SERVER_PORT,
-                ClientConstants.DEFAULT_BOARD_NAME);
+                ClientConfig.SERVER_ADDRESS,
+                ClientConfig.SERVER_PORT,
+                ClientConfig.DEFAULT_ROOM_NAME,
+                new UserName(ClientConfig.DEFAULT_USERNAME));
         try {
             clientNetworkController.startCommunication();
         } catch (Exception e) {

@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 public class DrawingPanel extends JPanel {
 
     public Color color = Color.BLACK;
-    public int size = ClientConstants.DEFAULT_SIZE;
+    public int size = ClientConfig.DEFAULT_SIZE;
     public ActionQueue drawActions;
     public String currentEditingFilename = null;
     private IDrawAction tmpDrawAction;

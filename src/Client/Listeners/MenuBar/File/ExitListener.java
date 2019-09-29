@@ -1,5 +1,7 @@
 package Client.Listeners.MenuBar.File;
 
+import Client.JFrameNetwork;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,5 +17,6 @@ public class ExitListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         mainFrame.dispose();
+        System.exit(0);
     }
 }

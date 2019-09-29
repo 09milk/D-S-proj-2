@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public abstract class NetworkController {
 
-    public String boardName;
+    public String roomName;
 
     protected ObjectInputStream inputStream;
     protected ObjectOutputStream outputStream;
@@ -23,17 +23,14 @@ public abstract class NetworkController {
         }
     }
 
-    public void sendPackage(IDrawAction drawAction) {
-        NetworkPackage networkPackage = new NetworkPackage(ActionType.DRAW, drawAction);
-        sendPackage(networkPackage);
-    }
-
     public void sendPackage(NetworkPackage networkPackage) {
         startSending(networkPackage);
-        System.out.println("Sending: " + networkPackage);
+        log("Sending: " + networkPackage.actionType);
     }
 
-    abstract public void receivedPackage(NetworkPackage networkPackage);
+    public void receivedPackage(NetworkPackage networkPackage){
+        log("Receiving: " + networkPackage.actionType);
+    }
 
     protected void startReading() {
         new Thread(new networkInputHandler()).start();
@@ -41,6 +38,10 @@ public abstract class NetworkController {
 
     protected void startSending(NetworkPackage networkPackage) {
         new Thread(new networkOutputHandler(networkPackage)).start();
+    }
+
+    protected void log(String message){
+        System.out.println(message);
     }
 
     private class networkInputHandler implements Runnable {
@@ -51,7 +52,8 @@ public abstract class NetworkController {
                     receivedPackage((NetworkPackage) inputStream.readObject());
                 }
             } catch (ClassNotFoundException | IOException e) {
-                System.out.println("networkInputHandler: " + e.getMessage());
+                log("networkInputHandler: " + e.getMessage());
+                networkErrorHandler();
             }
         }
     }
@@ -70,8 +72,11 @@ public abstract class NetworkController {
                     outputStream.writeObject(networkPackage);
                 }
             } catch (IOException e) {
-                System.out.println("networkOutputHandler: " + e.getMessage());
+                log("networkOutputHandler: " + e.getMessage());
+                networkErrorHandler();
             }
         }
     }
+
+    protected void networkErrorHandler(){}
 }

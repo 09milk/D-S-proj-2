@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class WhiteboardClientGUI {
 
-    public JFrame mainFrame;
+    public JFrameNetwork mainFrame;
     public JButton btnText;
     public JButton btnPencil;
     public JButton btnEraser;
@@ -32,8 +32,8 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmFont;
 
 
-    public WhiteboardClientGUI() {
-        initializeGUI();
+    public WhiteboardClientGUI(int posX, int posY) {
+        initializeGUI(posX, posY);
         initializeGroupLayout();
         initializeMenuBar(mainFrame);
     }
@@ -43,7 +43,7 @@ public class WhiteboardClientGUI {
         drawingPanel.requestFocusInWindow();
     }
 
-    private void initializeGUI() {
+    private void initializeGUI(int posX, int posY) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -51,15 +51,9 @@ public class WhiteboardClientGUI {
         }
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        mainFrame = new JFrame();
-        mainFrame.setBounds(100, 100, 748, 555);
+        mainFrame = new JFrameNetwork();
+        mainFrame.setBounds(posX, posY, 748, 555);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        /*
-        mainFrame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-
-            }
-        });*/
 
         btnPencil = new JButton();
         btnPencil.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-pencil-24.png")));
@@ -75,9 +69,9 @@ public class WhiteboardClientGUI {
 
         jSlider = new JSlider();
         jSlider.setPaintTicks(true);
-        jSlider.setValue(ClientConstants.DEFAULT_SIZE);
-        jSlider.setMaximum(ClientConstants.SLIDER_MAX);
-        jSlider.setMinimum(ClientConstants.SLIDER_MIN);
+        jSlider.setValue(ClientConfig.DEFAULT_SIZE);
+        jSlider.setMaximum(ClientConfig.SLIDER_MAX);
+        jSlider.setMinimum(ClientConfig.SLIDER_MIN);
         jSlider.setOrientation(SwingConstants.VERTICAL);
 
         btnCircle = new JButton("");
@@ -86,7 +80,7 @@ public class WhiteboardClientGUI {
         btnText = new JButton();
         btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
 
-        String currentMemberText = String.format(ClientConstants.CURRENT_MEMBER_STRING, 0);
+        String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
         btnCurrentMember = new JButton(currentMemberText);
     }
 

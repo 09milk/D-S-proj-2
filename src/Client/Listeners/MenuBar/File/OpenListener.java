@@ -1,8 +1,10 @@
 package Client.Listeners.MenuBar.File;
 
-import Client.ClientConstants;
+import Client.ClientConfig;
+import Client.ClientNetworkController;
 import Client.DrawActions.IDrawAction;
 import Client.DrawingPanel;
+import Client.WhiteboardClient;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -15,25 +17,27 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class OpenListener implements ActionListener {
-    private JFrame mainFrame;
+    private JFrame oldMainFrame;
     private DrawingPanel drawingPanel;
+    private ClientNetworkController clientNetworkController;
     private JFileChooser jFileChooser = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
 
-    public OpenListener(JFrame mainFrame, DrawingPanel drawingPanel) {
-        this.mainFrame = mainFrame;
+    public OpenListener(JFrame oldMainFrame, DrawingPanel drawingPanel, ClientNetworkController clientNetworkController) {
+        this.oldMainFrame = oldMainFrame;
         this.drawingPanel = drawingPanel;
+        this.clientNetworkController = clientNetworkController;
         jFileChooser.setAcceptAllFileFilterUsed(false);
         addChoosableFileFilter();
     }
 
     private void addChoosableFileFilter() {
-        jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConstants.CUSTOM_EXTENSION_DESCRIPTION,
-                ClientConstants.CUSTOM_EXTENSION));
+        jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConfig.CUSTOM_EXTENSION_DESCRIPTION,
+                ClientConfig.CUSTOM_EXTENSION));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        int result = jFileChooser.showOpenDialog(mainFrame);
+        int result = jFileChooser.showOpenDialog(oldMainFrame);
         if (result == JFileChooser.APPROVE_OPTION) {
             loadFile();
         }
@@ -43,7 +47,7 @@ public class OpenListener implements ActionListener {
         File selectedFile = jFileChooser.getSelectedFile();
         String extension = ((FileNameExtensionFilter) jFileChooser.getFileFilter()).getExtensions()[0];
         drawingPanel.currentEditingFilename = selectedFile.getName();
-        if (extension.equals(ClientConstants.CUSTOM_EXTENSION)) {
+        if (extension.equals(ClientConfig.CUSTOM_EXTENSION)) {
             loadCustomFile(selectedFile);
         }
     }
@@ -52,9 +56,10 @@ public class OpenListener implements ActionListener {
         ObjectInputStream objectInputStream;
         try (FileInputStream fileInputStream = new FileInputStream(selectedFile)) {
             objectInputStream = new ObjectInputStream(fileInputStream);
-            mainFrame.setTitle(selectedFile.getName());
-            drawingPanel.drawActions.setRealQueue((ArrayList<IDrawAction>) objectInputStream.readObject());
-            drawingPanel.repaint();
+            String name = selectedFile.getName();
+            ArrayList<IDrawAction> realQueue = (ArrayList<IDrawAction>) objectInputStream.readObject();
+            new WhiteboardClient(clientNetworkController, name, realQueue, oldMainFrame.getX(), oldMainFrame.getY());
+            oldMainFrame.dispose();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to Load.");

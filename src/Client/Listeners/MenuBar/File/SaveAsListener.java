@@ -1,6 +1,6 @@
 package Client.Listeners.MenuBar.File;
 
-import Client.ClientConstants;
+import Client.ClientConfig;
 import Client.DrawingPanel;
 
 import javax.swing.*;
@@ -38,8 +38,8 @@ public class SaveAsListener implements ActionListener {
     }
 
     private void addCustomExtensionFileFilter() {
-        jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConstants.CUSTOM_EXTENSION_DESCRIPTION,
-                ClientConstants.CUSTOM_EXTENSION));
+        jFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(ClientConfig.CUSTOM_EXTENSION_DESCRIPTION,
+                ClientConfig.CUSTOM_EXTENSION));
     }
 
     @Override
@@ -53,17 +53,17 @@ public class SaveAsListener implements ActionListener {
     private void saveAsFile() {
         File selectedFile = jFileChooser.getSelectedFile();
         String extension = ((FileNameExtensionFilter) jFileChooser.getFileFilter()).getExtensions()[0];
-        if (extension.equals(ClientConstants.CUSTOM_EXTENSION)) {
+        if (extension.equals(ClientConfig.CUSTOM_EXTENSION)) {
             saveAsCustomFile(selectedFile);
         }
 
     }
 
     private void saveAsCustomFile(File selectedFile) {
-        Pattern regexPattern = Pattern.compile("^.*\\.(" + ClientConstants.CUSTOM_EXTENSION + ")$");
+        Pattern regexPattern = Pattern.compile("^.*\\.(" + ClientConfig.CUSTOM_EXTENSION + ")$");
         String filename = selectedFile.getName();
         if (!regexPattern.matcher(filename).find()) {
-            filename = filename + "." + ClientConstants.CUSTOM_EXTENSION;
+            filename = filename + "." + ClientConfig.CUSTOM_EXTENSION;
         }
         saveCustomFileWithName(filename);
     }

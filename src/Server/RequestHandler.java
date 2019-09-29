@@ -36,6 +36,10 @@ public class RequestHandler implements Runnable {
         room.removeListener(handlerListener);
     }
 
+    public void sendCurrentView(){
+        serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
+    }
+
 
     public class HandlerListener {
         public void newDrawAction(IDrawAction drawAction) {

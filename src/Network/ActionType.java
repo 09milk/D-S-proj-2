@@ -10,5 +10,6 @@ public enum ActionType implements Serializable {
     MEMBER_AMOUNT,
     CHANGE_LOCAL_NAME,
     SET_QUEUE,
-    NEW_BOARD;
+    NEW_BOARD,
+    CLOSE_ROOM,
 }

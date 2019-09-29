@@ -34,7 +34,7 @@ public class ServerNetworkController extends NetworkController {
                 requestHandler.linkRoom(networkPackage.roomName);
                 requestHandler.userName = networkPackage.userName;
                 room = requestHandler.room;
-                //TODO: give current queue to client
+                requestHandler.sendCurrentView();
                 break;
             case DRAW:
                 room.addDrawAction(networkPackage.drawAction);

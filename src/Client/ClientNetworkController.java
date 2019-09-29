@@ -15,6 +15,7 @@ public class ClientNetworkController extends NetworkController {
     public UserName userName;
 
     private ActionQueue actionQueue;
+    private final Object actionLock = new Object();
     private WhiteboardClient whiteboardClient;
 
 
@@ -59,6 +60,15 @@ public class ClientNetworkController extends NetworkController {
                 whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.roomName, true);
                 break;
             case SET_QUEUE:
+                while (actionQueue == null){
+                    try {
+                        synchronized (actionLock) {
+                            actionLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 actionQueue.setRealQueue(networkPackage.realQueue);
                 break;
             case NEW_BOARD:
@@ -76,6 +86,9 @@ public class ClientNetworkController extends NetworkController {
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;
+        synchronized (actionLock) {
+            actionLock.notifyAll();
+        }
     }
 
     public void setWhiteboardClient(WhiteboardClient whiteboardClient) {

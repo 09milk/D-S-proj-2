@@ -1,7 +1,5 @@
 package Network;
 
-import Client.DrawActions.IDrawAction;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -28,7 +26,7 @@ public abstract class NetworkController {
         log("Sending: " + networkPackage.actionType);
     }
 
-    public void receivedPackage(NetworkPackage networkPackage){
+    public void receivedPackage(NetworkPackage networkPackage) {
         log("Receiving: " + networkPackage.actionType);
     }
 
@@ -40,8 +38,11 @@ public abstract class NetworkController {
         new Thread(new networkOutputHandler(networkPackage)).start();
     }
 
-    protected void log(String message){
+    protected void log(String message) {
         System.out.println(message);
+    }
+
+    protected void networkErrorHandler() {
     }
 
     private class networkInputHandler implements Runnable {
@@ -77,6 +78,4 @@ public abstract class NetworkController {
             }
         }
     }
-
-    protected void networkErrorHandler(){}
 }

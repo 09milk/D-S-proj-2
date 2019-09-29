@@ -3,7 +3,6 @@ package Client;
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
-import Network.UserName;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,6 +52,7 @@ public class ActionQueue implements Iterable<IDrawAction> {
 
     /**
      * Only NetworkController should call this method, others should call setWhiteBoardView(...)
+     *
      * @param realQueue
      */
     public void setRealQueue(ArrayList<IDrawAction> realQueue) {

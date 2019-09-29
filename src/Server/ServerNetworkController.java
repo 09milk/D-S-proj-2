@@ -64,17 +64,17 @@ public class ServerNetworkController extends NetworkController {
     }
 
     @Override
-    protected void log(String message){
+    protected void log(String message) {
         if (room != null) {
             System.out.println(room.name + ": " + message);
-        } else{
+        } else {
             super.log(message);
         }
     }
 
     @Override
-    protected void networkErrorHandler(){
-        try{
+    protected void networkErrorHandler() {
+        try {
             requestHandler.unlinkRoom();
             requestHandler.socket.close();
         } catch (IOException e) {

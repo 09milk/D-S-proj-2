@@ -38,23 +38,23 @@ public class Room {
         }
     }
 
-    public void changeLocalName(String name){
-        for (RequestHandler.HandlerListener listener : listeners){
+    public void changeLocalName(String name) {
+        for (RequestHandler.HandlerListener listener : listeners) {
             listener.changeLocalName(name);
         }
     }
 
-    public void setQueue(ArrayList<IDrawAction> actionQueue){
+    public void setQueue(ArrayList<IDrawAction> actionQueue) {
         System.out.println("Sending the whole queue thing!");
         this.actionQueue = actionQueue;
-        for (RequestHandler.HandlerListener listener : listeners){
+        for (RequestHandler.HandlerListener listener : listeners) {
             listener.setQueue(actionQueue);
         }
     }
 
     public void newBoard(UserName userName) {
-        for (RequestHandler.HandlerListener listener : listeners){
-            if(!listener.getUsername().equals(userName)){
+        for (RequestHandler.HandlerListener listener : listeners) {
+            if (!listener.getUsername().equals(userName)) {
                 listener.newWhiteboard();
             }
         }

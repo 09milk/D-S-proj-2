@@ -10,12 +10,11 @@ import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
+    private final Object actionLock = new Object();
+    public UserName userName;
     private String address;
     private int port;
-    public UserName userName;
-
     private ActionQueue actionQueue;
-    private final Object actionLock = new Object();
     private WhiteboardClient whiteboardClient;
 
 
@@ -60,7 +59,7 @@ public class ClientNetworkController extends NetworkController {
                 whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.roomName, true);
                 break;
             case SET_QUEUE:
-                while (actionQueue == null){
+                while (actionQueue == null) {
                     try {
                         synchronized (actionLock) {
                             actionLock.wait();

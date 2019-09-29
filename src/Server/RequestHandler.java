@@ -36,7 +36,7 @@ public class RequestHandler implements Runnable {
         room.removeListener(handlerListener);
     }
 
-    public void sendCurrentView(){
+    public void sendCurrentView() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
     }
 

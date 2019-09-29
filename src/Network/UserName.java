@@ -7,7 +7,7 @@ public class UserName implements Serializable {
     public String userName;
     public UUID uuid;
 
-    public UserName(String userName){
+    public UserName(String userName) {
         this.userName = userName;
         uuid = UUID.randomUUID();
     }

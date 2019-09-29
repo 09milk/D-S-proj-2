@@ -21,12 +21,12 @@ public class WhiteboardClient {
     public WhiteboardClientGUI whiteboardClientGUI;
     public ClientNetworkController clientNetworkController;
 
-    public WhiteboardClient(ClientNetworkController clientNetworkController){
+    public WhiteboardClient(ClientNetworkController clientNetworkController) {
         this(clientNetworkController, 100, 100);
     }
 
 
-    public WhiteboardClient(ClientNetworkController clientNetworkController, int posX, int posY){
+    public WhiteboardClient(ClientNetworkController clientNetworkController, int posX, int posY) {
         this(clientNetworkController, true, posX, posY);
     }
 
@@ -40,7 +40,7 @@ public class WhiteboardClient {
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
-        if(isNew) {
+        if (isNew) {
             whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
         }
     }
@@ -49,7 +49,7 @@ public class WhiteboardClient {
                             String title,
                             ArrayList<IDrawAction> realQueue,
                             int posX,
-                            int posY){
+                            int posY) {
         this(clientNetworkController, false, posX, posY);
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         whiteboardClientGUI.mainFrame.setTitle(title);

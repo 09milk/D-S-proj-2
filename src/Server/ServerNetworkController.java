@@ -34,6 +34,7 @@ public class ServerNetworkController extends NetworkController {
                 requestHandler.linkRoom(networkPackage.roomName);
                 requestHandler.userName = networkPackage.userName;
                 room = requestHandler.room;
+                //TODO: fix sendCurrentView() after other client make new board
                 requestHandler.sendCurrentView();
                 break;
             case DRAW:

@@ -3,7 +3,7 @@ package Client.DrawActions;
 import java.awt.*;
 import java.io.Serializable;
 
-public class TextDraw implements IDrawAction, Serializable {
+public class TextDraw implements IDrawAction {
 
     public Color color;
     public int x;

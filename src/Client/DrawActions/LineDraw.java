@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class LineDraw implements IDrawAction, Serializable {
+public class LineDraw implements IDrawAction {
 
     public Color color;
     public int originalX;

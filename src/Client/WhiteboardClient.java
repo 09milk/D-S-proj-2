@@ -4,11 +4,7 @@ import Client.DrawActions.IDrawAction;
 import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
-import Client.Listeners.ToolButton.EraserListener;
-import Client.Listeners.ToolButton.OvalListener;
-import Client.Listeners.ToolButton.PencilListener;
-import Client.Listeners.ToolButton.TextListener;
-import Client.Listeners.ToolButton.LineListener;
+import Client.Listeners.ToolButton.*;
 import Client.Listeners.mainFrameWindowListener;
 import Network.ActionType;
 import Network.NetworkPackage;
@@ -69,6 +65,7 @@ public class WhiteboardClient {
         whiteboardClientGUI.btnEraser.addActionListener(new EraserListener(drawingPanel));
         whiteboardClientGUI.btnLine.addActionListener(new LineListener(drawingPanel));
         whiteboardClientGUI.btnCircle.addActionListener(new OvalListener(drawingPanel));
+        whiteboardClientGUI.btnRectangle.addActionListener(new RectangleListener(drawingPanel));
 
         whiteboardClientGUI.jSlider.addMouseListener(new SliderListener(drawingPanel));
 

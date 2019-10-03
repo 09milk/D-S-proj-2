@@ -11,8 +11,9 @@ public class WhiteboardClientGUI {
     public JButton btnText;
     public JButton btnPencil;
     public JButton btnEraser;
-    public JButton btnCircle;
     public JButton btnLine;
+    public JButton btnCircle;
+    public JButton btnRectangle;
 
     public DrawingPanel drawingPanel;
     public JSlider jSlider;
@@ -62,6 +63,19 @@ public class WhiteboardClientGUI {
         btnEraser = new JButton();
         btnEraser.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-eraser-24.png")));
 
+        btnCircle = new JButton();
+        btnCircle.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-filled-circle-24.png")));
+
+        btnLine = new JButton();
+        btnLine.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-line-24.png")));
+
+        btnText = new JButton();
+        btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
+
+        btnRectangle = new JButton();
+        btnRectangle.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-rectangle-24.png")));
+
+
         drawingPanel = new DrawingPanel();
         drawingPanel.setBackground(Color.WHITE);
         drawingPanel.setDoubleBuffered(true);
@@ -74,15 +88,6 @@ public class WhiteboardClientGUI {
         jSlider.setMaximum(ClientConfig.SLIDER_MAX);
         jSlider.setMinimum(ClientConfig.SLIDER_MIN);
         jSlider.setOrientation(SwingConstants.VERTICAL);
-
-        btnCircle = new JButton("");
-        btnCircle.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-filled-circle-24.png")));
-        
-        btnLine = new JButton("");
-        btnLine.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-line-24.png")));
-
-        btnText = new JButton();
-        btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
 
         String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
         btnCurrentMember = new JButton(currentMemberText);

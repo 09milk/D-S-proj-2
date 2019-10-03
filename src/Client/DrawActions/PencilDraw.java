@@ -3,7 +3,7 @@ package Client.DrawActions;
 import java.awt.*;
 import java.io.Serializable;
 
-public class PencilDraw implements IDrawAction, Serializable {
+public class PencilDraw implements IDrawAction {
 
     public Color color;
     public int oldX;

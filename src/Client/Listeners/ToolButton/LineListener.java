@@ -22,7 +22,6 @@ public class LineListener extends AbstractToolButtonListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
-        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     @Override
@@ -30,6 +29,10 @@ public class LineListener extends AbstractToolButtonListener {
         return new LineDrawingListener();
     }
 
+    @Override
+    public void setCursor() {
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
     protected class LineDrawingListener extends MouseInputAdapter {
 

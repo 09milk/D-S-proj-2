@@ -11,6 +11,7 @@ public abstract class AbstractToolButtonListener implements ActionListener {
 
     public AbstractToolButtonListener(DrawingPanel drawingPanel) {
         this.drawingPanel = drawingPanel;
+        setCursor();
     }
 
     @Override
@@ -24,4 +25,5 @@ public abstract class AbstractToolButtonListener implements ActionListener {
 
     abstract protected MouseInputAdapter getDrawingListener();
 
+    public void setCursor(){};
 }

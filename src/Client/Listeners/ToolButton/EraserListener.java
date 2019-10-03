@@ -4,6 +4,7 @@ import Client.DrawActions.PencilDraw;
 import Client.DrawingPanel;
 
 import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class EraserListener extends AbstractToolButtonListener {
@@ -20,6 +21,10 @@ public class EraserListener extends AbstractToolButtonListener {
         return new EraserDrawingListener();
     }
 
+    @Override
+    public void setCursor(){
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
     private class EraserDrawingListener extends MouseInputAdapter {
 

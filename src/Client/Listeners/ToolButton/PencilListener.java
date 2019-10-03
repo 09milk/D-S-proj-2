@@ -18,16 +18,14 @@ public class PencilListener extends AbstractToolButtonListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent event) {
-        super.actionPerformed(event);
-        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-    }
-
-    @Override
     protected MouseInputAdapter getDrawingListener() {
         return new PencilDrawingListener();
     }
 
+    @Override
+    public void setCursor(){
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
     protected class PencilDrawingListener extends MouseInputAdapter {
 

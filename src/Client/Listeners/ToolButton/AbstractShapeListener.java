@@ -22,7 +22,6 @@ abstract public class AbstractShapeListener extends AbstractToolButtonListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
-        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     @Override
@@ -31,6 +30,11 @@ abstract public class AbstractShapeListener extends AbstractToolButtonListener {
     }
 
     abstract protected AbstractShapeDraw getAbstractShapeFill(int upperLeftX, int upperLeftY, int width, int height);
+
+    @Override
+    public void setCursor(){
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
     protected class ShapeDrawingListener extends MouseInputAdapter {
 

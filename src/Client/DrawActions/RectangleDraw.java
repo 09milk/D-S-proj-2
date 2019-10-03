@@ -1,7 +1,6 @@
 package Client.DrawActions;
 
 import java.awt.*;
-import java.io.Serializable;
 
 public class RectangleDraw implements IDrawAction {
 

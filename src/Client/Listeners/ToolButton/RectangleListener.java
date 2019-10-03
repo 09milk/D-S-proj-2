@@ -1,6 +1,5 @@
 package Client.Listeners.ToolButton;
 
-import Client.DrawActions.OvalDraw;
 import Client.DrawActions.RectangleDraw;
 import Client.DrawingPanel;
 

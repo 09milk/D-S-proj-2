@@ -2,34 +2,19 @@ package Client.DrawActions;
 
 import java.awt.*;
 
-public class OvalDraw implements IDrawAction {
-
-    public Color color;
-    public int upperLeftX;
-    public int upperLeftY;
-    public int width;
-    public int height;
-    public int size;
-    public boolean isFill;
+public class OvalDraw extends AbstractShapeDraw {
 
     public OvalDraw(Color color, int upperLeftX, int upperLeftY, int width, int height, int size, boolean isFill) {
-        this.color = color;
-        this.upperLeftX = upperLeftX;
-        this.upperLeftY = upperLeftY;
-        this.width = width;
-        this.height = height;
-        this.size = size;
-        this.isFill = isFill;
+        super(color, upperLeftX, upperLeftY, width, height, size, isFill);
     }
 
     @Override
-    public void draw(Graphics2D graphics) {
-        graphics.setColor(color);
-        if (isFill) {
-            graphics.fillOval(upperLeftX, upperLeftY, width, height);
-        } else {
-            graphics.setStroke(new BasicStroke(size, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            graphics.drawOval(upperLeftX, upperLeftY, width, height);
-        }
+    protected void fillShape(Graphics2D graphics2D, int upperLeftX, int upperLeftY, int width, int height) {
+        graphics2D.fillOval(upperLeftX, upperLeftY, width, height);
+    }
+
+    @Override
+    protected void drawShape(Graphics2D graphics2D, int upperLeftX, int upperLeftY, int width, int height) {
+        graphics2D.drawOval(upperLeftX, upperLeftY, width, height);
     }
 }

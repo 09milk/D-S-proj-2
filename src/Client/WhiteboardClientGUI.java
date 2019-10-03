@@ -12,6 +12,7 @@ public class WhiteboardClientGUI {
     public JButton btnPencil;
     public JButton btnEraser;
     public JButton btnCircle;
+    public JButton btnLine;
 
     public DrawingPanel drawingPanel;
     public JSlider jSlider;
@@ -76,6 +77,9 @@ public class WhiteboardClientGUI {
 
         btnCircle = new JButton("");
         btnCircle.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-filled-circle-24.png")));
+        
+        btnLine = new JButton("");
+        btnLine.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-line-24.png")));
 
         btnText = new JButton();
         btnText.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-text-24.png")));
@@ -107,7 +111,8 @@ public class WhiteboardClientGUI {
                                                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
                                                                         .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                         .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(btnLine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                 .addPreferredGap(ComponentPlacement.RELATED)))
                                                 .addComponent(drawingPanel, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
@@ -123,6 +128,8 @@ public class WhiteboardClientGUI {
                                                 .addComponent(btnPencil)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(btnEraser)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(btnLine)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(btnCircle, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE)

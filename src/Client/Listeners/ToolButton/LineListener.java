@@ -7,6 +7,7 @@ import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class LineListener extends AbstractToolButtonListener {
 
@@ -30,8 +31,12 @@ public class LineListener extends AbstractToolButtonListener {
     }
 
     @Override
-    public void setCursor() {
-        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    public void setCursor(){
+        Toolkit toolkit = drawingPanel.getToolkit();
+        drawingPanel.setCursor(toolkit.createCustomCursor(
+                new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),
+                new Point(),
+                null));
     }
 
     protected class LineDrawingListener extends MouseInputAdapter {
@@ -47,17 +52,27 @@ public class LineListener extends AbstractToolButtonListener {
             int currentX = event.getX();
             int currentY = event.getY();
 
-            tmpDrawAction = new LineDraw(drawingPanel.color, originalX, originalY, currentX, currentY, drawingPanel.size);
+            tmpDrawAction = new LineDraw(drawingPanel.color, originalX, originalY, currentX, currentY, drawingPanel.drawSize);
             drawingPanel.setTmpDrawAction(tmpDrawAction);
-
-            drawingPanel.repaint();
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
-            drawingPanel.resetTmpDrawAction();
             drawingPanel.drawActions.add(tmpDrawAction);
-            drawingPanel.repaint();
+            drawingPanel.resetTmpDrawAction();
+        }
+
+        @Override
+        public void mouseExited(MouseEvent event){
+            drawingPanel.resetTmpDrawAction();
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent event){
+            int x = event.getX();
+            int y = event.getY();
+
+            drawingPanel.setTmpDrawAction(new LineDraw(drawingPanel.color, x, y, x, y, drawingPanel.drawSize));
         }
     }
 }

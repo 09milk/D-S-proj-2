@@ -98,7 +98,7 @@ public class TextListener extends AbstractToolButtonListener {
             } else if (character != KeyEvent.CHAR_UNDEFINED) {
                 textString.addLast(character);
             }
-            tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.size, buildString(textString));
+            tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.drawSize, buildString(textString));
             drawingPanel.setTmpDrawAction(tmpDrawAction);
 
             drawingPanel.repaint();

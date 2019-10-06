@@ -10,7 +10,7 @@ import java.awt.event.*;
 public class DrawingPanel extends JPanel {
 
     public Color color = Color.BLACK;
-    public int size = ClientConfig.DEFAULT_SIZE;
+    public int drawSize = ClientConfig.DEFAULT_SIZE;
     public ActionQueue drawActions;
     public String currentEditingFilename = null;
     public boolean isInPerfectDraw = false;
@@ -50,6 +50,7 @@ public class DrawingPanel extends JPanel {
 
     public void setTmpDrawAction(IDrawAction tmpDrawAction) {
         this.tmpDrawAction = tmpDrawAction;
+        repaint();
     }
 
     public void resetTmpDrawAction() {
@@ -58,6 +59,7 @@ public class DrawingPanel extends JPanel {
 
     public void setDrawActions(ActionQueue drawActions) {
         this.drawActions = drawActions;
+        repaint();
     }
 
     protected void perfectDrawKeyBind() {

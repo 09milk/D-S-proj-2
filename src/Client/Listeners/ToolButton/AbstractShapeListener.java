@@ -63,15 +63,12 @@ abstract public class AbstractShapeListener extends AbstractToolButtonListener {
 
             tmpDrawAction = getAbstractShapeFill(upperLeftX, upperLeftY, width, height);
             drawingPanel.setTmpDrawAction(tmpDrawAction);
-
-            drawingPanel.repaint();
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
-            drawingPanel.resetTmpDrawAction();
             drawingPanel.drawActions.add(tmpDrawAction);
-            drawingPanel.repaint();
+            drawingPanel.resetTmpDrawAction();
         }
 
         private Point getClosestPointOnPerfectLine(int originalX, int originalY, int pointX, int pointY) {

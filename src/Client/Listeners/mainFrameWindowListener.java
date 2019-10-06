@@ -17,7 +17,10 @@ public class mainFrameWindowListener extends WindowAdapter {
 
     @Override
     public void windowClosing(WindowEvent windowEvent) {
-        clientNetworkController.sendPackage(new NetworkPackage(ActionType.DISCONNECT));
-        super.windowClosing(windowEvent);
+        try {
+            clientNetworkController.sendPackage(new NetworkPackage(ActionType.DISCONNECT)).join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -67,7 +67,8 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel, clientNetworkController));
         whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));
-        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame));
+        whiteboardClientGUI.mntmClose.addActionListener(new CloseRoomListener(mainFrame, clientNetworkController));
+        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame, clientNetworkController));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
     }

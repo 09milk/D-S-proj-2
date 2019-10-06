@@ -25,20 +25,20 @@ abstract public class AbstractFreeDrawListener extends AbstractToolButtonListene
     }
 
     @Override
-    public void setCursor(){
+    public void setCursor() {
         Toolkit toolkit = drawingPanel.getToolkit();
         drawingPanel.setCursor(toolkit.createCustomCursor(
-                new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),
+                new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB),
                 new Point(),
                 null));
     }
 
     abstract protected Color getColor();
 
-    protected IDrawAction mouseMovingDrawAction(MouseEvent event, Color color){
+    protected IDrawAction mouseMovingDrawAction(MouseEvent event, Color color) {
         int drawSize = drawingPanel.drawSize;
-        int x = event.getX() - drawSize/2;
-        int y = event.getY() - drawSize/2;
+        int x = event.getX() - drawSize / 2;
+        int y = event.getY() - drawSize / 2;
         return new OvalDraw(color, x, y, drawSize, drawSize, 0, true);
     }
 
@@ -64,12 +64,12 @@ abstract public class AbstractFreeDrawListener extends AbstractToolButtonListene
         }
 
         @Override
-        public void mouseExited(MouseEvent event){
+        public void mouseExited(MouseEvent event) {
             drawingPanel.resetTmpDrawAction();
         }
 
         @Override
-        public void mouseMoved(MouseEvent event){
+        public void mouseMoved(MouseEvent event) {
             drawingPanel.setTmpDrawAction(mouseMovingDrawAction(event, getColor()));
         }
     }

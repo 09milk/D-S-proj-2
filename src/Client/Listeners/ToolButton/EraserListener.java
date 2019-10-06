@@ -26,7 +26,7 @@ public class EraserListener extends AbstractFreeDrawListener {
 
     @Override
     protected IDrawAction mouseMovingDrawAction(MouseEvent event, Color color) {
-        int outerCircleSizeDifference  = 2;
+        int outerCircleSizeDifference = 2;
         int drawSize = drawingPanel.drawSize + outerCircleSizeDifference;
         int x = event.getX() - drawSize / 2;
         int y = event.getY() - drawSize / 2;

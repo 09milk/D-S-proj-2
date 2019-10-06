@@ -9,7 +9,7 @@ public class ListDraw implements IDrawAction {
 
     @Override
     public void draw(Graphics2D graphics) {
-        for(IDrawAction drawAction : drawActions){
+        for (IDrawAction drawAction : drawActions) {
             drawAction.draw(graphics);
         }
     }

@@ -31,10 +31,10 @@ public class LineListener extends AbstractToolButtonListener {
     }
 
     @Override
-    public void setCursor(){
+    public void setCursor() {
         Toolkit toolkit = drawingPanel.getToolkit();
         drawingPanel.setCursor(toolkit.createCustomCursor(
-                new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),
+                new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB),
                 new Point(),
                 null));
     }
@@ -63,12 +63,12 @@ public class LineListener extends AbstractToolButtonListener {
         }
 
         @Override
-        public void mouseExited(MouseEvent event){
+        public void mouseExited(MouseEvent event) {
             drawingPanel.resetTmpDrawAction();
         }
 
         @Override
-        public void mouseMoved(MouseEvent event){
+        public void mouseMoved(MouseEvent event) {
             int x = event.getX();
             int y = event.getY();
 

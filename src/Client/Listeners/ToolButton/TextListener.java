@@ -36,7 +36,7 @@ public class TextListener extends AbstractToolButtonListener {
     }
 
     @Override
-    public void setCursor(){
+    public void setCursor() {
         drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 

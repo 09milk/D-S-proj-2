@@ -36,8 +36,9 @@ public class RequestHandler implements Runnable {
         room.removeListener(handlerListener);
     }
 
-    public void sendCurrentView() {
+    public void sendCurrentViewAndTitle() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
+        serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));
     }
 
 
@@ -50,8 +51,8 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(amountOfMembers);
         }
 
-        public void changeLocalName(String name) {
-            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_LOCAL_NAME, userName, name));
+        public void changeBoardName(String name) {
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, name));
         }
 
         public void setQueue(ArrayList<IDrawAction> actionQueue) {

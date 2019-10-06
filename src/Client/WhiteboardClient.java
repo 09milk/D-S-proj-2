@@ -5,7 +5,7 @@ import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.*;
-import Client.Listeners.mainFrameWindowListener;
+import Client.Listeners.MainFrameWindowListener;
 import Network.ActionType;
 import Network.NetworkPackage;
 
@@ -51,7 +51,7 @@ public class WhiteboardClient {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         JFrame mainFrame = whiteboardClientGUI.mainFrame;
 
-        mainFrame.addWindowListener(new mainFrameWindowListener(clientNetworkController));
+        mainFrame.addWindowListener(new MainFrameWindowListener(clientNetworkController));
 
         whiteboardClientGUI.btnText.addActionListener(new TextListener(drawingPanel));
         whiteboardClientGUI.btnPencil.addActionListener(new PencilListener(drawingPanel));

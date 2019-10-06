@@ -1,7 +1,7 @@
 package Client.Listeners.MenuBar.File;
 
 import Client.ClientNetworkController;
-import Client.Listeners.mainFrameWindowListener;
+import Client.Listeners.MainFrameWindowListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +19,7 @@ public class ExitListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        new mainFrameWindowListener(clientNetworkController).windowClosing(null);
+        new MainFrameWindowListener(clientNetworkController).windowClosing(null);
         mainFrame.dispose();
         System.exit(0);
     }

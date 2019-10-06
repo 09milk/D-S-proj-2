@@ -13,8 +13,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class WhiteboardClient {
-    public static int newFileCount = 0;
-
     public WhiteboardClientGUI whiteboardClientGUI;
     public ClientNetworkController clientNetworkController;
 
@@ -22,24 +20,19 @@ public class WhiteboardClient {
         this(clientNetworkController, 100, 100);
     }
 
-
     public WhiteboardClient(ClientNetworkController clientNetworkController, int posX, int posY) {
-        this(clientNetworkController, true, posX, posY);
-    }
-
-    public WhiteboardClient(ClientNetworkController clientNetworkController, boolean isNew, int posX, int posY) {
         this.clientNetworkController = clientNetworkController;
         clientNetworkController.setWhiteboardClient(this);
 
         whiteboardClientGUI = new WhiteboardClientGUI(posX, posY);
+        synchronized (clientNetworkController.actionLock) {
+            clientNetworkController.actionLock.notifyAll();
+        }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
-        if (isNew) {
-            whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
-        }
     }
 
     public WhiteboardClient(ClientNetworkController clientNetworkController,
@@ -47,7 +40,7 @@ public class WhiteboardClient {
                             ArrayList<IDrawAction> realQueue,
                             int posX,
                             int posY) {
-        this(clientNetworkController, false, posX, posY);
+        this(clientNetworkController, posX, posY);
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         whiteboardClientGUI.mainFrame.setTitle(title);
         whiteboardClientGUI.drawingPanel.drawActions.setWhiteBoardView(realQueue);

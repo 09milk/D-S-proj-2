@@ -7,7 +7,6 @@ public class ServerMain {
         ServerParsedArgs parsedArgs = new ServerParsedArgs(args);
         ServerSocketController socketController = new ServerSocketController(parsedArgs.port);
         socketController.start();
-        RoomManager roomManager = RoomManager.getInstance();
         Runtime.getRuntime().addShutdownHook(new Thread(socketController::close));
         //loop should be terminated by ctrl-c only
         while (true) {

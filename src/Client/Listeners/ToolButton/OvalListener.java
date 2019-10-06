@@ -12,6 +12,6 @@ public class OvalListener extends AbstractShapeListener {
 
     @Override
     protected AbstractShapeDraw getAbstractShapeFill(int upperLeftX, int upperLeftY, int width, int height) {
-        return new OvalDraw(drawingPanel.color, upperLeftX, upperLeftY, width, height, drawingPanel.size, true);
+        return new OvalDraw(drawingPanel.color, upperLeftX, upperLeftY, width, height, drawingPanel.drawSize, true);
     }
 }

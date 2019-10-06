@@ -35,7 +35,7 @@ public class ServerNetworkController extends NetworkController {
                 requestHandler.userName = networkPackage.userName;
                 room = requestHandler.room;
                 //TODO: fix sendCurrentView() after other client make new board
-                requestHandler.sendCurrentView();
+                requestHandler.sendCurrentViewAndTitle();
                 break;
             case DRAW:
                 room.addDrawAction(networkPackage.drawAction);
@@ -43,8 +43,8 @@ public class ServerNetworkController extends NetworkController {
             case DISCONNECT:
                 requestHandler.unlinkRoom();
                 break;
-            case CHANGE_LOCAL_NAME:
-                room.changeLocalName(networkPackage.roomName);
+            case CHANGE_BOARD_NAME:
+                room.changeBoardName(networkPackage.boardName);
                 break;
             case SET_QUEUE:
                 room.setQueue(networkPackage.realQueue);
@@ -67,7 +67,7 @@ public class ServerNetworkController extends NetworkController {
     @Override
     protected void log(String message) {
         if (room != null) {
-            System.out.println(room.name + ": " + message);
+            System.out.println(room.roomName + ": " + message);
         } else {
             super.log(message);
         }

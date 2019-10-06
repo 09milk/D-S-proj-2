@@ -9,7 +9,7 @@ abstract public class AbstractShapeDraw implements IDrawAction {
     public int upperLeftY;
     public int width;
     public int height;
-    public int size;
+    public int size = 0;
     public boolean isFill;
 
     public AbstractShapeDraw(Color color, int upperLeftX, int upperLeftY, int width, int height, int size, boolean isFill) {

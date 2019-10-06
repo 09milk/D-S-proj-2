@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
-    private final Object actionLock = new Object();
+    public final Object actionLock = new Object();
     public UserName userName;
     private String address;
     private int port;
@@ -55,8 +55,17 @@ public class ClientNetworkController extends NetworkController {
                 } catch (NullPointerException ignored) {
                 }
                 break;
-            case CHANGE_LOCAL_NAME:
-                whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.roomName, true);
+            case CHANGE_BOARD_NAME:
+                while (whiteboardClient.whiteboardClientGUI == null) {
+                    try {
+                        synchronized (actionLock) {
+                            actionLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.boardName, true);
                 break;
             case SET_QUEUE:
                 while (actionQueue == null) {
@@ -72,7 +81,7 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case NEW_BOARD:
                 JFrameNetwork oldFrame = whiteboardClient.whiteboardClientGUI.mainFrame;
-                new WhiteboardClient(this, false, oldFrame.getX(), oldFrame.getY());
+                new WhiteboardClient(this, oldFrame.getX(), oldFrame.getY());
                 oldFrame.dispose();
                 break;
             default:

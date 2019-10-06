@@ -6,12 +6,15 @@ import Network.UserName;
 import java.util.ArrayList;
 
 public class Room {
+    public String boardName;
     public ArrayList<IDrawAction> actionQueue = new ArrayList<>();
     public ArrayList<RequestHandler.HandlerListener> listeners = new ArrayList<>();
-    public String name;
+    public String roomName;
+    private int newFileCount = 0;
 
-    public Room(String name) {
-        this.name = name;
+    public Room(String roomName) {
+        this.roomName = roomName;
+        newBoard(null);
     }
 
     public synchronized void addListener(RequestHandler.HandlerListener listener) {
@@ -25,7 +28,7 @@ public class Room {
     }
 
     private void sendAmountOfMember() {
-        System.out.println(name + ": " + "Current number of member(s): " + listeners.size());
+        System.out.println(roomName + ": " + "Current number of member(s): " + listeners.size());
         for (RequestHandler.HandlerListener listener : listeners) {
             listener.sendAmountOfMember(listeners.size());
         }
@@ -38,9 +41,10 @@ public class Room {
         }
     }
 
-    public void changeLocalName(String name) {
+    public void changeBoardName(String name) {
+        boardName = name;
         for (RequestHandler.HandlerListener listener : listeners) {
-            listener.changeLocalName(name);
+            listener.changeBoardName(boardName);
         }
     }
 
@@ -53,10 +57,13 @@ public class Room {
     }
 
     public void newBoard(UserName userName) {
+        this.actionQueue = new ArrayList<>();
         for (RequestHandler.HandlerListener listener : listeners) {
             if (!listener.getUsername().equals(userName)) {
                 listener.newWhiteboard();
             }
         }
+        changeBoardName("new " + newFileCount);
+        newFileCount++;
     }
 }

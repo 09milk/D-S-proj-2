@@ -67,7 +67,7 @@ public class ServerNetworkController extends NetworkController {
     @Override
     protected void log(String message) {
         if (room != null) {
-            System.out.println(room.name + ": " + message);
+            System.out.println(room.roomName + ": " + message);
         } else {
             super.log(message);
         }

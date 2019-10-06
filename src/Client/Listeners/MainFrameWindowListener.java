@@ -7,11 +7,11 @@ import Network.NetworkPackage;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class mainFrameWindowListener extends WindowAdapter {
+public class MainFrameWindowListener extends WindowAdapter {
 
     public ClientNetworkController clientNetworkController;
 
-    public mainFrameWindowListener(ClientNetworkController clientNetworkController) {
+    public MainFrameWindowListener(ClientNetworkController clientNetworkController) {
         this.clientNetworkController = clientNetworkController;
     }
 

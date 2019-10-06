@@ -3,11 +3,11 @@ package Network;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class UserName implements Serializable {
+public class User implements Serializable {
     public String userName;
     public UUID uuid;
 
-    public UserName(String userName) {
+    public User(String userName) {
         this.userName = userName;
         uuid = UUID.randomUUID();
     }
@@ -15,12 +15,12 @@ public class UserName implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserName)) return false;
+        if (!(o instanceof User)) return false;
 
-        UserName userName1 = (UserName) o;
+        User user = (User) o;
 
-        if (!userName.equals(userName1.userName)) return false;
-        return uuid.equals(userName1.uuid);
+        if (!userName.equals(user.userName)) return false;
+        return uuid.equals(user.uuid);
     }
 
     @Override

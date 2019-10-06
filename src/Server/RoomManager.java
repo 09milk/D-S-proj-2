@@ -1,5 +1,7 @@
 package Server;
 
+import Network.User;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomManager {
@@ -26,4 +28,8 @@ public class RoomManager {
         return newRoom(name);
     }
 
+    public void closeRoom(User user, Room room) {
+        room.closeRoom(user);
+        allRooms.remove(room.roomName);
+    }
 }

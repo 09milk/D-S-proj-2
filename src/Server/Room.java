@@ -1,7 +1,7 @@
 package Server;
 
 import Client.DrawActions.IDrawAction;
-import Network.UserName;
+import Network.User;
 
 import java.util.ArrayList;
 
@@ -56,14 +56,30 @@ public class Room {
         }
     }
 
-    public void newBoard(UserName userName) {
+    public void newBoard(User user) {
         this.actionQueue = new ArrayList<>();
         for (RequestHandler.HandlerListener listener : listeners) {
-            if (!listener.getUsername().equals(userName)) {
+            if (!listener.getUsername().equals(user)) {
                 listener.newWhiteboard();
             }
         }
         changeBoardName("new " + newFileCount);
         newFileCount++;
+    }
+
+    public void closeRoom(User user) {
+        ArrayList<Thread> threads = new ArrayList<>();
+        for (RequestHandler.HandlerListener listener : listeners) {
+            if (!listener.getUsername().equals(user)) {
+                threads.add(listener.closeRoom());
+            }
+        }
+        for (Thread thread : threads){
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

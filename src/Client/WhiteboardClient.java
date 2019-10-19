@@ -4,21 +4,18 @@ import Client.DrawActions.IDrawAction;
 import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
-import Client.Listeners.ToolButton.EraserListener;
-import Client.Listeners.ToolButton.OvalListener;
-import Client.Listeners.ToolButton.PencilListener;
-import Client.Listeners.ToolButton.TextListener;
-import Client.Listeners.ToolButton.LineListener;
-import Client.Listeners.mainFrameWindowListener;
+import Client.Listeners.ToolButton.*;
+import Client.Listeners.MainFrameWindowListener;
 import Network.ActionType;
 import Network.NetworkPackage;
 
 import javax.swing.*;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class WhiteboardClient {
-    public static int newFileCount = 0;
-
     public WhiteboardClientGUI whiteboardClientGUI;
     public ClientNetworkController clientNetworkController;
 
@@ -26,24 +23,19 @@ public class WhiteboardClient {
         this(clientNetworkController, 100, 100);
     }
 
-
     public WhiteboardClient(ClientNetworkController clientNetworkController, int posX, int posY) {
-        this(clientNetworkController, true, posX, posY);
-    }
-
-    public WhiteboardClient(ClientNetworkController clientNetworkController, boolean isNew, int posX, int posY) {
         this.clientNetworkController = clientNetworkController;
         clientNetworkController.setWhiteboardClient(this);
 
         whiteboardClientGUI = new WhiteboardClientGUI(posX, posY);
+        synchronized (clientNetworkController.actionLock) {
+            clientNetworkController.actionLock.notifyAll();
+        }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
-        if (isNew) {
-            whiteboardClientGUI.mainFrame.setTitle("new " + newFileCount);
-        }
     }
 
     public WhiteboardClient(ClientNetworkController clientNetworkController,
@@ -51,7 +43,7 @@ public class WhiteboardClient {
                             ArrayList<IDrawAction> realQueue,
                             int posX,
                             int posY) {
-        this(clientNetworkController, false, posX, posY);
+        this(clientNetworkController, posX, posY);
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         whiteboardClientGUI.mainFrame.setTitle(title);
         whiteboardClientGUI.drawingPanel.drawActions.setWhiteBoardView(realQueue);
@@ -62,13 +54,14 @@ public class WhiteboardClient {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         JFrame mainFrame = whiteboardClientGUI.mainFrame;
 
-        mainFrame.addWindowListener(new mainFrameWindowListener(clientNetworkController));
+        mainFrame.addWindowListener(new MainFrameWindowListener(clientNetworkController));
 
         whiteboardClientGUI.btnText.addActionListener(new TextListener(drawingPanel));
         whiteboardClientGUI.btnPencil.addActionListener(new PencilListener(drawingPanel));
         whiteboardClientGUI.btnEraser.addActionListener(new EraserListener(drawingPanel));
         whiteboardClientGUI.btnLine.addActionListener(new LineListener(drawingPanel));
         whiteboardClientGUI.btnCircle.addActionListener(new OvalListener(drawingPanel));
+        whiteboardClientGUI.btnRectangle.addActionListener(new RectangleListener(drawingPanel));
 
         whiteboardClientGUI.jSlider.addMouseListener(new SliderListener(drawingPanel));
 
@@ -77,9 +70,21 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel, clientNetworkController));
         whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));
-        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame));
+        whiteboardClientGUI.mntmClose.addActionListener(new CloseRoomListener(mainFrame, clientNetworkController));
+        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame, clientNetworkController));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
+        
+        whiteboardClientGUI.btnCurrentMember.addMouseListener(new MouseAdapter() {
+			// Same functionality as 'Enter' key pressed, if the enter button is clicked, send message to server
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				whiteboardClientGUI.chatRoom.setVisible(true);
+				System.out.println("Chat Room Window Opened");
+
+		        
+			}
+		});
     }
 
 }

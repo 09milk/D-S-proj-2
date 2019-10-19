@@ -28,12 +28,16 @@ public class TextListener extends AbstractToolButtonListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         super.actionPerformed(event);
-        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     @Override
     protected MouseInputAdapter getDrawingListener() {
         return textDrawingListener;
+    }
+
+    @Override
+    public void setCursor() {
+        drawingPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     private String buildString(ArrayDeque<Character> textString) {
@@ -94,7 +98,7 @@ public class TextListener extends AbstractToolButtonListener {
             } else if (character != KeyEvent.CHAR_UNDEFINED) {
                 textString.addLast(character);
             }
-            tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.size, buildString(textString));
+            tmpDrawAction = new TextDraw(drawingPanel.color, x, y, drawingPanel.drawSize, buildString(textString));
             drawingPanel.setTmpDrawAction(tmpDrawAction);
 
             drawingPanel.repaint();

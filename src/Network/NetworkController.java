@@ -21,9 +21,9 @@ public abstract class NetworkController {
         }
     }
 
-    public void sendPackage(NetworkPackage networkPackage) {
-        startSending(networkPackage);
+    public Thread sendPackage(NetworkPackage networkPackage) {
         log("Sending: " + networkPackage.actionType);
+        return startSending(networkPackage);
     }
 
     public void receivedPackage(NetworkPackage networkPackage) {
@@ -34,8 +34,10 @@ public abstract class NetworkController {
         new Thread(new networkInputHandler()).start();
     }
 
-    protected void startSending(NetworkPackage networkPackage) {
-        new Thread(new networkOutputHandler(networkPackage)).start();
+    protected Thread startSending(NetworkPackage networkPackage) {
+        Thread thread =  new Thread(new networkOutputHandler(networkPackage));
+        thread.start();
+        return thread;
     }
 
     protected void log(String message) {

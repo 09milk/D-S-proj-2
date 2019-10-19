@@ -21,7 +21,6 @@ public class NewListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        WhiteboardClient.newFileCount++;
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         new WhiteboardClient(clientNetworkController, oldMainFrame.getX(), oldMainFrame.getY());
         oldMainFrame.dispose();

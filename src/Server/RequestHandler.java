@@ -3,7 +3,8 @@ package Server;
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
-import Network.UserName;
+import Network.User;
+import sun.nio.ch.Net;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class RequestHandler implements Runnable {
 
     public Socket socket;
     public Room room;
-    public UserName userName;
+    public User user;
     private RoomManager roomManager;
     private ServerNetworkController serverNetworkController;
     private HandlerListener handlerListener = new HandlerListener();
@@ -27,8 +28,8 @@ public class RequestHandler implements Runnable {
         serverNetworkController = new ServerNetworkController(this);
     }
 
-    public void linkRoom(String boardName) {
-        room = roomManager.getRoom(boardName);
+    public void linkRoom(String roomName) {
+        room = roomManager.getRoom(roomName);
         room.addListener(handlerListener);
     }
 
@@ -36,22 +37,27 @@ public class RequestHandler implements Runnable {
         room.removeListener(handlerListener);
     }
 
-    public void sendCurrentView() {
+    public void sendCurrentViewAndTitle() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
+        serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));
+    }
+
+    public void closeRoom() {
+        roomManager.closeRoom(user, room);
     }
 
 
     public class HandlerListener {
         public void newDrawAction(IDrawAction drawAction) {
-            serverNetworkController.sendPackage(new NetworkPackage(ActionType.DRAW, userName, drawAction));
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.DRAW, user, drawAction));
         }
 
         public void sendAmountOfMember(int amountOfMembers) {
             serverNetworkController.sendPackage(amountOfMembers);
         }
 
-        public void changeLocalName(String name) {
-            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_LOCAL_NAME, userName, name));
+        public void changeBoardName(String name) {
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, name));
         }
 
         public void setQueue(ArrayList<IDrawAction> actionQueue) {
@@ -62,8 +68,12 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         }
 
-        public UserName getUsername() {
-            return userName;
+        public User getUsername() {
+            return user;
+        }
+
+        public Thread closeRoom() {
+            return serverNetworkController.sendPackage(new NetworkPackage(ActionType.CLOSE_ROOM));
         }
     }
 }

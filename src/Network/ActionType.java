@@ -8,8 +8,8 @@ public enum ActionType implements Serializable {
     CONNECT,
     DISCONNECT,
     MEMBER_AMOUNT,
-    CHANGE_LOCAL_NAME,
+    CHANGE_BOARD_NAME,
     SET_QUEUE,
     NEW_BOARD,
-    CLOSE_ROOM,
+    CLOSE_ROOM
 }

@@ -1,44 +1,38 @@
 package Client.Listeners.ToolButton;
 
-import Client.DrawActions.PencilDraw;
+import Client.DrawActions.IDrawAction;
+import Client.DrawActions.ListDraw;
+import Client.DrawActions.OvalDraw;
 import Client.DrawingPanel;
 
-import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class EraserListener extends AbstractToolButtonListener {
-
-    private int oldX;
-    private int oldY;
+public class EraserListener extends AbstractFreeDrawListener {
 
     public EraserListener(DrawingPanel drawingPanel) {
         super(drawingPanel);
     }
 
-    @Override
-    protected MouseInputAdapter getDrawingListener() {
-        return new EraserDrawingListener();
+    private static Color getContrastColor(Color color) {
+        double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000.0;
+        return y >= 128 ? Color.BLACK : Color.WHITE;
     }
 
+    @Override
+    protected Color getColor() {
+        return drawingPanel.getBackground();
+    }
 
-    private class EraserDrawingListener extends MouseInputAdapter {
-
-        @Override
-        public void mousePressed(MouseEvent event) {
-            oldX = event.getX();
-            oldY = event.getY();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent event) {
-            int x = event.getX();
-            int y = event.getY();
-
-            drawingPanel.drawActions.add(new PencilDraw(drawingPanel.getBackground(), oldX, oldY, x, y, drawingPanel.size));
-            drawingPanel.repaint();
-
-            oldX = x;
-            oldY = y;
-        }
+    @Override
+    protected IDrawAction mouseMovingDrawAction(MouseEvent event, Color color) {
+        int outerCircleSizeDifference = 2;
+        int drawSize = drawingPanel.drawSize + outerCircleSizeDifference;
+        int x = event.getX() - drawSize / 2;
+        int y = event.getY() - drawSize / 2;
+        ListDraw listDraw = new ListDraw();
+        listDraw.drawActions.add(new OvalDraw(getContrastColor(color), x, y, drawSize, drawSize, 0, true));
+        listDraw.drawActions.add(super.mouseMovingDrawAction(event, color));
+        return listDraw;
     }
 }

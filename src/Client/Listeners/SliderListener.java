@@ -15,6 +15,6 @@ public class SliderListener extends MouseInputAdapter {
 
     @Override
     public void mouseReleased(MouseEvent event) {
-        drawingPanel.size = ((JSlider) event.getSource()).getValue();
+        drawingPanel.drawSize = ((JSlider) event.getSource()).getValue();
     }
 }

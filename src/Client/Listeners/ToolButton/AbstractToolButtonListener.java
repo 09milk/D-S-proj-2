@@ -17,6 +17,7 @@ public abstract class AbstractToolButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         drawingPanel.clearDrawingListener();
 
+        setCursor();
         drawingPanel.addMouseListener(getDrawingListener());
         drawingPanel.addMouseMotionListener(getDrawingListener());
     }
@@ -24,4 +25,5 @@ public abstract class AbstractToolButtonListener implements ActionListener {
 
     abstract protected MouseInputAdapter getDrawingListener();
 
+    abstract public void setCursor();
 }

@@ -1,11 +1,8 @@
 package Client.DrawActions;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.io.Serializable;
+import java.awt.*;
 
-public class LineDraw implements IDrawAction, Serializable {
+public class LineDraw implements IDrawAction {
 
     public Color color;
     public int originalX;

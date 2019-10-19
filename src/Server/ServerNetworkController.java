@@ -32,9 +32,9 @@ public class ServerNetworkController extends NetworkController {
         switch (actionType) {
             case CONNECT:
                 requestHandler.linkRoom(networkPackage.roomName);
-                requestHandler.userName = networkPackage.userName;
+                requestHandler.user = networkPackage.user;
                 room = requestHandler.room;
-                requestHandler.sendCurrentView();
+                requestHandler.sendCurrentViewAndTitle();
                 break;
             case DRAW:
                 room.addDrawAction(networkPackage.drawAction);
@@ -42,14 +42,17 @@ public class ServerNetworkController extends NetworkController {
             case DISCONNECT:
                 requestHandler.unlinkRoom();
                 break;
-            case CHANGE_LOCAL_NAME:
-                room.changeLocalName(networkPackage.roomName);
+            case CHANGE_BOARD_NAME:
+                room.changeBoardName(networkPackage.boardName);
                 break;
             case SET_QUEUE:
                 room.setQueue(networkPackage.realQueue);
                 break;
             case NEW_BOARD:
-                room.newBoard(requestHandler.userName);
+                room.newBoard(requestHandler.user);
+                break;
+            case CLOSE_ROOM:
+                requestHandler.closeRoom();
                 break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());
@@ -66,7 +69,7 @@ public class ServerNetworkController extends NetworkController {
     @Override
     protected void log(String message) {
         if (room != null) {
-            System.out.println(room.name + ": " + message);
+            System.out.println(room.roomName + ": " + message);
         } else {
             super.log(message);
         }

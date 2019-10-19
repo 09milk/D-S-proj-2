@@ -1,6 +1,6 @@
 package Client;
 
-import Network.UserName;
+import Network.User;
 
 public class ClientMain {
     public static void main(String[] args) {
@@ -12,7 +12,7 @@ public class ClientMain {
                 ClientConfig.SERVER_ADDRESS,
                 ClientConfig.SERVER_PORT,
                 ClientConfig.DEFAULT_ROOM_NAME,
-                new UserName(ClientConfig.DEFAULT_USERNAME));
+                new User(ClientConfig.DEFAULT_USERNAME));
         try {
             clientNetworkController.startCommunication();
         } catch (Exception e) {

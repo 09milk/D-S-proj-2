@@ -1,12 +1,13 @@
 package Client;
 
+import java.io.IOException;
+import java.net.Socket;
+
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
-
-import java.io.IOException;
-import java.net.Socket;
+import Server.ChatHistory;
 
 public class ClientNetworkController extends NetworkController {
 
@@ -84,6 +85,19 @@ public class ClientNetworkController extends NetworkController {
                 new WhiteboardClient(this, oldFrame.getX(), oldFrame.getY());
                 oldFrame.dispose();
                 break;
+            case CHAT:
+                whiteboardClient.whiteboardClientGUI.chatRoom.addChat(networkPackage.user, networkPackage.chatMessage);
+                break;
+            case CHAT_HISTORY:
+                ChatHistory chatHistory = networkPackage.chatHistory;
+                User user;
+                String chatMessage;
+                for (int i = 0; i < chatHistory.getNumOfChat(); i++){
+                    user = chatHistory.getChatUser(i);
+                    chatMessage = chatHistory.getChatMessage(i);
+                    whiteboardClient.whiteboardClientGUI.chatRoom.addChat(user, chatMessage);
+                }
+                break;
             case CLOSE_ROOM:
                 whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
                 break;
@@ -94,6 +108,9 @@ public class ClientNetworkController extends NetworkController {
         this.startReading();
     }
 
+    public void addChat(String message){
+        startSending(new NetworkPackage(ActionType.CHAT, user, message));
+    }
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;

@@ -5,6 +5,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
 
+import Client.ChatRoom;
+
 public class WhiteboardClientGUI {
 
     public JFrameNetwork mainFrame;
@@ -33,6 +35,8 @@ public class WhiteboardClientGUI {
     public JMenu mnStyle;
     public JMenuItem mntmColor;
     public JMenuItem mntmFont;
+    
+    public ChatRoom chatRoom;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
@@ -92,6 +96,8 @@ public class WhiteboardClientGUI {
 
         String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
         btnCurrentMember = new JButton(currentMemberText);
+        
+        chatRoom = new ChatRoom();
     }
 
     /**********************************************************************************************************
@@ -108,20 +114,21 @@ public class WhiteboardClientGUI {
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                                         .addGroup(groupLayout.createSequentialGroup()
-                                                                .addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addGap(5))
                                                         .addGroup(groupLayout.createSequentialGroup()
-                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+//                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                                                        		.addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 50, GroupLayout.DEFAULT_SIZE)
                                                                 .addPreferredGap(ComponentPlacement.RELATED))
                                                         .addGroup(groupLayout.createSequentialGroup()
                                                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                                                                        .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnLine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnRectangle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                		.addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnLine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnRectangle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE))
                                                                 .addPreferredGap(ComponentPlacement.RELATED)))
-                                                .addComponent(drawingPanel, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(drawingPanel, GroupLayout.PREFERRED_SIZE, 661, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(

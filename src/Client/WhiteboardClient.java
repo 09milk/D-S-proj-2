@@ -10,6 +10,9 @@ import Network.ActionType;
 import Network.NetworkPackage;
 
 import javax.swing.*;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class WhiteboardClient {
@@ -30,6 +33,10 @@ public class WhiteboardClient {
         }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
+
+        ChatRoom chatRoom = whiteboardClientGUI.chatRoom;
+        chatRoom.setCNC(clientNetworkController);
+
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
@@ -71,6 +78,14 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame, clientNetworkController));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
+        
+        whiteboardClientGUI.btnCurrentMember.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				whiteboardClientGUI.chatRoom.setVisible(true);
+				System.out.println("Chat Room Window Opened");
+			}
+		});
     }
 
 }

@@ -1,11 +1,11 @@
 package Server;
 
+import java.io.IOException;
+import java.net.Socket;
+
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
-
-import java.io.IOException;
-import java.net.Socket;
 
 public class ServerNetworkController extends NetworkController {
 
@@ -50,6 +50,9 @@ public class ServerNetworkController extends NetworkController {
                 break;
             case NEW_BOARD:
                 room.newBoard(requestHandler.user);
+                break;
+            case CHAT:
+                room.addChat(networkPackage.user, networkPackage.chatMessage);
                 break;
             case CLOSE_ROOM:
                 requestHandler.closeRoom();

@@ -36,7 +36,7 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmColor;
     public JMenuItem mntmFont;
     
-    public JFrame chatRoom;
+    public ChatRoom chatRoom;
 
 
     public WhiteboardClientGUI(int posX, int posY) {

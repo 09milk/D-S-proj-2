@@ -9,13 +9,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+
+import Network.User;
 
 public class ChatRoom extends JFrame {
 
@@ -23,8 +26,10 @@ public class ChatRoom extends JFrame {
 	
 	private JTextField txtCurrentMember;
 	private JTextField txtMembers;
-	private JTextField txtCharBar;
+	private JTextArea txtCharBar;
 	private JTextField txtMessage;
+
+    private ClientNetworkController clientNetworkController;
 
 	/**
 	 * Launch the application.
@@ -68,11 +73,11 @@ public class ChatRoom extends JFrame {
 		txtMembers.setText("Members we have currently");
 		txtMembers.setColumns(10);
 		
-		txtCharBar = new JTextField();
+		txtCharBar = new JTextArea();
 		txtCharBar.setBackground(SystemColor.inactiveCaptionBorder);
 		txtCharBar.setEditable(false);
 		// Override the setText so that it could show the top-10 (10 should be good I guess) messages from server
-		txtCharBar.setText("Char bar - all the communications will show here:");
+		txtCharBar.setText("");
 		txtCharBar.setColumns(10);
 		
 		txtMessage = new JTextField();
@@ -82,7 +87,7 @@ public class ChatRoom extends JFrame {
 			public void keyPressed(KeyEvent arg0) {
 			}
 		});
-		txtMessage.setText("Message");
+		txtMessage.setText("");
 		txtMessage.setColumns(10);
 		
 		JButton btnEnter = new JButton("Enter");
@@ -90,6 +95,8 @@ public class ChatRoom extends JFrame {
 			// Same functionality as 'Enter' key pressed, if the enter button is clicked, send message to server
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				ChatRoom.this.sendChat(txtMessage.getText());
+				txtMessage.setText("");
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -126,4 +133,17 @@ public class ChatRoom extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 
+
+	public void setCNC(ClientNetworkController CNC){
+		this.clientNetworkController = CNC;
+	}
+
+	public void addChat(User user, String message) {
+		this.txtCharBar.setText(this.txtCharBar.getText() + user.userName + ": " + message + "\n");
+        repaint();
+	}
+
+	public void sendChat(String message) {
+		this.clientNetworkController.addChat(message);
+    }
 }

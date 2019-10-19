@@ -1,9 +1,10 @@
 package Network;
 
-import Client.DrawActions.IDrawAction;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import Client.DrawActions.IDrawAction;
+import Server.ChatHistory;
 
 public class NetworkPackage implements Serializable {
 
@@ -15,6 +16,8 @@ public class NetworkPackage implements Serializable {
     public ArrayList<IDrawAction> realQueue;
     public User user;
 
+    public String chatMessage;
+    public ChatHistory chatHistory;
 
     public NetworkPackage(ActionType actionType) {
         this.actionType = actionType;
@@ -28,6 +31,8 @@ public class NetworkPackage implements Serializable {
                 this.roomName = string;
             case CHANGE_BOARD_NAME:
                 this.boardName = string;
+            case CHAT:
+                this.chatMessage = string;
         }
     }
 
@@ -51,6 +56,12 @@ public class NetworkPackage implements Serializable {
         this(actionType);
         this.realQueue = realQueue;
     }
+
+    public NetworkPackage(ActionType actionType, ChatHistory chatHistory) {
+        this(actionType);
+        this.chatHistory = chatHistory;
+    }
+
 
 
 }

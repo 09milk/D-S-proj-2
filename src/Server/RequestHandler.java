@@ -1,13 +1,12 @@
 package Server;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
-import sun.nio.ch.Net;
-
-import java.net.Socket;
-import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
 
@@ -40,6 +39,8 @@ public class RequestHandler implements Runnable {
     public void sendCurrentViewAndTitle() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));
+        // also send the chat history
+        serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT_HISTORY, room.chatHistory));
     }
 
     public void closeRoom() {
@@ -66,6 +67,10 @@ public class RequestHandler implements Runnable {
 
         public void newWhiteboard() {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
+        }
+
+        public void addChat(User user, String chatMessage) {
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, user, chatMessage));
         }
 
         public User getUsername() {

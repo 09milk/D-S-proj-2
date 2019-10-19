@@ -33,6 +33,10 @@ public class WhiteboardClient {
         }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
+
+        ChatRoom chatRoom = whiteboardClientGUI.chatRoom;
+        chatRoom.setCNC(clientNetworkController);
+
         addMouseListenerToButton();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);

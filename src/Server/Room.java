@@ -1,9 +1,9 @@
 package Server;
 
+import java.util.ArrayList;
+
 import Client.DrawActions.IDrawAction;
 import Network.User;
-
-import java.util.ArrayList;
 
 public class Room {
     public String boardName;
@@ -11,9 +11,11 @@ public class Room {
     public ArrayList<RequestHandler.HandlerListener> listeners = new ArrayList<>();
     public String roomName;
     private int newFileCount = 0;
+    public ChatHistory chatHistory;
 
     public Room(String roomName) {
         this.roomName = roomName;
+        this.chatHistory = new ChatHistory();
         newBoard(null);
     }
 
@@ -65,6 +67,14 @@ public class Room {
         }
         changeBoardName("new " + newFileCount);
         newFileCount++;
+    }
+
+    public void addChat(User user, String chatMessage){
+        chatHistory.addChat(user, chatMessage);
+        for (RequestHandler.HandlerListener listener : listeners) {
+            System.out.println("added chat " + chatMessage);
+            listener.addChat(user, chatMessage);
+        }
     }
 
     public void closeRoom(User user) {

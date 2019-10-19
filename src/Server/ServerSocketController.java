@@ -1,10 +1,3 @@
-/*
-
-Name: Marco Ho
-Student ID: 791960
-
-*/
-
 package Server;
 
 import java.io.IOException;

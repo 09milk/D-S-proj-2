@@ -76,7 +76,6 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
         
         whiteboardClientGUI.btnCurrentMember.addMouseListener(new MouseAdapter() {
-			// Same functionality as 'Enter' key pressed, if the enter button is clicked, send message to server
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				whiteboardClientGUI.chatRoom.setVisible(true);

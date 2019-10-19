@@ -80,8 +80,6 @@ public class WhiteboardClient {
 			public void mouseClicked(MouseEvent arg0) {
 				whiteboardClientGUI.chatRoom.setVisible(true);
 				System.out.println("Chat Room Window Opened");
-
-		        
 			}
 		});
     }

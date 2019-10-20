@@ -32,9 +32,8 @@ public class ServerNetworkController extends NetworkController {
         switch (actionType) {
             case CONNECT:
                 requestHandler.linkRoom(networkPackage.roomName);
-                requestHandler.userName = networkPackage.userName;
+                requestHandler.user = networkPackage.user;
                 room = requestHandler.room;
-                //TODO: fix sendCurrentView() after other client make new board
                 requestHandler.sendCurrentViewAndTitle();
                 break;
             case DRAW:
@@ -50,7 +49,10 @@ public class ServerNetworkController extends NetworkController {
                 room.setQueue(networkPackage.realQueue);
                 break;
             case NEW_BOARD:
-                room.newBoard(requestHandler.userName);
+                room.newBoard(requestHandler.user);
+                break;
+            case CLOSE_ROOM:
+                requestHandler.closeRoom();
                 break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());

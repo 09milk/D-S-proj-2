@@ -18,7 +18,7 @@ public class JFrameNetwork extends JFrame {
         if (networkController != null) {
             networkController.sendPackage(new NetworkPackage(
                     ActionType.CHANGE_BOARD_NAME,
-                    networkController.userName,
+                    networkController.user,
                     title));
         }
     }

@@ -13,16 +13,16 @@ public class NetworkPackage implements Serializable {
     public String boardName;
     public int amountOfMembers;
     public ArrayList<IDrawAction> realQueue;
-    public UserName userName;
+    public User user;
 
 
     public NetworkPackage(ActionType actionType) {
         this.actionType = actionType;
     }
 
-    public NetworkPackage(ActionType actionType, UserName userName, String string) {
+    public NetworkPackage(ActionType actionType, User user, String string) {
         this(actionType);
-        this.userName = userName;
+        this.user = user;
         switch (actionType) {
             case CONNECT:
                 this.roomName = string;
@@ -36,9 +36,9 @@ public class NetworkPackage implements Serializable {
         this.drawAction = drawAction;
     }
 
-    public NetworkPackage(ActionType actionType, UserName userName, IDrawAction drawAction) {
+    public NetworkPackage(ActionType actionType, User user, IDrawAction drawAction) {
         this(actionType);
-        this.userName = userName;
+        this.user = user;
         this.drawAction = drawAction;
     }
 

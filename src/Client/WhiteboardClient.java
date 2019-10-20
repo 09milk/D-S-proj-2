@@ -5,7 +5,7 @@ import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.*;
-import Client.Listeners.mainFrameWindowListener;
+import Client.Listeners.MainFrameWindowListener;
 import Network.ActionType;
 import Network.NetworkPackage;
 
@@ -51,7 +51,7 @@ public class WhiteboardClient {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         JFrame mainFrame = whiteboardClientGUI.mainFrame;
 
-        mainFrame.addWindowListener(new mainFrameWindowListener(clientNetworkController));
+        mainFrame.addWindowListener(new MainFrameWindowListener(clientNetworkController));
 
         whiteboardClientGUI.btnText.addActionListener(new TextListener(drawingPanel));
         whiteboardClientGUI.btnPencil.addActionListener(new PencilListener(drawingPanel));
@@ -67,7 +67,8 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel, clientNetworkController));
         whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));
-        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame));
+        whiteboardClientGUI.mntmClose.addActionListener(new CloseRoomListener(mainFrame, clientNetworkController));
+        whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame, clientNetworkController));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
     }

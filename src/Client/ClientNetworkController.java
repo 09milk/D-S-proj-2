@@ -3,7 +3,7 @@ package Client;
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
-import Network.UserName;
+import Network.User;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -11,18 +11,18 @@ import java.net.Socket;
 public class ClientNetworkController extends NetworkController {
 
     public final Object actionLock = new Object();
-    public UserName userName;
+    public User user;
     private String address;
     private int port;
     private ActionQueue actionQueue;
     private WhiteboardClient whiteboardClient;
 
 
-    public ClientNetworkController(String address, int port, String roomName, UserName userName) {
+    public ClientNetworkController(String address, int port, String roomName, User user) {
         this.address = address;
         this.port = port;
         this.roomName = roomName;
-        this.userName = userName;
+        this.user = user;
     }
 
     public void startCommunication() throws Exception {
@@ -34,7 +34,7 @@ public class ClientNetworkController extends NetworkController {
         }
         this.setIOStream(socket);
 
-        startSending(new NetworkPackage(ActionType.CONNECT, userName, this.roomName));
+        startSending(new NetworkPackage(ActionType.CONNECT, user, this.roomName));
 
         this.startReading();
     }
@@ -83,6 +83,9 @@ public class ClientNetworkController extends NetworkController {
                 JFrameNetwork oldFrame = whiteboardClient.whiteboardClientGUI.mainFrame;
                 new WhiteboardClient(this, oldFrame.getX(), oldFrame.getY());
                 oldFrame.dispose();
+                break;
+            case CLOSE_ROOM:
+                whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
                 break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());

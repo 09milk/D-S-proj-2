@@ -27,6 +27,7 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmOpen;
     public JMenuItem mntmSave;
     public JMenuItem mntmSaveAs;
+    public JMenuItem mntmClose;
     public JMenuItem mntmExit;
 
     public JMenu mnStyle;
@@ -171,6 +172,9 @@ public class WhiteboardClientGUI {
 
         mntmSaveAs = new JMenuItem("Save As");
         mnFile.add(mntmSaveAs);
+
+        mntmClose = new JMenuItem("Close Room");
+        mnFile.add(mntmClose);
 
         mntmExit = new JMenuItem("Exit");
         mnFile.add(mntmExit);

@@ -3,15 +3,8 @@ package Client;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JSlider;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
 

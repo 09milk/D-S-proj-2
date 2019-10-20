@@ -1,9 +1,9 @@
 package Server;
 
-import Network.User;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import Network.User;
 
 public class ChatHistory implements Serializable {
     private ArrayList<User> chatUsers;
@@ -12,6 +12,11 @@ public class ChatHistory implements Serializable {
     public ChatHistory() {
         chatUsers = new ArrayList<User>();
         chatMessages = new ArrayList<String>();
+    }
+
+    public ChatHistory(ChatHistory clone) {
+        this.chatUsers = new ArrayList<User>(clone.chatUsers);
+        this.chatMessages = new ArrayList<String>(clone.chatMessages);
     }
 
     public void addChat(User user, String chatMessage) {

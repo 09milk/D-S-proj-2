@@ -155,6 +155,10 @@ public class ChatRoom extends JFrame {
         this.txtCharBar.setText(displayText);
     }
 
+    public void clearChat() {
+        this.txtCharBar.setText("");
+    }
+
     public void sendChat(String message) {
         this.clientNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, clientNetworkController.user, message));
     }
@@ -162,7 +166,7 @@ public class ChatRoom extends JFrame {
     public void updateMemberList(ArrayList<User> memberList) {
         String txt = "";
         for (User user : memberList) {
-            txt += user.userName + "\n";
+            txt += String.format("%s(%d)\n", user.userName, user.displayId);
         }
         this.txtMembers.setText(txt);
     }

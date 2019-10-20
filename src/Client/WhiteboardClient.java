@@ -56,6 +56,7 @@ public class WhiteboardClient {
     private void addMouseListenerToButton() {
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         JFrame mainFrame = whiteboardClientGUI.mainFrame;
+        ChatRoom chatRoom = whiteboardClientGUI.chatRoom;
 
         mainFrame.addWindowListener(new MainFrameWindowListener(clientNetworkController));
 
@@ -69,8 +70,8 @@ public class WhiteboardClient {
         whiteboardClientGUI.jSlider.addMouseListener(new SliderListener(drawingPanel));
 
 
-        whiteboardClientGUI.mntmNew.addActionListener(new NewListener(mainFrame, clientNetworkController));
-        whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, drawingPanel, clientNetworkController));
+        whiteboardClientGUI.mntmNew.addActionListener(new NewListener(mainFrame, chatRoom, clientNetworkController));
+        whiteboardClientGUI.mntmOpen.addActionListener(new OpenListener(mainFrame, chatRoom, drawingPanel, clientNetworkController));
         whiteboardClientGUI.mntmSave.addActionListener(new SaveListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmSaveAs.addActionListener(new SaveAsListener(mainFrame, drawingPanel));
         whiteboardClientGUI.mntmClose.addActionListener(new CloseRoomListener(mainFrame, clientNetworkController));

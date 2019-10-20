@@ -1,9 +1,9 @@
 package Server;
 
+import java.util.ArrayList;
+
 import Client.DrawActions.IDrawAction;
 import Network.User;
-
-import java.util.ArrayList;
 
 public class Room {
     public String boardName;
@@ -23,18 +23,22 @@ public class Room {
     public synchronized void addListener(RequestHandler.HandlerListener listener, User user) {
         listeners.add(listener);
         memberList.add(user);
-        sendMemberUpdate();
     }
 
     public synchronized void removeListener(RequestHandler.HandlerListener listener, User user) {
         listeners.remove(listener);
         memberList.remove(user);
-        sendMemberUpdate();
     }
 
-    private void sendMemberUpdate() {
+    public void sendMemberUpdate() {
         for (RequestHandler.HandlerListener listener : listeners) {
             listener.sendMemberUpdate(memberList);
+        }
+    }
+
+    public void sendChatHistory() {
+        for (RequestHandler.HandlerListener listener : listeners) {
+            listener.sendChatHistory(chatHistory);
         }
     }
 

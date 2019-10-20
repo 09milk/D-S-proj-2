@@ -53,11 +53,10 @@ public class NetworkPackage implements Serializable {
         this.realQueue = realQueue;
     }
 
-    public NetworkPackage(ActionType actionType, ChatHistory chatHistory) {
-        this(actionType);
-        this.chatHistory = chatHistory;
+    public NetworkPackage(ChatHistory chatHistory) {
+        this(ActionType.CHAT_HISTORY);
+        this.chatHistory = new ChatHistory(chatHistory);
     }
-
 
     public NetworkPackage(ArrayList<User> memberList) {
         this(ActionType.MEMBER_UPDATE);

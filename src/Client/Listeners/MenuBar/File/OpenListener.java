@@ -5,6 +5,7 @@ import Client.ClientNetworkController;
 import Client.DrawActions.IDrawAction;
 import Client.DrawingPanel;
 import Client.WhiteboardClient;
+import Client.ChatRoom;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,12 +19,14 @@ import java.util.ArrayList;
 
 public class OpenListener implements ActionListener {
     private JFrame oldMainFrame;
+    private ChatRoom chatRoom;
     private DrawingPanel drawingPanel;
     private ClientNetworkController clientNetworkController;
     private JFileChooser jFileChooser = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
 
-    public OpenListener(JFrame oldMainFrame, DrawingPanel drawingPanel, ClientNetworkController clientNetworkController) {
+    public OpenListener(JFrame oldMainFrame, ChatRoom chatRoom, DrawingPanel drawingPanel, ClientNetworkController clientNetworkController) {
         this.oldMainFrame = oldMainFrame;
+        this.chatRoom = chatRoom;
         this.drawingPanel = drawingPanel;
         this.clientNetworkController = clientNetworkController;
         jFileChooser.setAcceptAllFileFilterUsed(false);
@@ -60,6 +63,7 @@ public class OpenListener implements ActionListener {
             ArrayList<IDrawAction> realQueue = (ArrayList<IDrawAction>) objectInputStream.readObject();
             new WhiteboardClient(clientNetworkController, name, realQueue, oldMainFrame.getX(), oldMainFrame.getY());
             oldMainFrame.dispose();
+            chatRoom.dispose();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to Load.");

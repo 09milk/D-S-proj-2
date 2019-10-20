@@ -2,6 +2,7 @@ package Client.Listeners.MenuBar.File;
 
 import Client.ClientNetworkController;
 import Client.WhiteboardClient;
+import Client.ChatRoom;
 import Network.ActionType;
 import Network.NetworkPackage;
 
@@ -12,10 +13,12 @@ import java.awt.event.ActionListener;
 public class NewListener implements ActionListener {
 
     private JFrame oldMainFrame;
+    private ChatRoom chatRoom;
     private ClientNetworkController clientNetworkController;
 
-    public NewListener(JFrame oldMainFrame, ClientNetworkController clientNetworkController) {
+    public NewListener(JFrame oldMainFrame, ChatRoom chatRoom, ClientNetworkController clientNetworkController) {
         this.oldMainFrame = oldMainFrame;
+        this.chatRoom = chatRoom;
         this.clientNetworkController = clientNetworkController;
     }
 
@@ -24,5 +27,6 @@ public class NewListener implements ActionListener {
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         new WhiteboardClient(clientNetworkController, oldMainFrame.getX(), oldMainFrame.getY());
         oldMainFrame.dispose();
+        chatRoom.dispose();
     }
 }

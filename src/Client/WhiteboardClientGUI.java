@@ -35,7 +35,6 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmFont;
 
     public ChatRoom chatRoom;
-    public boolean chatRoomInitialized = false;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
@@ -96,7 +95,6 @@ public class WhiteboardClientGUI {
         btnChatRoom = new JButton(ClientConfig.CHAT_ROOM_STRING);
 
         chatRoom = new ChatRoom();
-        chatRoomInitialized = true;
     }
 
     /**********************************************************************************************************

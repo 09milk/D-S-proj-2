@@ -86,8 +86,10 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case NEW_BOARD:
                 JFrameNetwork oldFrame = whiteboardClient.whiteboardClientGUI.mainFrame;
+                ChatRoom oldChatRoom = whiteboardClient.whiteboardClientGUI.chatRoom;
                 new WhiteboardClient(this, oldFrame.getX(), oldFrame.getY());
                 oldFrame.dispose();
+                oldChatRoom.dispose();
                 break;
             case CHAT:
                 whiteboardClient.whiteboardClientGUI.chatRoom.addChat(networkPackage.user, networkPackage.chatMessage);
@@ -96,10 +98,12 @@ public class ClientNetworkController extends NetworkController {
                 ChatHistory chatHistory = networkPackage.chatHistory;
                 User user;
                 String chatMessage;
+                ChatRoom chatRoom = whiteboardClient.whiteboardClientGUI.chatRoom;
+                chatRoom.clearChat();
                 for (int i = 0; i < chatHistory.getNumOfChat(); i++) {
                     user = chatHistory.getChatUser(i);
                     chatMessage = chatHistory.getChatMessage(i);
-                    whiteboardClient.whiteboardClientGUI.chatRoom.addChatNoScroll(user, chatMessage);
+                    chatRoom.addChatNoScroll(user, chatMessage);
                 }
                 break;
             case CLOSE_ROOM:

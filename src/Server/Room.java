@@ -1,18 +1,18 @@
 package Server;
 
-import java.util.ArrayList;
-
 import Client.DrawActions.IDrawAction;
 import Network.User;
+
+import java.util.ArrayList;
 
 public class Room {
     public String boardName;
     public ArrayList<IDrawAction> actionQueue = new ArrayList<>();
     public ArrayList<RequestHandler.HandlerListener> listeners = new ArrayList<>();
     public String roomName;
-    private int newFileCount = 0;
     public ChatHistory chatHistory;
     public ArrayList<User> memberList = new ArrayList<>();
+    private int newFileCount = 0;
 
     public Room(String roomName) {
         this.roomName = roomName;
@@ -32,7 +32,7 @@ public class Room {
         sendMemberUpdate();
     }
 
-    private void sendMemberUpdate(){
+    private void sendMemberUpdate() {
         for (RequestHandler.HandlerListener listener : listeners) {
             listener.sendMemberUpdate(memberList);
         }
@@ -71,7 +71,7 @@ public class Room {
         newFileCount++;
     }
 
-    public void addChat(User user, String chatMessage){
+    public void addChat(User user, String chatMessage) {
         chatHistory.addChat(user, chatMessage);
         for (RequestHandler.HandlerListener listener : listeners) {
             listener.addChat(user, chatMessage);
@@ -85,7 +85,7 @@ public class Room {
                 threads.add(listener.closeRoom());
             }
         }
-        for (Thread thread : threads){
+        for (Thread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {

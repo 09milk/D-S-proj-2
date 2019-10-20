@@ -1,11 +1,11 @@
 package Server;
 
-import java.io.IOException;
-import java.net.Socket;
-
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class ServerNetworkController extends NetworkController {
 

@@ -1,12 +1,12 @@
 package Server;
 
-import java.net.Socket;
-import java.util.ArrayList;
-
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
+
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
 

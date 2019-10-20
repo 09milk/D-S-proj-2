@@ -1,15 +1,9 @@
 package Client;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
-
-import Client.ChatRoom;
-import Client.UserConfig;
 
 public class WhiteboardClientGUI {
 
@@ -39,12 +33,12 @@ public class WhiteboardClientGUI {
     public JMenu mnStyle;
     public JMenuItem mntmColor;
     public JMenuItem mntmFont;
-    
+
     public JMenu mnCustom;
     public JMenuItem mntmUserName;
-    
+
     public ChatRoom chatRoom;
-    
+
     public UserConfig userConfig;
 
 
@@ -105,10 +99,10 @@ public class WhiteboardClientGUI {
 
         String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
         btnCurrentMember = new JButton(currentMemberText);
-        btnCurrentMember.setPreferredSize(new Dimension(280,40));
-        
+        btnCurrentMember.setPreferredSize(new Dimension(280, 40));
+
         chatRoom = new ChatRoom();
-        
+
         userConfig = new UserConfig();
     }
 
@@ -129,11 +123,11 @@ public class WhiteboardClientGUI {
                                                                 .addGap(5))
                                                         .addGroup(groupLayout.createSequentialGroup()
 //                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                                                        		.addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 50, GroupLayout.DEFAULT_SIZE)
+                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 50, GroupLayout.DEFAULT_SIZE)
                                                                 .addPreferredGap(ComponentPlacement.RELATED))
                                                         .addGroup(groupLayout.createSequentialGroup()
                                                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                                                                		.addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                         .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
                                                                         .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
                                                                         .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
@@ -204,10 +198,10 @@ public class WhiteboardClientGUI {
 
         mntmColor = new JMenuItem("Color");
         mnStyle.add(mntmColor);
-        
+
         mnCustom = new JMenu("Custom");
         menuBar.add(mnCustom);
-        
+
         mntmUserName = new JMenuItem("User name");
         mnCustom.add(mntmUserName);
 

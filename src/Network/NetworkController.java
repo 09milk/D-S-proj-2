@@ -35,7 +35,7 @@ public abstract class NetworkController {
     }
 
     protected Thread startSending(NetworkPackage networkPackage) {
-        Thread thread =  new Thread(new networkOutputHandler(networkPackage));
+        Thread thread = new Thread(new networkOutputHandler(networkPackage));
         thread.start();
         return thread;
     }

@@ -1,10 +1,10 @@
 package Network;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import Client.DrawActions.IDrawAction;
 import Server.ChatHistory;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class NetworkPackage implements Serializable {
 

@@ -25,7 +25,7 @@ public class ClientMain {
         new WhiteboardClient(clientNetworkController);
     }
 
-    public static void loadConfig(){
+    public static void loadConfig() {
         try {
             ClientConfig.loadConfig();
         } catch (Exception e) {

@@ -1,13 +1,13 @@
 package Client;
 
-import java.io.IOException;
-import java.net.Socket;
-
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
 import Server.ChatHistory;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
@@ -50,13 +50,14 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case MEMBER_UPDATE:
                 boolean success = false;
-                while (! success){
-                    try{
+                while (!success) {
+                    try {
                         whiteboardClient.whiteboardClientGUI.chatRoom.updateMemberList(networkPackage.memberList);
                         String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
                         whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
                         success = true;
-                    } catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                 }
                 break;
             case CHANGE_BOARD_NAME:
@@ -95,7 +96,7 @@ public class ClientNetworkController extends NetworkController {
                 ChatHistory chatHistory = networkPackage.chatHistory;
                 User user;
                 String chatMessage;
-                for (int i = 0; i < chatHistory.getNumOfChat(); i++){
+                for (int i = 0; i < chatHistory.getNumOfChat(); i++) {
                     user = chatHistory.getChatUser(i);
                     chatMessage = chatHistory.getChatMessage(i);
                     whiteboardClient.whiteboardClientGUI.chatRoom.addChatNoScroll(user, chatMessage);

@@ -1,16 +1,15 @@
 package Client;
 
 import Client.DrawActions.IDrawAction;
+import Client.Listeners.MainFrameWindowListener;
 import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.*;
-import Client.Listeners.MainFrameWindowListener;
 import Network.ActionType;
 import Network.NetworkPackage;
 
 import javax.swing.*;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -78,14 +77,14 @@ public class WhiteboardClient {
         whiteboardClientGUI.mntmExit.addActionListener(new ExitListener(mainFrame, clientNetworkController));
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
-        
+
         whiteboardClientGUI.btnChatRoom.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				whiteboardClientGUI.chatRoom.setVisible(true);
-				System.out.println("Chat Room Window Opened");
-			}
-		});
+            @Override
+            public void mouseClicked(MouseEvent arg0) {
+                whiteboardClientGUI.chatRoom.setVisible(true);
+                System.out.println("Chat Room Window Opened");
+            }
+        });
     }
 
 }

@@ -16,8 +16,8 @@ public class User implements Serializable {
 
     private short getDisplayId() {
         long xorLong = uuid.getLeastSignificantBits() ^ uuid.getMostSignificantBits();
-        int xorInt = (int)(xorLong^(xorLong>>>32));
-        return (short)((xorInt^(xorInt>>>16)) & 0x7fff);
+        int xorInt = (int) (xorLong ^ (xorLong >>> 32));
+        return (short) ((xorInt ^ (xorInt >>> 16)) & 0x7fff);
     }
 
     @Override

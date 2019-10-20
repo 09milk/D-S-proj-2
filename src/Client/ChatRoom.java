@@ -19,6 +19,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import Network.User;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
 
 public class ChatRoom extends JFrame {
 
@@ -26,6 +30,7 @@ public class ChatRoom extends JFrame {
 	
 	private JTextField txtCurrentMember;
 	private JTextField txtMembers;
+	private JScrollPane scroll;
 	private JTextArea txtCharBar;
 	private JTextField txtMessage;
 
@@ -52,13 +57,12 @@ public class ChatRoom extends JFrame {
 	 */
 	public ChatRoom() {
 //		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		setBounds(100, 100, 537, 502);
+		setBounds(100, 100, 537, 516);
 		
 		txtCurrentMember = new JTextField();
 		txtCurrentMember.setEditable(false);
@@ -73,18 +77,23 @@ public class ChatRoom extends JFrame {
 		txtMembers.setText("Members we have currently");
 		txtMembers.setColumns(10);
 		
+
 		txtCharBar = new JTextArea();
-		txtCharBar.setBackground(SystemColor.inactiveCaptionBorder);
 		txtCharBar.setEditable(false);
-		// Override the setText so that it could show the top-10 (10 should be good I guess) messages from server
+		txtCharBar.setBackground(SystemColor.inactiveCaptionBorder);
 		txtCharBar.setText("");
 		txtCharBar.setColumns(10);
+		scroll = new JScrollPane(txtCharBar, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		txtMessage = new JTextField();
 		txtMessage.addKeyListener(new KeyAdapter() {
 			// If the key 'Enter' is pressed, then the message is sent to server 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
+			    if (arg0.getKeyCode()==KeyEvent.VK_ENTER){
+					ChatRoom.this.sendChat(txtMessage.getText());
+					txtMessage.setText("");
+			    }
 			}
 		});
 		txtMessage.setText("");
@@ -99,22 +108,23 @@ public class ChatRoom extends JFrame {
 				txtMessage.setText("");
 			}
 		});
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(txtMembers, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+				.addComponent(txtMembers, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addComponent(txtCurrentMember, GroupLayout.PREFERRED_SIZE, 521, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(23, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(txtMessage, GroupLayout.PREFERRED_SIZE, 429, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(btnEnter))
-						.addComponent(txtCharBar, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+					.addGap(21))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -123,7 +133,7 @@ public class ChatRoom extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(txtMembers, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtCharBar, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtMessage, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)

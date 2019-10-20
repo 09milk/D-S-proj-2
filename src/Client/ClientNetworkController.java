@@ -50,9 +50,9 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case MEMBER_AMOUNT:
                 int amount = networkPackage.amountOfMembers;
-                String text = String.format(ClientConfig.CURRENT_MEMBER_STRING, amount);
+                String text = String.format(ClientConfig.CHAT_ROOM_STRING, amount);
                 try {
-                    whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
+                    whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
                 } catch (NullPointerException ignored) {
                 }
                 break;

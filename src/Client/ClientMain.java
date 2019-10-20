@@ -2,8 +2,11 @@ package Client;
 
 import Network.User;
 
+import javax.swing.*;
+
 public class ClientMain {
     public static void main(String[] args) {
+        loadConfig();
         startWhiteboard();
     }
 
@@ -20,5 +23,17 @@ public class ClientMain {
             System.exit(0);
         }
         new WhiteboardClient(clientNetworkController);
+    }
+
+    public static void loadConfig(){
+        try {
+            ClientConfig.loadConfig();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    ClientConfig.CLIENT_CONFIG_ERROR_MSG,
+                    ClientConfig.ERROR_BOX_TITLE,
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

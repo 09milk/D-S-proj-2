@@ -79,7 +79,7 @@ public class WhiteboardClient {
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
         
-        whiteboardClientGUI.btnCurrentMember.addMouseListener(new MouseAdapter() {
+        whiteboardClientGUI.btnChatRoom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				whiteboardClientGUI.chatRoom.setVisible(true);

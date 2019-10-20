@@ -5,8 +5,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
 
-import Client.ChatRoom;
-
 public class WhiteboardClientGUI {
 
     public JFrameNetwork mainFrame;
@@ -19,7 +17,7 @@ public class WhiteboardClientGUI {
 
     public DrawingPanel drawingPanel;
     public JSlider jSlider;
-    public JButton btnCurrentMember;
+    public JButton btnChatRoom;
 
 
     public JMenuBar menuBar;
@@ -59,7 +57,7 @@ public class WhiteboardClientGUI {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         mainFrame = new JFrameNetwork();
-        mainFrame.setBounds(posX, posY, 748, 555);
+        mainFrame.setBounds(posX, posY, ClientConfig.WIDTH, ClientConfig.HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         btnPencil = new JButton();
@@ -94,8 +92,8 @@ public class WhiteboardClientGUI {
         jSlider.setMinimum(ClientConfig.SLIDER_MIN);
         jSlider.setOrientation(SwingConstants.VERTICAL);
 
-        String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
-        btnCurrentMember = new JButton(currentMemberText);
+        String chatRoomText = String.format(ClientConfig.CHAT_ROOM_STRING, 0);
+        btnChatRoom = new JButton(chatRoomText);
         
         chatRoom = new ChatRoom();
     }
@@ -110,7 +108,7 @@ public class WhiteboardClientGUI {
                         .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(btnCurrentMember, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnChatRoom, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                                         .addGroup(groupLayout.createSequentialGroup()
@@ -152,7 +150,7 @@ public class WhiteboardClientGUI {
                                                 .addComponent(jSlider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addComponent(drawingPanel, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnCurrentMember))
+                                .addComponent(btnChatRoom))
         );
         mainFrame.getContentPane().setLayout(groupLayout);
     }

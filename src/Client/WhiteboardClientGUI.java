@@ -6,6 +6,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.*;
 
 import Client.ChatRoom;
+import Client.UserConfig;
 
 public class WhiteboardClientGUI {
 
@@ -36,7 +37,12 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmColor;
     public JMenuItem mntmFont;
     
+    public JMenu mnCustom;
+    public JMenuItem mntmUserName;
+    
     public ChatRoom chatRoom;
+    
+    public UserConfig userConfig;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
@@ -98,6 +104,8 @@ public class WhiteboardClientGUI {
         btnCurrentMember = new JButton(currentMemberText);
         
         chatRoom = new ChatRoom();
+        
+        userConfig = new UserConfig();
     }
 
     /**********************************************************************************************************
@@ -192,6 +200,14 @@ public class WhiteboardClientGUI {
 
         mntmColor = new JMenuItem("Color");
         mnStyle.add(mntmColor);
+        
+        mnCustom = new JMenu("Custom");
+        menuBar.add(mnCustom);
+        
+        mntmUserName = new JMenuItem("User name");
+        mnCustom.add(mntmUserName);
+
+        
 		/*
 		mntmFont = new JMenuItem("Font");
 		mnStyle.add(mntmFont);*/

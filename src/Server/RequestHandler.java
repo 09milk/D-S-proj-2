@@ -29,11 +29,11 @@ public class RequestHandler implements Runnable {
 
     public void linkRoom(String roomName) {
         room = roomManager.getRoom(roomName);
-        room.addListener(handlerListener);
+        room.addListener(handlerListener, user);
     }
 
     public void unlinkRoom() {
-        room.removeListener(handlerListener);
+        room.removeListener(handlerListener, user);
     }
 
     public void sendCurrentViewAndTitle() {
@@ -53,8 +53,8 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.DRAW, user, drawAction));
         }
 
-        public void sendAmountOfMember(int amountOfMembers) {
-            serverNetworkController.sendPackage(amountOfMembers);
+        public void sendMemberUpdate(ArrayList<User> memberList) {
+            serverNetworkController.sendPackage(new NetworkPackage(memberList));
         }
 
         public void changeBoardName(String name) {

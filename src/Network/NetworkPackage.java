@@ -18,6 +18,7 @@ public class NetworkPackage implements Serializable {
 
     public String chatMessage;
     public ChatHistory chatHistory;
+    public ArrayList<User> memberList;
 
     public NetworkPackage(ActionType actionType) {
         this.actionType = actionType;
@@ -47,11 +48,6 @@ public class NetworkPackage implements Serializable {
         this.drawAction = drawAction;
     }
 
-    public NetworkPackage(ActionType actionType, int amountOfMembers) {
-        this(actionType);
-        this.amountOfMembers = amountOfMembers;
-    }
-
     public NetworkPackage(ActionType actionType, ArrayList<IDrawAction> realQueue) {
         this(actionType);
         this.realQueue = realQueue;
@@ -63,6 +59,10 @@ public class NetworkPackage implements Serializable {
     }
 
 
+    public NetworkPackage(ArrayList<User> memberList) {
+        this(ActionType.MEMBER_UPDATE);
+        this.memberList = new ArrayList<User>(memberList);
+    }
 
 }
 

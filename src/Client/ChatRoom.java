@@ -3,7 +3,6 @@ package Client;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
-import Server.ChatHistory;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -14,13 +13,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 
 public class ChatRoom extends JFrame {
 
 	private JPanel contentPane;
 	
 	private JTextField txtCurrentMember;
-	private JTextField txtMembers;
+	private JTextArea txtMembers;
 	private JScrollPane scroll;
 	private JTextArea txtCharBar;
 	private JTextField txtMessage;
@@ -61,7 +62,7 @@ public class ChatRoom extends JFrame {
 		txtCurrentMember.setText("Current Member:");
 		txtCurrentMember.setColumns(10);
 		
-		txtMembers = new JTextField();
+		txtMembers = new JTextArea();
 		txtMembers.setEditable(false);
 		txtMembers.setBackground(SystemColor.menu);
 		txtMembers.setForeground(SystemColor.desktop);
@@ -82,8 +83,10 @@ public class ChatRoom extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 			    if (arg0.getKeyCode()==KeyEvent.VK_ENTER){
-					ChatRoom.this.sendChat(txtMessage.getText());
-					txtMessage.setText("");
+					if (! txtMessage.getText().equals("")) {
+						ChatRoom.this.sendChat(txtMessage.getText());
+						txtMessage.setText("");
+					}
 			    }
 			}
 		});
@@ -95,8 +98,10 @@ public class ChatRoom extends JFrame {
 			// Same functionality as 'Enter' key pressed, if the enter button is clicked, send message to server
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ChatRoom.this.sendChat(txtMessage.getText());
-				txtMessage.setText("");
+				if (! txtMessage.getText().equals("")) {
+					ChatRoom.this.sendChat(txtMessage.getText());
+					txtMessage.setText("");
+				}
 			}
 		});
 		
@@ -154,4 +159,12 @@ public class ChatRoom extends JFrame {
 	public void sendChat(String message) {
 		this.clientNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, clientNetworkController.user, message));
     }
+	
+	public void updateMemberList(ArrayList<User> memberList){
+		String txt = "";
+		for (User user : memberList){
+			txt += user.userName + "\n";
+		}
+		this.txtMembers.setText(txt);
+	}
 }

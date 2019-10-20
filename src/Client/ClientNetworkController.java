@@ -35,7 +35,7 @@ public class ClientNetworkController extends NetworkController {
         }
         this.setIOStream(socket);
 
-        startSending(new NetworkPackage(ActionType.CONNECT, user, this.roomName));
+        sendPackage(new NetworkPackage(ActionType.CONNECT, user, this.roomName));
 
         this.startReading();
     }
@@ -95,7 +95,7 @@ public class ClientNetworkController extends NetworkController {
                 for (int i = 0; i < chatHistory.getNumOfChat(); i++){
                     user = chatHistory.getChatUser(i);
                     chatMessage = chatHistory.getChatMessage(i);
-                    whiteboardClient.whiteboardClientGUI.chatRoom.addChat(user, chatMessage);
+                    whiteboardClient.whiteboardClientGUI.chatRoom.addChatNoScroll(user, chatMessage);
                 }
                 break;
             case CLOSE_ROOM:
@@ -106,10 +106,6 @@ public class ClientNetworkController extends NetworkController {
                 break;
         }
         this.startReading();
-    }
-
-    public void addChat(String message){
-        startSending(new NetworkPackage(ActionType.CHAT, user, message));
     }
 
     public void setActionQueue(ActionQueue actionQueue) {

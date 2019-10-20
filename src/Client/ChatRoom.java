@@ -1,28 +1,19 @@
 package Client;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.SystemColor;
+import Network.ActionType;
+import Network.NetworkPackage;
+import Network.User;
+import Server.ChatHistory;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.EmptyBorder;
-
-import Network.User;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
 
 public class ChatRoom extends JFrame {
 
@@ -149,11 +140,18 @@ public class ChatRoom extends JFrame {
 	}
 
 	public void addChat(User user, String message) {
-		this.txtCharBar.setText(this.txtCharBar.getText() + user.userName + ": " + message + "\n");
-        repaint();
+		addChatNoScroll(user, message);
+		JScrollBar jScrollBar = scroll.getVerticalScrollBar();
+		SwingUtilities.invokeLater(() -> jScrollBar.setValue(jScrollBar.getMaximum()));
+	}
+
+	public void addChatNoScroll(User user, String message){
+		String displayText =
+				String.format("%s%s(%d): %s\n", this.txtCharBar.getText(), user.userName, user.displayId, message);
+		this.txtCharBar.setText(displayText);
 	}
 
 	public void sendChat(String message) {
-		this.clientNetworkController.addChat(message);
+		this.clientNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, clientNetworkController.user, message));
     }
 }

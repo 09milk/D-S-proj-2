@@ -6,10 +6,18 @@ import java.util.UUID;
 public class User implements Serializable {
     public String userName;
     public UUID uuid;
+    public short displayId;
 
     public User(String userName) {
         this.userName = userName;
         uuid = UUID.randomUUID();
+        displayId = this.getDisplayId();
+    }
+
+    private short getDisplayId() {
+        long xorLong = uuid.getLeastSignificantBits() ^ uuid.getMostSignificantBits();
+        int xorInt = (int)(xorLong^(xorLong>>>32));
+        return (short)((xorInt^(xorInt>>>16)) & 0x7fff);
     }
 
     @Override

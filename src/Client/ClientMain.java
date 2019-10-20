@@ -34,6 +34,7 @@ public class ClientMain {
                     ClientConfig.CLIENT_CONFIG_ERROR_MSG,
                     ClientConfig.ERROR_BOX_TITLE,
                     JOptionPane.INFORMATION_MESSAGE);
+            System.exit(1);
         }
     }
 }

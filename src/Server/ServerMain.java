@@ -1,11 +1,12 @@
 package Server;
 
+
 import java.net.Socket;
 
 public class ServerMain {
     public static void main(String[] args) {
-        ServerParsedArgs parsedArgs = new ServerParsedArgs(args);
-        ServerSocketController socketController = new ServerSocketController(parsedArgs.port);
+        loadConfig();
+        ServerSocketController socketController = new ServerSocketController(ServerConfig.SERVER_PORT);
         socketController.start();
         Runtime.getRuntime().addShutdownHook(new Thread(socketController::close));
         //loop should be terminated by ctrl-c only
@@ -14,20 +15,15 @@ public class ServerMain {
             new Thread(new RequestHandler(socket)).start();
         }
     }
-}
 
-class ServerParsedArgs {
-
-    int port;
-
-    ServerParsedArgs(String[] args) {
+    public static void loadConfig() {
         try {
-            this.port = Integer.parseInt(args[0]);
-            if (this.port > 65535 || this.port < 0) {
-                throw new IllegalArgumentException();
+            ServerConfig.loadConfig();
+            if (ServerConfig.SERVER_PORT > 65535 || ServerConfig.SERVER_PORT < 0) {
+                throw new Exception("Wrong Port");
             }
         } catch (Exception e) {
-            System.out.println("Usage: server <port>");
+            System.out.println(e.getMessage());
             System.exit(1);
         }
     }

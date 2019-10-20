@@ -12,6 +12,7 @@ public class Room {
     public String roomName;
     private int newFileCount = 0;
     public ChatHistory chatHistory;
+    public ArrayList<User> memberList = new ArrayList<>();
 
     public Room(String roomName) {
         this.roomName = roomName;
@@ -19,20 +20,21 @@ public class Room {
         newBoard(null);
     }
 
-    public synchronized void addListener(RequestHandler.HandlerListener listener) {
+    public synchronized void addListener(RequestHandler.HandlerListener listener, User user) {
         listeners.add(listener);
-        sendAmountOfMember();
+        memberList.add(user);
+        sendMemberUpdate();
     }
 
-    public synchronized void removeListener(RequestHandler.HandlerListener listener) {
+    public synchronized void removeListener(RequestHandler.HandlerListener listener, User user) {
         listeners.remove(listener);
-        sendAmountOfMember();
+        memberList.remove(user);
+        sendMemberUpdate();
     }
 
-    private void sendAmountOfMember() {
-        System.out.println(roomName + ": " + "Current number of member(s): " + listeners.size());
+    private void sendMemberUpdate(){
         for (RequestHandler.HandlerListener listener : listeners) {
-            listener.sendAmountOfMember(listeners.size());
+            listener.sendMemberUpdate(memberList);
         }
     }
 
@@ -72,7 +74,6 @@ public class Room {
     public void addChat(User user, String chatMessage){
         chatHistory.addChat(user, chatMessage);
         for (RequestHandler.HandlerListener listener : listeners) {
-            System.out.println("added chat " + chatMessage);
             listener.addChat(user, chatMessage);
         }
     }

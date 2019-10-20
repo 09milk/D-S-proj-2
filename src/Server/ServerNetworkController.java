@@ -31,8 +31,8 @@ public class ServerNetworkController extends NetworkController {
         ActionType actionType = networkPackage.actionType;
         switch (actionType) {
             case CONNECT:
-                requestHandler.linkRoom(networkPackage.roomName);
                 requestHandler.user = networkPackage.user;
+                requestHandler.linkRoom(networkPackage.roomName);
                 room = requestHandler.room;
                 requestHandler.sendCurrentViewAndTitle();
                 break;
@@ -62,11 +62,6 @@ public class ServerNetworkController extends NetworkController {
                 break;
         }
         this.startReading();
-    }
-
-    public void sendPackage(int amountOfMembers) {
-        NetworkPackage networkPackage = new NetworkPackage(ActionType.MEMBER_AMOUNT, amountOfMembers);
-        startSending(networkPackage);
     }
 
     @Override

@@ -48,12 +48,15 @@ public class ClientNetworkController extends NetworkController {
             case DRAW:
                 actionQueue.addRealAction(networkPackage.drawAction);
                 break;
-            case MEMBER_AMOUNT:
-                int amount = networkPackage.amountOfMembers;
-                String text = String.format(ClientConfig.CURRENT_MEMBER_STRING, amount);
-                try {
-                    whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
-                } catch (NullPointerException ignored) {
+            case MEMBER_UPDATE:
+                boolean success = false;
+                while (! success){
+                    try{
+                        whiteboardClient.whiteboardClientGUI.chatRoom.updateMemberList(networkPackage.memberList);
+                        String text = String.format(ClientConfig.CURRENT_MEMBER_STRING, networkPackage.memberList.size());
+                        whiteboardClient.whiteboardClientGUI.btnCurrentMember.setText(text);
+                        success = true;
+                    } catch (Exception e){}
                 }
                 break;
             case CHANGE_BOARD_NAME:

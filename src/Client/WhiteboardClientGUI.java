@@ -1,11 +1,20 @@
 package Client;
 
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 
-import Client.ChatRoom;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSlider;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class WhiteboardClientGUI {
 
@@ -37,6 +46,7 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmFont;
     
     public ChatRoom chatRoom;
+    public boolean chatRoomInitialized = false;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
@@ -96,8 +106,10 @@ public class WhiteboardClientGUI {
 
         String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
         btnCurrentMember = new JButton(currentMemberText);
+        btnCurrentMember.setPreferredSize(new Dimension(280,40));
         
         chatRoom = new ChatRoom();
+        chatRoomInitialized = true;
     }
 
     /**********************************************************************************************************

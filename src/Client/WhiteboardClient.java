@@ -79,6 +79,13 @@ public class WhiteboardClient {
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
         
+        whiteboardClientGUI.mntmUserName.addMouseListener(new MouseAdapter() {
+        	public void mousePressed(MouseEvent e) {
+        		whiteboardClientGUI.userConfig.setVisible(true);
+				System.out.println("User Name Window Opened");
+        	}
+        });
+        
         whiteboardClientGUI.btnCurrentMember.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {

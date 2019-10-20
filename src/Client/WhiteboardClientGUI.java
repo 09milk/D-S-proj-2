@@ -13,8 +13,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSlider;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
+import java.awt.*;
+
+import Client.ChatRoom;
+import Client.UserConfig;
 
 public class WhiteboardClientGUI {
 
@@ -45,8 +47,12 @@ public class WhiteboardClientGUI {
     public JMenuItem mntmColor;
     public JMenuItem mntmFont;
     
+    public JMenu mnCustom;
+    public JMenuItem mntmUserName;
+    
     public ChatRoom chatRoom;
-    public boolean chatRoomInitialized = false;
+    
+    public UserConfig userConfig;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
@@ -109,7 +115,8 @@ public class WhiteboardClientGUI {
         btnCurrentMember.setPreferredSize(new Dimension(280,40));
         
         chatRoom = new ChatRoom();
-        chatRoomInitialized = true;
+        
+        userConfig = new UserConfig();
     }
 
     /**********************************************************************************************************
@@ -204,6 +211,14 @@ public class WhiteboardClientGUI {
 
         mntmColor = new JMenuItem("Color");
         mnStyle.add(mntmColor);
+        
+        mnCustom = new JMenu("Custom");
+        menuBar.add(mnCustom);
+        
+        mntmUserName = new JMenuItem("User name");
+        mnCustom.add(mntmUserName);
+
+        
 		/*
 		mntmFont = new JMenuItem("Font");
 		mnStyle.add(mntmFont);*/

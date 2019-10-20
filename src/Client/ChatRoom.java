@@ -67,13 +67,15 @@ public class ChatRoom extends JFrame {
 		txtCurrentMember.setEditable(false);
 		txtCurrentMember.setBackground(SystemColor.menu);
 		txtCurrentMember.setText("Current Member:");
+		txtCurrentMember.setBorder(null);
 		txtCurrentMember.setColumns(10);
 		
 		txtMembers = new JTextArea();
 		txtMembers.setEditable(false);
 		txtMembers.setBackground(SystemColor.menu);
 		txtMembers.setForeground(SystemColor.desktop);
-		txtMembers.setText("Members we have currently");
+		txtMembers.setText("Members we have currently:");
+		txtMembers.setBorder(null);
 		txtMembers.setColumns(10);
 		
 

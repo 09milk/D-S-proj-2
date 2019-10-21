@@ -11,8 +11,8 @@ import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
-    private final Object actionQueueActionLock = new Object();
-    private final Object whiteboardClientActionLock = new Object();
+    public final Object actionQueueActionLock = new Object();
+    public final Object whiteboardClientActionLock = new Object();
     public User user;
     private String address;
     private int port;

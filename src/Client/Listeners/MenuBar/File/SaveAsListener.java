@@ -62,10 +62,10 @@ public class SaveAsListener implements ActionListener {
     private void saveAsCustomFile(File selectedFile) {
         Pattern regexPattern = Pattern.compile("^.*\\.(" + ClientConfig.CUSTOM_EXTENSION + ")$");
         String filename = selectedFile.getName();
-        drawingPanel.currentEditingFilename = filename;
         if (!regexPattern.matcher(filename).find()) {
             filename = filename + "." + ClientConfig.CUSTOM_EXTENSION;
         }
+        drawingPanel.currentEditingFilename = filename;
         saveCustomFileWithName(filename);
     }
 

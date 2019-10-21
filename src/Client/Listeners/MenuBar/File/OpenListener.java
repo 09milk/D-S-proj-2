@@ -45,7 +45,6 @@ public class OpenListener implements ActionListener {
     private void loadFile() {
         File selectedFile = jFileChooser.getSelectedFile();
         String extension = ((FileNameExtensionFilter) jFileChooser.getFileFilter()).getExtensions()[0];
-        drawingPanel.currentEditingFilename = selectedFile.getName();
         if (extension.equals(ClientConfig.CUSTOM_EXTENSION)) {
             loadCustomFile(selectedFile);
         }
@@ -57,7 +56,14 @@ public class OpenListener implements ActionListener {
             objectInputStream = new ObjectInputStream(fileInputStream);
             String name = selectedFile.getName();
             ArrayList<IDrawAction> realQueue = (ArrayList<IDrawAction>) objectInputStream.readObject();
-            new WhiteboardClient(clientNetworkController, name, realQueue, oldMainFrame.getX(), oldMainFrame.getY());
+            WhiteboardClient newClient = new WhiteboardClient(
+                    clientNetworkController,
+                    name,
+                    realQueue,
+                    oldMainFrame.getX(),
+                    oldMainFrame.getY()
+            );
+            newClient.whiteboardClientGUI.drawingPanel.currentEditingFilename = selectedFile.getName();
             oldMainFrame.dispose();
             chatRoom.dispose();
         } catch (Exception e) {

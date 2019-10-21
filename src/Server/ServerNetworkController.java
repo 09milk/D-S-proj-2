@@ -60,6 +60,9 @@ public class ServerNetworkController extends NetworkController {
             case CHAT:
                 room.addChat(networkPackage.user, networkPackage.chatMessage);
                 break;
+            case SET_MANAGER:
+                room.setManager(networkPackage.user.uuid);
+                break;
             case CLOSE_ROOM:
                 requestHandler.closeRoom();
                 break;

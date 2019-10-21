@@ -3,11 +3,13 @@ package Client;
 import Client.DrawActions.IDrawAction;
 import Client.Listeners.MainFrameWindowListener;
 import Client.Listeners.MenuBar.File.*;
+import Client.Listeners.MenuBar.Privilege.BecomeManagerListener;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.*;
 import Network.ActionType;
 import Network.NetworkPackage;
+import Network.User;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class WhiteboardClient {
     public WhiteboardClientGUI whiteboardClientGUI;
     public ClientNetworkController clientNetworkController;
+    public JMenuItem[] managerFunctions;
 
     public WhiteboardClient(ClientNetworkController clientNetworkController) {
         this(clientNetworkController, 100, 100);
@@ -37,6 +40,8 @@ public class WhiteboardClient {
         chatRoom.setCNC(clientNetworkController);
 
         addMouseListenerToButton();
+        addManagerFunctionToList();
+        disableManagerFunctions();
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
     }
@@ -79,6 +84,8 @@ public class WhiteboardClient {
 
         whiteboardClientGUI.mntmColor.addActionListener(new ColorSelectionListener(drawingPanel));
 
+        whiteboardClientGUI.mntmBecomeManager.addActionListener(new BecomeManagerListener(clientNetworkController));
+
         whiteboardClientGUI.btnChatRoom.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
@@ -88,4 +95,40 @@ public class WhiteboardClient {
         });
     }
 
+    private void addManagerFunctionToList() {
+        managerFunctions = new JMenuItem[]{
+                whiteboardClientGUI.mntmNew,
+                whiteboardClientGUI.mntmOpen,
+                whiteboardClientGUI.mntmSave,
+                whiteboardClientGUI.mntmSaveAs,
+                whiteboardClientGUI.mntmClose
+        };
+    }
+
+    public void updateMemberList(ArrayList<User> memberList) {
+        for(User user : memberList){
+            whiteboardClientGUI.mntmBecomeManager.setEnabled(true);
+            if(user.isManager){
+                whiteboardClientGUI.mntmBecomeManager.setEnabled(false);
+                if(user.uuid == clientNetworkController.user.uuid) {
+                    clientNetworkController.user.isManager = true;
+                    enableManagerFunctions();
+                }
+                break;
+            }
+        }
+        whiteboardClientGUI.chatRoom.updateMemberList(memberList);
+    }
+
+    public void enableManagerFunctions(){
+        for (JMenuItem menuItem : managerFunctions){
+            menuItem.setEnabled(true);
+        }
+    }
+
+    public void disableManagerFunctions(){
+        for (JMenuItem menuItem : managerFunctions){
+            menuItem.setEnabled(false);
+        }
+    }
 }

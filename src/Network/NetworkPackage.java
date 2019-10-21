@@ -55,13 +55,17 @@ public class NetworkPackage implements Serializable {
 
     public NetworkPackage(ChatHistory chatHistory) {
         this(ActionType.CHAT_HISTORY);
-        this.chatHistory = new ChatHistory(chatHistory);
+        this.chatHistory = chatHistory;
     }
 
     public NetworkPackage(ArrayList<User> memberList) {
         this(ActionType.MEMBER_UPDATE);
-        this.memberList = new ArrayList<User>(memberList);
+        this.memberList = memberList;
     }
 
+    public NetworkPackage(ActionType actionType, User user) {
+        this.actionType = actionType;
+        this.user = user;
+    }
 }
 

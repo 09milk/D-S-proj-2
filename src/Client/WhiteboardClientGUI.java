@@ -32,7 +32,9 @@ public class WhiteboardClientGUI {
 
     public JMenu mnStyle;
     public JMenuItem mntmColor;
-    public JMenuItem mntmFont;
+
+    public JMenu mnPrivilege;
+    public JMenuItem mntmBecomeManager;
 
     public ChatRoom chatRoom;
 
@@ -189,9 +191,12 @@ public class WhiteboardClientGUI {
 
         mntmColor = new JMenuItem("Color");
         mnStyle.add(mntmColor);
-		/*
-		mntmFont = new JMenuItem("Font");
-		mnStyle.add(mntmFont);*/
 
+
+        mnPrivilege = new JMenu("Privilege");
+        menuBar.add(mnPrivilege);
+
+        mntmBecomeManager = new JMenuItem("Become Manager");
+        mnPrivilege.add(mntmBecomeManager);
     }
 }

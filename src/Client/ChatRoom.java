@@ -123,21 +123,6 @@ public class ChatRoom extends JFrame {
         getContentPane().setLayout(groupLayout);
     }
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ChatRoom frame = new ChatRoom();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     public void setCNC(ClientNetworkController CNC) {
         this.clientNetworkController = CNC;
@@ -164,10 +149,14 @@ public class ChatRoom extends JFrame {
     }
 
     public void updateMemberList(ArrayList<User> memberList) {
-        String txt = "";
+        StringBuilder txt = new StringBuilder();
         for (User user : memberList) {
-            txt += String.format("%s(%d)\n", user.userName, user.displayId);
+            txt.append(String.format("%s(%d)", user.userName, user.displayId));
+            if(user.isManager){
+                txt.append("(Manager)");
+            }
+            txt.append("\n");
         }
-        this.txtMembers.setText(txt);
+        this.txtMembers.setText(txt.toString());
     }
 }

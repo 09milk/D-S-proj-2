@@ -4,6 +4,7 @@ import Client.DrawActions.IDrawAction;
 import Network.User;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Room {
     public String boardName;
@@ -12,6 +13,8 @@ public class Room {
     public String roomName;
     public ChatHistory chatHistory;
     public ArrayList<User> memberList = new ArrayList<>();
+    private Object setManagerActionLock = new Object();
+    private User manager = null;
     private int newFileCount = 0;
 
     public Room(String roomName) {
@@ -82,6 +85,16 @@ public class Room {
         }
     }
 
+    public void setManager(UUID managerUUID) {
+        synchronized (setManagerActionLock) {
+            if (manager == null) {
+                manager = getUserByUUID(managerUUID);
+                manager.isManager = true;
+                this.sendMemberUpdate();
+            }
+        }
+    }
+
     public void closeRoom(User user) {
         ArrayList<Thread> threads = new ArrayList<>();
         for (RequestHandler.HandlerListener listener : listeners) {
@@ -96,5 +109,14 @@ public class Room {
                 e.printStackTrace();
             }
         }
+    }
+
+    private User getUserByUUID(UUID userUUID){
+        for(User user : this.memberList){
+            if(user.uuid == userUUID){
+                return user;
+            }
+        }
+        return null;
     }
 }

@@ -53,7 +53,7 @@ public class ClientNetworkController extends NetworkController {
                 boolean success = false;
                 while (!success) {
                     try {
-                        whiteboardClient.whiteboardClientGUI.chatRoom.updateMemberList(networkPackage.memberList);
+                        whiteboardClient.updateMemberList(networkPackage.memberList);
                         String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
                         whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
                         success = true;

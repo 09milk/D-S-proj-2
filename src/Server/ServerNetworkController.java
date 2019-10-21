@@ -9,10 +9,10 @@ import java.net.Socket;
 
 public class ServerNetworkController extends NetworkController {
 
-    private RoomManager roomManager;
-    public RequestHandler requestHandler;
-    private Room room;
     public final Object waitForAcceptLock = new Object();
+    public RequestHandler requestHandler;
+    private RoomManager roomManager;
+    private Room room;
 
     public ServerNetworkController(RequestHandler requestHandler) {
         this.roomManager = RoomManager.getInstance();
@@ -34,7 +34,7 @@ public class ServerNetworkController extends NetworkController {
             case CONNECT:
                 requestHandler.user = networkPackage.user;
                 room = roomManager.getRoom(networkPackage.roomName);
-                if(room.hasManager()) {
+                if (room.hasManager()) {
                     room.usersControllerWaitingForAccept.put(networkPackage.user.uuid, this);
                     room.getManagerHandlerListener().askForAcceptFromManager(networkPackage.user);
                     this.startReading();

@@ -3,7 +3,6 @@ package Client.Listeners.MenuBar.Privilege;
 import Client.ClientNetworkController;
 import Network.ActionType;
 import Network.NetworkPackage;
-import Network.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

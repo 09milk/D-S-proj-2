@@ -152,7 +152,7 @@ public class ChatRoom extends JFrame {
         StringBuilder txt = new StringBuilder();
         for (User user : memberList) {
             txt.append(user.nameWithId);
-            if(user.isManager){
+            if (user.isManager) {
                 txt.append("(Manager)");
             }
             txt.append("\n");

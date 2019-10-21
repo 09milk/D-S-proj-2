@@ -33,7 +33,7 @@ public class ClientMain {
         }
     }
 
-    public static void popErrorBox(String errorMessage){
+    public static void popErrorBox(String errorMessage) {
         JOptionPane.showMessageDialog(
                 null,
                 errorMessage,

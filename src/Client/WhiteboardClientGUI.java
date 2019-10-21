@@ -41,7 +41,6 @@ public class WhiteboardClientGUI {
     public ChatRoom chatRoom;
 
 
-
     public WhiteboardClientGUI(int posX, int posY) {
         initializeGUI(posX, posY);
         initializeGroupLayout();
@@ -213,7 +212,7 @@ public class WhiteboardClientGUI {
 
     public void makeAllComponentVisible(Boolean visible) {
         Component[] components = mainFrame.getComponents();
-        for (Component component : components){
+        for (Component component : components) {
             component.setVisible(visible);
         }
         mainFrame.invalidate();

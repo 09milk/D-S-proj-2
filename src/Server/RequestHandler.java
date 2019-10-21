@@ -13,9 +13,9 @@ public class RequestHandler implements Runnable {
     public Socket socket;
     public Room room;
     public User user;
+    public HandlerListener handlerListener = new HandlerListener();
     private RoomManager roomManager;
     private ServerNetworkController serverNetworkController;
-    public HandlerListener handlerListener = new HandlerListener();
 
     public RequestHandler(Socket socket) {
         this.socket = socket;
@@ -91,7 +91,7 @@ public class RequestHandler implements Runnable {
             return user;
         }
 
-        public void askForAcceptFromManager(User user){
+        public void askForAcceptFromManager(User user) {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.ACCEPT_USER, user));
         }
 

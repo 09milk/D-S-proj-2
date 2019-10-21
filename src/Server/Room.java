@@ -3,13 +3,13 @@ package Server;
 import Client.DrawActions.IDrawAction;
 import Network.User;
 import com.sun.istack.internal.NotNull;
-import com.sun.security.ntlm.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Room {
+    private final Object setManagerActionLock = new Object();
     public String boardName;
     public ArrayList<IDrawAction> actionQueue = new ArrayList<>();
     public ArrayList<RequestHandler.HandlerListener> listeners = new ArrayList<>();
@@ -17,7 +17,6 @@ public class Room {
     public ChatHistory chatHistory;
     public ArrayList<User> memberList = new ArrayList<>();
     public HashMap<UUID, ServerNetworkController> usersControllerWaitingForAccept = new HashMap<>();
-    private final Object setManagerActionLock = new Object();
     private RequestHandler.HandlerListener managerHandlerListener = null;
     private int newFileCount = 0;
 
@@ -87,6 +86,17 @@ public class Room {
         }
     }
 
+    public void removeManager() {
+        synchronized (setManagerActionLock) {
+            managerHandlerListener = null;
+        }
+        acceptAllUsers();
+    }
+
+    public RequestHandler.HandlerListener getManagerHandlerListener() {
+        return managerHandlerListener;
+    }
+
     public void setManagerHandlerListener(@NotNull UUID managerUUID) {
         synchronized (setManagerActionLock) {
             if (managerHandlerListener == null) {
@@ -99,20 +109,9 @@ public class Room {
         }
     }
 
-    public void removeManager(){
-        synchronized (setManagerActionLock) {
-            managerHandlerListener = null;
-        }
-        acceptAllUsers();
-    }
-
-    public RequestHandler.HandlerListener getManagerHandlerListener(){
-        return managerHandlerListener;
-    }
-
     public void closeRoom(User user) {
         ArrayList<Thread> threads = new ArrayList<>();
-        for(UUID uuid : usersControllerWaitingForAccept.keySet()){
+        for (UUID uuid : usersControllerWaitingForAccept.keySet()) {
             usersControllerWaitingForAccept.get(uuid).requestHandler.handlerListener.closeRoom();
         }
         for (RequestHandler.HandlerListener listener : listeners) {
@@ -128,21 +127,21 @@ public class Room {
         }
     }
 
-    public RequestHandler.HandlerListener getHandlerListenerByUserUUID(UUID userUUID){
-        for(RequestHandler.HandlerListener listener : listeners){
-            if(listener.getUser().uuid.equals(userUUID)){
+    public RequestHandler.HandlerListener getHandlerListenerByUserUUID(UUID userUUID) {
+        for (RequestHandler.HandlerListener listener : listeners) {
+            if (listener.getUser().uuid.equals(userUUID)) {
                 return listener;
             }
         }
         return null;
     }
 
-    public Boolean hasManager(){
+    public Boolean hasManager() {
         return managerHandlerListener != null;
     }
 
-    private void acceptAllUsers(){
-        for(UUID uuid : usersControllerWaitingForAccept.keySet()){
+    private void acceptAllUsers() {
+        for (UUID uuid : usersControllerWaitingForAccept.keySet()) {
             Object lock = usersControllerWaitingForAccept.get(uuid).waitForAcceptLock;
             synchronized (lock) {
                 lock.notifyAll();

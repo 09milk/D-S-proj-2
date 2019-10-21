@@ -5,13 +5,15 @@ import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
 import Server.ChatHistory;
+import com.sun.deploy.uitoolkit.impl.fx.FXPluginToolkit;
 
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
-    public final Object actionLock = new Object();
+    private final Object actionQueueActionLock = new Object();
+    private final Object whiteboardClientActionLock = new Object();
     public User user;
     private String address;
     private int port;
@@ -63,8 +65,8 @@ public class ClientNetworkController extends NetworkController {
             case CHANGE_BOARD_NAME:
                 while (whiteboardClient.whiteboardClientGUI == null) {
                     try {
-                        synchronized (actionLock) {
-                            actionLock.wait();
+                        synchronized (actionQueueActionLock) {
+                            actionQueueActionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -75,8 +77,8 @@ public class ClientNetworkController extends NetworkController {
             case SET_QUEUE:
                 while (actionQueue == null) {
                     try {
-                        synchronized (actionLock) {
-                            actionLock.wait();
+                        synchronized (actionQueueActionLock) {
+                            actionQueueActionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -98,6 +100,15 @@ public class ClientNetworkController extends NetworkController {
                 ChatHistory chatHistory = networkPackage.chatHistory;
                 User user;
                 String chatMessage;
+                while(whiteboardClient == null){
+                    try {
+                        synchronized (whiteboardClientActionLock) {
+                            whiteboardClientActionLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 ChatRoom chatRoom = whiteboardClient.whiteboardClientGUI.chatRoom;
                 chatRoom.clearChat();
                 for (int i = 0; i < chatHistory.getNumOfChat(); i++) {
@@ -118,12 +129,15 @@ public class ClientNetworkController extends NetworkController {
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;
-        synchronized (actionLock) {
-            actionLock.notifyAll();
+        synchronized (actionQueueActionLock) {
+            actionQueueActionLock.notifyAll();
         }
     }
 
     public void setWhiteboardClient(WhiteboardClient whiteboardClient) {
         this.whiteboardClient = whiteboardClient;
+        synchronized (whiteboardClientActionLock) {
+            whiteboardClientActionLock.notifyAll();
+        }
     }
 }

@@ -27,8 +27,8 @@ public class WhiteboardClient {
         clientNetworkController.setWhiteboardClient(this);
 
         whiteboardClientGUI = new WhiteboardClientGUI(posX, posY);
-        synchronized (clientNetworkController.actionLock) {
-            clientNetworkController.actionLock.notifyAll();
+        synchronized (clientNetworkController.actionQueueActionLock) {
+            clientNetworkController.actionQueueActionLock.notifyAll();
         }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));

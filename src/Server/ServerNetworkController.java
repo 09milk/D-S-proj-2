@@ -10,8 +10,9 @@ import java.net.Socket;
 public class ServerNetworkController extends NetworkController {
 
     private RoomManager roomManager;
-    private RequestHandler requestHandler;
+    public RequestHandler requestHandler;
     private Room room;
+    public final Object waitForAcceptLock = new Object();
 
     public ServerNetworkController(RequestHandler requestHandler) {
         this.roomManager = RoomManager.getInstance();
@@ -32,8 +33,21 @@ public class ServerNetworkController extends NetworkController {
         switch (actionType) {
             case CONNECT:
                 requestHandler.user = networkPackage.user;
-                requestHandler.linkRoom(networkPackage.roomName);
-                room = requestHandler.room;
+                room = roomManager.getRoom(networkPackage.roomName);
+                if(room.hasManager()) {
+                    room.usersControllerWaitingForAccept.put(networkPackage.user.uuid, this);
+                    room.getManagerHandlerListener().askForAcceptFromManager(networkPackage.user);
+                    this.startReading();
+                    synchronized (waitForAcceptLock) {
+                        try {
+                            waitForAcceptLock.wait();
+                            room.usersControllerWaitingForAccept.remove(networkPackage.user.uuid);
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+                    }
+                }
+                requestHandler.linkRoom(room);
                 // send member update goes first to wait for chat room creation
                 room.sendMemberUpdate();
                 requestHandler.sendCurrentViewAndTitle();
@@ -60,10 +74,19 @@ public class ServerNetworkController extends NetworkController {
                 room.addChat(networkPackage.user, networkPackage.chatMessage);
                 break;
             case SET_MANAGER:
-                room.setManager(networkPackage.user.uuid);
+                room.setManagerHandlerListener(networkPackage.user.uuid);
+                break;
+            case KICK_USER:
+                room.getHandlerListenerByUserUUID(networkPackage.user.uuid).closeRoom();
                 break;
             case CLOSE_ROOM:
                 requestHandler.closeRoom();
+                break;
+            case ACCEPT_USER:
+                Object lock = room.usersControllerWaitingForAccept.get(networkPackage.user.uuid).waitForAcceptLock;
+                synchronized (lock) {
+                    lock.notifyAll();
+                }
                 break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());
@@ -87,8 +110,7 @@ public class ServerNetworkController extends NetworkController {
             requestHandler.unlinkRoom();
             room.sendMemberUpdate();
             requestHandler.socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 }

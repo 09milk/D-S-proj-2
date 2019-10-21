@@ -15,7 +15,7 @@ public class RequestHandler implements Runnable {
     public User user;
     private RoomManager roomManager;
     private ServerNetworkController serverNetworkController;
-    private HandlerListener handlerListener = new HandlerListener();
+    public HandlerListener handlerListener = new HandlerListener();
 
     public RequestHandler(Socket socket) {
         this.socket = socket;
@@ -27,8 +27,8 @@ public class RequestHandler implements Runnable {
         serverNetworkController = new ServerNetworkController(this);
     }
 
-    public void linkRoom(String roomName) {
-        room = roomManager.getRoom(roomName);
+    public void linkRoom(Room room) {
+        this.room = room;
         room.addListener(handlerListener);
         room.memberList.add(user);
     }
@@ -36,7 +36,7 @@ public class RequestHandler implements Runnable {
     public void unlinkRoom() {
         room.removeListener(handlerListener);
         room.memberList.remove(user);
-        if(user.isManager){
+        if (user.isManager) {
             room.removeManager();
         }
     }
@@ -87,8 +87,12 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, user, chatMessage));
         }
 
-        public User getUsername() {
+        public User getUser() {
             return user;
+        }
+
+        public void askForAcceptFromManager(User user){
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.ACCEPT_USER, user));
         }
 
         public Thread closeRoom() {

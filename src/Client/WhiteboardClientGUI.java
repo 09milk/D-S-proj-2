@@ -35,14 +35,18 @@ public class WhiteboardClientGUI {
 
     public JMenu mnPrivilege;
     public JMenuItem mntmBecomeManager;
+    public JMenu mnAcceptUser;
+    public JMenu mnKickUser;
 
     public ChatRoom chatRoom;
+
 
 
     public WhiteboardClientGUI(int posX, int posY) {
         initializeGUI(posX, posY);
         initializeGroupLayout();
         initializeMenuBar(mainFrame);
+        makeAllComponentVisible(false);
     }
 
     public void startGUI() {
@@ -61,6 +65,7 @@ public class WhiteboardClientGUI {
         mainFrame = new JFrameNetwork();
         mainFrame.setBounds(posX, posY, ClientConfig.WIDTH, ClientConfig.HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setTitle("Waiting for Manager to Accept Connection...");
 
         btnPencil = new JButton();
         btnPencil.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-pencil-24.png")));
@@ -198,5 +203,21 @@ public class WhiteboardClientGUI {
 
         mntmBecomeManager = new JMenuItem("Become Manager");
         mnPrivilege.add(mntmBecomeManager);
+
+        mnAcceptUser = new JMenu("Accept User");
+        mnPrivilege.add(mnAcceptUser);
+
+        mnKickUser = new JMenu("Kick User");
+        mnPrivilege.add(mnKickUser);
+    }
+
+    public void makeAllComponentVisible(Boolean visible) {
+        Component[] components = mainFrame.getComponents();
+        for (Component component : components){
+            component.setVisible(visible);
+        }
+        mainFrame.invalidate();
+        mainFrame.validate();
+        mainFrame.repaint();
     }
 }

@@ -1,11 +1,13 @@
 package Client;
 
+import Client.Listeners.MenuBar.Privilege.AcceptUserListener;
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
 import Server.ChatHistory;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -72,6 +74,7 @@ public class ClientNetworkController extends NetworkController {
                         e.printStackTrace();
                     }
                 }
+                whiteboardClient.whiteboardClientGUI.makeAllComponentVisible(true);
                 whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.boardName, true);
                 break;
             case SET_QUEUE:
@@ -119,6 +122,12 @@ public class ClientNetworkController extends NetworkController {
                 break;
             case CLOSE_ROOM:
                 whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
+                break;
+            case ACCEPT_USER:
+                User targetUser = networkPackage.user;
+                JMenuItem selectUserButton = new JMenuItem(targetUser.nameWithId);
+                selectUserButton.addActionListener(new AcceptUserListener(this, targetUser, selectUserButton, whiteboardClient.whiteboardClientGUI));
+                whiteboardClient.whiteboardClientGUI.mnAcceptUser.add(selectUserButton);
                 break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());

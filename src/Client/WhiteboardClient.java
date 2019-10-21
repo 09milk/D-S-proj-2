@@ -4,6 +4,7 @@ import Client.DrawActions.IDrawAction;
 import Client.Listeners.MainFrameWindowListener;
 import Client.Listeners.MenuBar.File.*;
 import Client.Listeners.MenuBar.Privilege.BecomeManagerListener;
+import Client.Listeners.MenuBar.Privilege.KickUserListener;
 import Client.Listeners.MenuBar.Style.ColorSelectionListener;
 import Client.Listeners.SliderListener;
 import Client.Listeners.ToolButton.*;
@@ -106,7 +107,9 @@ public class WhiteboardClient {
                 whiteboardClientGUI.mntmOpen,
                 whiteboardClientGUI.mntmSave,
                 whiteboardClientGUI.mntmSaveAs,
-                whiteboardClientGUI.mntmClose
+                whiteboardClientGUI.mntmClose,
+                whiteboardClientGUI.mnAcceptUser,
+                whiteboardClientGUI.mnKickUser
         };
         synchronized (managerFunctionsActionLock) {
             managerFunctionsActionLock.notifyAll();
@@ -114,16 +117,19 @@ public class WhiteboardClient {
     }
 
     public void updateMemberList(ArrayList<User> memberList) {
+        whiteboardClientGUI.mntmBecomeManager.setEnabled(true);
+        whiteboardClientGUI.mnKickUser.removeAll();
         for (User user : memberList) {
-            whiteboardClientGUI.mntmBecomeManager.setEnabled(true);
             if (user.isManager) {
                 whiteboardClientGUI.mntmBecomeManager.setEnabled(false);
                 if (user.uuid.equals(clientNetworkController.user.uuid)) {
                     clientNetworkController.user.isManager = true;
                     enableManagerFunctions();
                 }
-                break;
             }
+            JMenuItem selectUserButton = new JMenuItem(user.nameWithId);
+            selectUserButton.addActionListener(new KickUserListener(clientNetworkController, user));
+            whiteboardClientGUI.mnKickUser.add(selectUserButton);
         }
         whiteboardClientGUI.chatRoom.updateMemberList(memberList);
     }

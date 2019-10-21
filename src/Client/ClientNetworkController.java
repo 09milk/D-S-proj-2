@@ -1,18 +1,19 @@
 package Client;
 
+import Client.Listeners.MenuBar.Privilege.AcceptUserListener;
 import Network.ActionType;
 import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
 import Server.ChatHistory;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
-    public final Object actionQueueActionLock = new Object();
-    public final Object whiteboardClientActionLock = new Object();
+    public final Object actionLock = new Object();
     public User user;
     private String address;
     private int port;
@@ -50,34 +51,37 @@ public class ClientNetworkController extends NetworkController {
                 actionQueue.addRealAction(networkPackage.drawAction);
                 break;
             case MEMBER_UPDATE:
-                boolean success = false;
-                while (!success) {
+                while (whiteboardClient == null || whiteboardClient.whiteboardClientGUI == null) {
                     try {
-                        whiteboardClient.whiteboardClientGUI.chatRoom.updateMemberList(networkPackage.memberList);
-                        String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
-                        whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
-                        success = true;
-                    } catch (Exception e) {
-                    }
-                }
-                break;
-            case CHANGE_BOARD_NAME:
-                while (whiteboardClient.whiteboardClientGUI == null) {
-                    try {
-                        synchronized (actionQueueActionLock) {
-                            actionQueueActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                whiteboardClient.updateMemberList(networkPackage.memberList);
+                String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
+                whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
+                break;
+            case CHANGE_BOARD_NAME:
+                while (whiteboardClient.whiteboardClientGUI == null) {
+                    try {
+                        synchronized (actionLock) {
+                            actionLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                whiteboardClient.whiteboardClientGUI.makeAllComponentVisible(true);
                 whiteboardClient.whiteboardClientGUI.mainFrame.setTitle(networkPackage.boardName, true);
                 break;
             case SET_QUEUE:
                 while (actionQueue == null) {
                     try {
-                        synchronized (actionQueueActionLock) {
-                            actionQueueActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -101,8 +105,8 @@ public class ClientNetworkController extends NetworkController {
                 String chatMessage;
                 while (whiteboardClient == null) {
                     try {
-                        synchronized (whiteboardClientActionLock) {
-                            whiteboardClientActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -119,6 +123,12 @@ public class ClientNetworkController extends NetworkController {
             case CLOSE_ROOM:
                 whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
                 break;
+            case ACCEPT_USER:
+                User targetUser = networkPackage.user;
+                JMenuItem selectUserButton = new JMenuItem(targetUser.nameWithId);
+                selectUserButton.addActionListener(new AcceptUserListener(this, targetUser, selectUserButton, whiteboardClient.whiteboardClientGUI));
+                whiteboardClient.whiteboardClientGUI.mnAcceptUser.add(selectUserButton);
+                break;
             default:
                 System.out.println("Unexpected action type: " + actionType.name());
                 break;
@@ -128,15 +138,15 @@ public class ClientNetworkController extends NetworkController {
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;
-        synchronized (actionQueueActionLock) {
-            actionQueueActionLock.notifyAll();
+        synchronized (actionLock) {
+            actionLock.notifyAll();
         }
     }
 
     public void setWhiteboardClient(WhiteboardClient whiteboardClient) {
         this.whiteboardClient = whiteboardClient;
-        synchronized (whiteboardClientActionLock) {
-            whiteboardClientActionLock.notifyAll();
+        synchronized (actionLock) {
+            actionLock.notifyAll();
         }
     }
 }

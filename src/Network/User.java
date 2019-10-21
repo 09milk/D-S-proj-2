@@ -4,14 +4,25 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class User implements Serializable {
+    public final String nameWithId;
     public String userName;
     public UUID uuid;
     public short displayId;
+    public boolean isManager = false;
 
     public User(String userName) {
         this.userName = userName;
         uuid = UUID.randomUUID();
-        displayId = this.getDisplayId();
+        displayId = getDisplayId();
+        nameWithId = String.format("%s(%d)", userName, displayId);
+    }
+
+    public User(User user) {
+        this.userName = user.userName;
+        uuid = user.uuid;
+        displayId = user.displayId;
+        isManager = user.isManager;
+        nameWithId = user.nameWithId;
     }
 
     private short getDisplayId() {

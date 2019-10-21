@@ -13,5 +13,8 @@ public enum ActionType implements Serializable {
     NEW_BOARD,
     CHAT,
     CHAT_HISTORY,
+    SET_MANAGER,
+    KICK_USER,
+    ACCEPT_USER,
     CLOSE_ROOM
 }

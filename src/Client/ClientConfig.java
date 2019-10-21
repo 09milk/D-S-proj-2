@@ -17,7 +17,7 @@ public class ClientConfig {
 
     public static final String ERROR_BOX_TITLE = "ERROR";
     public static final String CLIENT_CONFIG_ERROR_MSG =
-            "Error error occurred during reading configuration from " + CONFIG_FILE;
+            "Error occurred during reading configuration from " + CONFIG_FILE;
 
     public static int WIDTH;
     public static int HEIGHT;

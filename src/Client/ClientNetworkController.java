@@ -11,8 +11,7 @@ import java.net.Socket;
 
 public class ClientNetworkController extends NetworkController {
 
-    public final Object actionQueueActionLock = new Object();
-    public final Object whiteboardClientActionLock = new Object();
+    public final Object actionLock = new Object();
     public User user;
     private String address;
     private int port;
@@ -50,22 +49,24 @@ public class ClientNetworkController extends NetworkController {
                 actionQueue.addRealAction(networkPackage.drawAction);
                 break;
             case MEMBER_UPDATE:
-                boolean success = false;
-                while (!success) {
+                while (whiteboardClient == null || whiteboardClient.whiteboardClientGUI == null) {
                     try {
-                        whiteboardClient.updateMemberList(networkPackage.memberList);
-                        String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
-                        whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
-                        success = true;
-                    } catch (Exception e) {
+                        synchronized (actionLock) {
+                            actionLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
+                whiteboardClient.updateMemberList(networkPackage.memberList);
+                String text = String.format(ClientConfig.CHAT_ROOM_STRING, networkPackage.memberList.size());
+                whiteboardClient.whiteboardClientGUI.btnChatRoom.setText(text);
                 break;
             case CHANGE_BOARD_NAME:
                 while (whiteboardClient.whiteboardClientGUI == null) {
                     try {
-                        synchronized (actionQueueActionLock) {
-                            actionQueueActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -76,8 +77,8 @@ public class ClientNetworkController extends NetworkController {
             case SET_QUEUE:
                 while (actionQueue == null) {
                     try {
-                        synchronized (actionQueueActionLock) {
-                            actionQueueActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -101,8 +102,8 @@ public class ClientNetworkController extends NetworkController {
                 String chatMessage;
                 while (whiteboardClient == null) {
                     try {
-                        synchronized (whiteboardClientActionLock) {
-                            whiteboardClientActionLock.wait();
+                        synchronized (actionLock) {
+                            actionLock.wait();
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -128,15 +129,15 @@ public class ClientNetworkController extends NetworkController {
 
     public void setActionQueue(ActionQueue actionQueue) {
         this.actionQueue = actionQueue;
-        synchronized (actionQueueActionLock) {
-            actionQueueActionLock.notifyAll();
+        synchronized (actionLock) {
+            actionLock.notifyAll();
         }
     }
 
     public void setWhiteboardClient(WhiteboardClient whiteboardClient) {
         this.whiteboardClient = whiteboardClient;
-        synchronized (whiteboardClientActionLock) {
-            whiteboardClientActionLock.notifyAll();
+        synchronized (actionLock) {
+            actionLock.notifyAll();
         }
     }
 }

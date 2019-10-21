@@ -60,7 +60,10 @@ public class NetworkPackage implements Serializable {
 
     public NetworkPackage(ArrayList<User> memberList) {
         this(ActionType.MEMBER_UPDATE);
-        this.memberList = new ArrayList<User>(memberList);
+        this.memberList = new ArrayList<>();
+        for (User user : memberList) {
+            this.memberList.add(new User(user));
+        }
     }
 
     public NetworkPackage(ActionType actionType, User user) {

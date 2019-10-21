@@ -30,8 +30,8 @@ public class WhiteboardClient {
         clientNetworkController.setWhiteboardClient(this);
 
         whiteboardClientGUI = new WhiteboardClientGUI(posX, posY);
-        synchronized (clientNetworkController.actionQueueActionLock) {
-            clientNetworkController.actionQueueActionLock.notifyAll();
+        synchronized (clientNetworkController.actionLock) {
+            clientNetworkController.actionLock.notifyAll();
         }
         DrawingPanel drawingPanel = whiteboardClientGUI.drawingPanel;
         drawingPanel.setDrawActions(new ActionQueue(clientNetworkController, drawingPanel));
@@ -110,7 +110,7 @@ public class WhiteboardClient {
             whiteboardClientGUI.mntmBecomeManager.setEnabled(true);
             if(user.isManager){
                 whiteboardClientGUI.mntmBecomeManager.setEnabled(false);
-                if(user.uuid == clientNetworkController.user.uuid) {
+                if(user.uuid.equals(clientNetworkController.user.uuid)) {
                     clientNetworkController.user.isManager = true;
                     enableManagerFunctions();
                 }

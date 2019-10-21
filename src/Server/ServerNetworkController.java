@@ -43,8 +43,7 @@ public class ServerNetworkController extends NetworkController {
                 room.addDrawAction(networkPackage.drawAction);
                 break;
             case DISCONNECT:
-                requestHandler.unlinkRoom();
-                room.sendMemberUpdate();
+                networkErrorHandler();
                 break;
             case CHANGE_BOARD_NAME:
                 room.changeBoardName(networkPackage.boardName);
@@ -86,6 +85,7 @@ public class ServerNetworkController extends NetworkController {
     protected void networkErrorHandler() {
         try {
             requestHandler.unlinkRoom();
+            room.sendMemberUpdate();
             requestHandler.socket.close();
         } catch (IOException e) {
             e.printStackTrace();

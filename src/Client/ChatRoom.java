@@ -136,7 +136,7 @@ public class ChatRoom extends JFrame {
 
     public void addChatNoScroll(User user, String message) {
         String displayText =
-                String.format("%s%s(%d): %s\n", this.txtCharBar.getText(), user.userName, user.displayId, message);
+                String.format("%s%s: %s\n", this.txtCharBar.getText(), user.nameWithId, message);
         this.txtCharBar.setText(displayText);
     }
 
@@ -151,7 +151,7 @@ public class ChatRoom extends JFrame {
     public void updateMemberList(ArrayList<User> memberList) {
         StringBuilder txt = new StringBuilder();
         for (User user : memberList) {
-            txt.append(String.format("%s(%d)", user.userName, user.displayId));
+            txt.append(user.nameWithId);
             if(user.isManager){
                 txt.append("(Manager)");
             }

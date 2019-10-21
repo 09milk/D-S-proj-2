@@ -2,6 +2,7 @@ package Server;
 
 import Client.DrawActions.IDrawAction;
 import Network.User;
+import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -13,7 +14,7 @@ public class Room {
     public String roomName;
     public ChatHistory chatHistory;
     public ArrayList<User> memberList = new ArrayList<>();
-    private Object setManagerActionLock = new Object();
+    private final Object setManagerActionLock = new Object();
     private User manager = null;
     private int newFileCount = 0;
 
@@ -23,14 +24,12 @@ public class Room {
         newBoard(null);
     }
 
-    public synchronized void addListener(RequestHandler.HandlerListener listener, User user) {
+    public synchronized void addListener(RequestHandler.HandlerListener listener) {
         listeners.add(listener);
-        memberList.add(user);
     }
 
-    public synchronized void removeListener(RequestHandler.HandlerListener listener, User user) {
+    public synchronized void removeListener(RequestHandler.HandlerListener listener) {
         listeners.remove(listener);
-        memberList.remove(user);
     }
 
     public void sendMemberUpdate() {
@@ -85,13 +84,21 @@ public class Room {
         }
     }
 
-    public void setManager(UUID managerUUID) {
+    public void setManager(@NotNull UUID managerUUID) {
         synchronized (setManagerActionLock) {
             if (manager == null) {
                 manager = getUserByUUID(managerUUID);
-                manager.isManager = true;
+                if (manager != null) {
+                    manager.isManager = true;
+                }
                 this.sendMemberUpdate();
             }
+        }
+    }
+
+    public void removeManager(){
+        synchronized (setManagerActionLock) {
+            manager = null;
         }
     }
 
@@ -113,7 +120,7 @@ public class Room {
 
     private User getUserByUUID(UUID userUUID){
         for(User user : this.memberList){
-            if(user.uuid == userUUID){
+            if(user.uuid.equals(userUUID)){
                 return user;
             }
         }

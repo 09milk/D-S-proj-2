@@ -29,11 +29,16 @@ public class RequestHandler implements Runnable {
 
     public void linkRoom(String roomName) {
         room = roomManager.getRoom(roomName);
-        room.addListener(handlerListener, user);
+        room.addListener(handlerListener);
+        room.memberList.add(user);
     }
 
     public void unlinkRoom() {
-        room.removeListener(handlerListener, user);
+        room.removeListener(handlerListener);
+        room.memberList.remove(user);
+        if(user.isManager){
+            room.removeManager();
+        }
     }
 
     public void sendCurrentViewAndTitle() {

@@ -7,12 +7,22 @@ public class User implements Serializable {
     public String userName;
     public UUID uuid;
     public short displayId;
+    public final String nameWithId;
     public boolean isManager = false;
 
     public User(String userName) {
         this.userName = userName;
         uuid = UUID.randomUUID();
         displayId = getDisplayId();
+        nameWithId = String.format("%s(%d)", userName, displayId);
+    }
+
+    public User(User user){
+        this.userName = user.userName;
+        uuid = user.uuid;
+        displayId = user.displayId;
+        isManager = user.isManager;
+        nameWithId = user.nameWithId;
     }
 
     private short getDisplayId() {

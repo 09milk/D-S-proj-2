@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class WhiteboardClient {
+    public final Object managerFunctionsActionLock = new Object();
     public WhiteboardClientGUI whiteboardClientGUI;
     public ClientNetworkController clientNetworkController;
     public JMenuItem[] managerFunctions;
@@ -41,7 +42,11 @@ public class WhiteboardClient {
 
         addMouseListenerToButton();
         addManagerFunctionToList();
-        disableManagerFunctions();
+        if (clientNetworkController.user.isManager) {
+            enableManagerFunctions();
+        } else {
+            disableManagerFunctions();
+        }
         whiteboardClientGUI.startGUI();
         whiteboardClientGUI.mainFrame.setNetworkController(clientNetworkController);
     }
@@ -103,14 +108,17 @@ public class WhiteboardClient {
                 whiteboardClientGUI.mntmSaveAs,
                 whiteboardClientGUI.mntmClose
         };
+        synchronized (managerFunctionsActionLock) {
+            managerFunctionsActionLock.notifyAll();
+        }
     }
 
     public void updateMemberList(ArrayList<User> memberList) {
-        for(User user : memberList){
+        for (User user : memberList) {
             whiteboardClientGUI.mntmBecomeManager.setEnabled(true);
-            if(user.isManager){
+            if (user.isManager) {
                 whiteboardClientGUI.mntmBecomeManager.setEnabled(false);
-                if(user.uuid.equals(clientNetworkController.user.uuid)) {
+                if (user.uuid.equals(clientNetworkController.user.uuid)) {
                     clientNetworkController.user.isManager = true;
                     enableManagerFunctions();
                 }
@@ -120,14 +128,23 @@ public class WhiteboardClient {
         whiteboardClientGUI.chatRoom.updateMemberList(memberList);
     }
 
-    public void enableManagerFunctions(){
-        for (JMenuItem menuItem : managerFunctions){
+    public void enableManagerFunctions() {
+        while (managerFunctions == null) {
+            try {
+                synchronized (managerFunctionsActionLock) {
+                    managerFunctionsActionLock.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        for (JMenuItem menuItem : managerFunctions) {
             menuItem.setEnabled(true);
         }
     }
 
-    public void disableManagerFunctions(){
-        for (JMenuItem menuItem : managerFunctions){
+    public void disableManagerFunctions() {
+        for (JMenuItem menuItem : managerFunctions) {
             menuItem.setEnabled(false);
         }
     }

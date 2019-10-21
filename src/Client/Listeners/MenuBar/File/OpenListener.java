@@ -63,7 +63,7 @@ public class OpenListener implements ActionListener {
                     oldMainFrame.getX(),
                     oldMainFrame.getY()
             );
-            newClient.whiteboardClientGUI.drawingPanel.currentEditingFilename = selectedFile.getName();
+            newClient.whiteboardClientGUI.drawingPanel.currentEditingFilePath = selectedFile.getPath();
             oldMainFrame.dispose();
             chatRoom.dispose();
         } catch (Exception e) {

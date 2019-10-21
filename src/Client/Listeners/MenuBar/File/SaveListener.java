@@ -17,7 +17,7 @@ public class SaveListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (drawingPanel.currentEditingFilename != null) {
+        if (drawingPanel.currentEditingFilePath != null) {
             saveFile();
         } else {
             (new SaveAsListener(mainFrame, drawingPanel, true)).actionPerformed(null);
@@ -25,6 +25,6 @@ public class SaveListener implements ActionListener {
     }
 
     private void saveFile() {
-        (new SaveAsListener(mainFrame, drawingPanel)).saveCustomFileWithName(drawingPanel.currentEditingFilename);
+        (new SaveAsListener(mainFrame, drawingPanel)).saveCustomFileWithName(drawingPanel.currentEditingFilePath);
     }
 }

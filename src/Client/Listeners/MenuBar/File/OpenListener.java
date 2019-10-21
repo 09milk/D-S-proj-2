@@ -1,11 +1,7 @@
 package Client.Listeners.MenuBar.File;
 
-import Client.ClientConfig;
-import Client.ClientNetworkController;
+import Client.*;
 import Client.DrawActions.IDrawAction;
-import Client.DrawingPanel;
-import Client.WhiteboardClient;
-import Client.ChatRoom;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

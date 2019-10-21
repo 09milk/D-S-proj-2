@@ -1,9 +1,9 @@
 package Server;
 
+import Network.User;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import Network.User;
 
 public class ChatHistory implements Serializable {
     private ArrayList<User> chatUsers;

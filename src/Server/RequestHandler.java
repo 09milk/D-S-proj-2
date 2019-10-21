@@ -1,12 +1,12 @@
 package Server;
 
-import java.net.Socket;
-import java.util.ArrayList;
-
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
+
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
 
@@ -38,10 +38,10 @@ public class RequestHandler implements Runnable {
 
     public void sendCurrentViewAndTitle() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
-        serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));        
+        serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));
     }
 
-    public void sendChatHistory(boolean toAll){
+    public void sendChatHistory(boolean toAll) {
         if (toAll)
             room.sendChatHistory();
         else

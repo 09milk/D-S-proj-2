@@ -5,7 +5,6 @@ import Network.NetworkController;
 import Network.NetworkPackage;
 import Network.User;
 import Server.ChatHistory;
-import com.sun.deploy.uitoolkit.impl.fx.FXPluginToolkit;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -100,7 +99,7 @@ public class ClientNetworkController extends NetworkController {
                 ChatHistory chatHistory = networkPackage.chatHistory;
                 User user;
                 String chatMessage;
-                while(whiteboardClient == null){
+                while (whiteboardClient == null) {
                     try {
                         synchronized (whiteboardClientActionLock) {
                             whiteboardClientActionLock.wait();

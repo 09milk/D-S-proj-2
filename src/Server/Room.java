@@ -1,9 +1,9 @@
 package Server;
 
-import java.util.ArrayList;
-
 import Client.DrawActions.IDrawAction;
 import Network.User;
+
+import java.util.ArrayList;
 
 public class Room {
     public String boardName;

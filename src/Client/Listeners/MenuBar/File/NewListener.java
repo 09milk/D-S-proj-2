@@ -1,8 +1,8 @@
 package Client.Listeners.MenuBar.File;
 
+import Client.ChatRoom;
 import Client.ClientNetworkController;
 import Client.WhiteboardClient;
-import Client.ChatRoom;
 import Network.ActionType;
 import Network.NetworkPackage;
 

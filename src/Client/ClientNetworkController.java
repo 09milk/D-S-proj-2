@@ -121,7 +121,8 @@ public class ClientNetworkController extends NetworkController {
                 }
                 break;
             case CLOSE_ROOM:
-                whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
+                whiteboardClient.whiteboardClientGUI.showKickNotification();
+                // whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
                 break;
             case ACCEPT_USER:
                 User targetUser = networkPackage.user;

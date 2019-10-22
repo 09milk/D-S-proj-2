@@ -1,9 +1,21 @@
 package Client;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+
+import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSlider;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.*;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class WhiteboardClientGUI {
 
@@ -218,5 +230,10 @@ public class WhiteboardClientGUI {
         mainFrame.invalidate();
         mainFrame.validate();
         mainFrame.repaint();
+    }
+
+    public void closeWithNotification(String message){
+        JOptionPane.showMessageDialog(mainFrame, message);
+        mntmExit.doClick();
     }
 }

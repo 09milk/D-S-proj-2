@@ -120,9 +120,11 @@ public class ClientNetworkController extends NetworkController {
                     chatRoom.addChatNoScroll(user, chatMessage);
                 }
                 break;
+            case KICKED:
+                whiteboardClient.whiteboardClientGUI.closeWithNotification("You have been kicked out of the room.");
+                break;
             case CLOSE_ROOM:
-                whiteboardClient.whiteboardClientGUI.showKickNotification();
-                // whiteboardClient.whiteboardClientGUI.mntmExit.doClick();
+                whiteboardClient.whiteboardClientGUI.closeWithNotification("Room is closed.");
                 break;
             case ACCEPT_USER:
                 User targetUser = networkPackage.user;

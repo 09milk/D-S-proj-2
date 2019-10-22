@@ -1,12 +1,12 @@
 package Server;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
-
-import java.net.Socket;
-import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
 
@@ -93,6 +93,10 @@ public class RequestHandler implements Runnable {
 
         public void askForAcceptFromManager(User user) {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.ACCEPT_USER, user));
+        }
+
+        public Thread kicked() {
+            return serverNetworkController.sendPackage(new NetworkPackage(ActionType.KICKED));
         }
 
         public Thread closeRoom() {

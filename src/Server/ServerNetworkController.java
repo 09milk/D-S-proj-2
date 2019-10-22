@@ -77,7 +77,7 @@ public class ServerNetworkController extends NetworkController {
                 room.setManagerHandlerListener(networkPackage.user.uuid);
                 break;
             case KICK_USER:
-                room.getHandlerListenerByUserUUID(networkPackage.user.uuid).closeRoom();
+                room.getHandlerListenerByUserUUID(networkPackage.user.uuid).kicked();
                 break;
             case CLOSE_ROOM:
                 requestHandler.closeRoom();

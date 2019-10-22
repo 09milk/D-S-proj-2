@@ -2,35 +2,47 @@ package Server;
 
 import Client.DrawActions.IDrawAction;
 import Network.User;
+import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class Room {
+    private final Object setManagerActionLock = new Object();
     public String boardName;
     public ArrayList<IDrawAction> actionQueue = new ArrayList<>();
     public ArrayList<RequestHandler.HandlerListener> listeners = new ArrayList<>();
     public String roomName;
+    public ChatHistory chatHistory;
+    public ArrayList<User> memberList = new ArrayList<>();
+    public HashMap<UUID, ServerNetworkController> usersControllerWaitingForAccept = new HashMap<>();
+    private RequestHandler.HandlerListener managerHandlerListener = null;
     private int newFileCount = 0;
 
     public Room(String roomName) {
         this.roomName = roomName;
+        this.chatHistory = new ChatHistory();
         newBoard(null);
     }
 
     public synchronized void addListener(RequestHandler.HandlerListener listener) {
         listeners.add(listener);
-        sendAmountOfMember();
     }
 
     public synchronized void removeListener(RequestHandler.HandlerListener listener) {
         listeners.remove(listener);
-        sendAmountOfMember();
     }
 
-    private void sendAmountOfMember() {
-        System.out.println(roomName + ": " + "Current number of member(s): " + listeners.size());
+    public void sendMemberUpdate() {
         for (RequestHandler.HandlerListener listener : listeners) {
-            listener.sendAmountOfMember(listeners.size());
+            listener.sendMemberUpdate(memberList);
+        }
+    }
+
+    public void sendChatHistory() {
+        for (RequestHandler.HandlerListener listener : listeners) {
+            listener.sendChatHistory(chatHistory);
         }
     }
 
@@ -59,7 +71,7 @@ public class Room {
     public void newBoard(User user) {
         this.actionQueue = new ArrayList<>();
         for (RequestHandler.HandlerListener listener : listeners) {
-            if (!listener.getUsername().equals(user)) {
+            if (!listener.getUser().equals(user)) {
                 listener.newWhiteboard();
             }
         }
@@ -67,18 +79,72 @@ public class Room {
         newFileCount++;
     }
 
+    public void addChat(User user, String chatMessage) {
+        chatHistory.addChat(user, chatMessage);
+        for (RequestHandler.HandlerListener listener : listeners) {
+            listener.addChat(user, chatMessage);
+        }
+    }
+
+    public void removeManager() {
+        synchronized (setManagerActionLock) {
+            managerHandlerListener = null;
+        }
+        acceptAllUsers();
+    }
+
+    public RequestHandler.HandlerListener getManagerHandlerListener() {
+        return managerHandlerListener;
+    }
+
+    public void setManagerHandlerListener(@NotNull UUID managerUUID) {
+        synchronized (setManagerActionLock) {
+            if (managerHandlerListener == null) {
+                managerHandlerListener = getHandlerListenerByUserUUID(managerUUID);
+                if (managerHandlerListener != null) {
+                    managerHandlerListener.getUser().isManager = true;
+                }
+                this.sendMemberUpdate();
+            }
+        }
+    }
+
     public void closeRoom(User user) {
         ArrayList<Thread> threads = new ArrayList<>();
+        for (UUID uuid : usersControllerWaitingForAccept.keySet()) {
+            usersControllerWaitingForAccept.get(uuid).requestHandler.handlerListener.closeRoom();
+        }
         for (RequestHandler.HandlerListener listener : listeners) {
-            if (!listener.getUsername().equals(user)) {
+            if (!listener.getUser().equals(user)) {
                 threads.add(listener.closeRoom());
             }
         }
-        for (Thread thread : threads){
+        for (Thread thread : threads) {
             try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                thread.join(100);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
+
+    public RequestHandler.HandlerListener getHandlerListenerByUserUUID(UUID userUUID) {
+        for (RequestHandler.HandlerListener listener : listeners) {
+            if (listener.getUser().uuid.equals(userUUID)) {
+                return listener;
+            }
+        }
+        return null;
+    }
+
+    public Boolean hasManager() {
+        return managerHandlerListener != null;
+    }
+
+    private void acceptAllUsers() {
+        for (UUID uuid : usersControllerWaitingForAccept.keySet()) {
+            Object lock = usersControllerWaitingForAccept.get(uuid).waitForAcceptLock;
+            synchronized (lock) {
+                lock.notifyAll();
             }
         }
     }

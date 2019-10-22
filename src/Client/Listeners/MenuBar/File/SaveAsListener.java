@@ -62,15 +62,17 @@ public class SaveAsListener implements ActionListener {
     private void saveAsCustomFile(File selectedFile) {
         Pattern regexPattern = Pattern.compile("^.*\\.(" + ClientConfig.CUSTOM_EXTENSION + ")$");
         String filename = selectedFile.getName();
-        drawingPanel.currentEditingFilename = filename;
+        String filePath = selectedFile.getPath();
         if (!regexPattern.matcher(filename).find()) {
             filename = filename + "." + ClientConfig.CUSTOM_EXTENSION;
+            filePath = filePath + "." + ClientConfig.CUSTOM_EXTENSION;
         }
-        saveCustomFileWithName(filename);
+        drawingPanel.currentEditingFilePath = filePath;
+        saveCustomFileWithName(filename, filePath);
     }
 
-    void saveCustomFileWithName(String filename) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
+    void saveCustomFileWithName(String filename, String filePath) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(drawingPanel.drawActions.getRealQueue());
             mainFrame.setTitle(filename);
@@ -78,5 +80,10 @@ public class SaveAsListener implements ActionListener {
             e.printStackTrace();
             System.out.println("Unable to Save.");
         }
+    }
+
+    void saveCustomFileWithName(String filePath) {
+        String filename = (new File(filePath)).getName();
+        saveCustomFileWithName(filename, filePath);
     }
 }

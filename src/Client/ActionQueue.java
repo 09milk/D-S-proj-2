@@ -19,6 +19,8 @@ public class ActionQueue implements Iterable<IDrawAction> {
     private ClientNetworkController clientNetworkController;
     private DrawingPanel drawingPanel;
 
+    private boolean isStartedSyncTimer = false;
+
     public ActionQueue(ClientNetworkController clientNetworkController, DrawingPanel drawingPanel) {
         this.clientNetworkController = clientNetworkController;
         clientNetworkController.setActionQueue(this);
@@ -32,13 +34,19 @@ public class ActionQueue implements Iterable<IDrawAction> {
 
     public void addRealAction(IDrawAction drawAction) {
         realQueue.add(drawAction);
-        //TODO: implement better sync timing
-        synchronizeRealAndLocal();
+        startSyncTimer();
     }
 
     public synchronized void synchronizeRealAndLocal() {
         localQueue = new ArrayList<>(realQueue);
         drawingPanel.repaint();
+    }
+
+    private void startSyncTimer() {
+        if (!isStartedSyncTimer) {
+            isStartedSyncTimer = true;
+            new Thread(new SyncTimer()).start();
+        }
     }
 
     @Override
@@ -62,5 +70,18 @@ public class ActionQueue implements Iterable<IDrawAction> {
 
     public void setWhiteBoardView(ArrayList<IDrawAction> realQueue) {
         clientNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, realQueue));
+    }
+
+    private class SyncTimer implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException ignored) {
+            }
+            isStartedSyncTimer = false;
+            synchronizeRealAndLocal();
+        }
     }
 }

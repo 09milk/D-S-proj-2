@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RoomManager {
 
     private static RoomManager instance = new RoomManager();
-    private ConcurrentHashMap<String, Room> allRooms = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Room> allRooms = new ConcurrentHashMap<>();
 
     private RoomManager() {
     }

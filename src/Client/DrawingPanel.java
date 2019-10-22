@@ -12,7 +12,7 @@ public class DrawingPanel extends JPanel {
     public Color color = Color.BLACK;
     public int drawSize = ClientConfig.DEFAULT_SIZE;
     public ActionQueue drawActions;
-    public String currentEditingFilename = null;
+    public String currentEditingFilePath = null;
     public boolean isInPerfectDraw = false;
     private IDrawAction tmpDrawAction;
 

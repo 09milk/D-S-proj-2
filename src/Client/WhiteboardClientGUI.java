@@ -1,9 +1,21 @@
 package Client;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+
+import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSlider;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.*;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class WhiteboardClientGUI {
 
@@ -17,7 +29,7 @@ public class WhiteboardClientGUI {
 
     public DrawingPanel drawingPanel;
     public JSlider jSlider;
-    public JButton btnCurrentMember;
+    public JButton btnChatRoom;
 
 
     public JMenuBar menuBar;
@@ -32,13 +44,20 @@ public class WhiteboardClientGUI {
 
     public JMenu mnStyle;
     public JMenuItem mntmColor;
-    public JMenuItem mntmFont;
+
+    public JMenu mnPrivilege;
+    public JMenuItem mntmBecomeManager;
+    public JMenu mnAcceptUser;
+    public JMenu mnKickUser;
+
+    public ChatRoom chatRoom;
 
 
     public WhiteboardClientGUI(int posX, int posY) {
         initializeGUI(posX, posY);
         initializeGroupLayout();
         initializeMenuBar(mainFrame);
+        makeAllComponentVisible(false);
     }
 
     public void startGUI() {
@@ -55,8 +74,9 @@ public class WhiteboardClientGUI {
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         mainFrame = new JFrameNetwork();
-        mainFrame.setBounds(posX, posY, 748, 555);
+        mainFrame.setBounds(posX, posY, ClientConfig.WIDTH, ClientConfig.HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setTitle("Waiting for Manager to Accept Connection...");
 
         btnPencil = new JButton();
         btnPencil.setIcon(new ImageIcon(WhiteboardClientGUI.class.getResource("/Client/icons/icons8-pencil-24.png")));
@@ -90,8 +110,9 @@ public class WhiteboardClientGUI {
         jSlider.setMinimum(ClientConfig.SLIDER_MIN);
         jSlider.setOrientation(SwingConstants.VERTICAL);
 
-        String currentMemberText = String.format(ClientConfig.CURRENT_MEMBER_STRING, 0);
-        btnCurrentMember = new JButton(currentMemberText);
+        btnChatRoom = new JButton(ClientConfig.CHAT_ROOM_STRING);
+
+        chatRoom = new ChatRoom();
     }
 
     /**********************************************************************************************************
@@ -104,24 +125,25 @@ public class WhiteboardClientGUI {
                         .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(btnCurrentMember, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnChatRoom, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                                         .addGroup(groupLayout.createSequentialGroup()
-                                                                .addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addGap(5))
                                                         .addGroup(groupLayout.createSequentialGroup()
-                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+//                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                                                                .addComponent(jSlider, GroupLayout.DEFAULT_SIZE, 50, GroupLayout.DEFAULT_SIZE)
                                                                 .addPreferredGap(ComponentPlacement.RELATED))
                                                         .addGroup(groupLayout.createSequentialGroup()
                                                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                                                                        .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnLine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(btnRectangle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                        .addComponent(btnText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(btnPencil, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnEraser, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnCircle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnLine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                                                                        .addComponent(btnRectangle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE))
                                                                 .addPreferredGap(ComponentPlacement.RELATED)))
-                                                .addComponent(drawingPanel, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(drawingPanel, GroupLayout.PREFERRED_SIZE, 661, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -145,7 +167,7 @@ public class WhiteboardClientGUI {
                                                 .addComponent(jSlider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addComponent(drawingPanel, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(btnCurrentMember))
+                                .addComponent(btnChatRoom))
         );
         mainFrame.getContentPane().setLayout(groupLayout);
     }
@@ -185,9 +207,33 @@ public class WhiteboardClientGUI {
 
         mntmColor = new JMenuItem("Color");
         mnStyle.add(mntmColor);
-		/*
-		mntmFont = new JMenuItem("Font");
-		mnStyle.add(mntmFont);*/
 
+
+        mnPrivilege = new JMenu("Privilege");
+        menuBar.add(mnPrivilege);
+
+        mntmBecomeManager = new JMenuItem("Become Manager");
+        mnPrivilege.add(mntmBecomeManager);
+
+        mnAcceptUser = new JMenu("Accept User");
+        mnPrivilege.add(mnAcceptUser);
+
+        mnKickUser = new JMenu("Kick User");
+        mnPrivilege.add(mnKickUser);
+    }
+
+    public void makeAllComponentVisible(Boolean visible) {
+        Component[] components = mainFrame.getComponents();
+        for (Component component : components) {
+            component.setVisible(visible);
+        }
+        mainFrame.invalidate();
+        mainFrame.validate();
+        mainFrame.repaint();
+    }
+
+    public void closeWithNotification(String message){
+        JOptionPane.showMessageDialog(mainFrame, message);
+        mntmExit.doClick();
     }
 }

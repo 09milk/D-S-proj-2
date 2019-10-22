@@ -1,22 +1,21 @@
 package Server;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
 import Client.DrawActions.IDrawAction;
 import Network.ActionType;
 import Network.NetworkPackage;
 import Network.User;
-import sun.nio.ch.Net;
-
-import java.net.Socket;
-import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
 
     public Socket socket;
     public Room room;
     public User user;
+    public HandlerListener handlerListener = new HandlerListener();
     private RoomManager roomManager;
     private ServerNetworkController serverNetworkController;
-    private HandlerListener handlerListener = new HandlerListener();
 
     public RequestHandler(Socket socket) {
         this.socket = socket;
@@ -28,18 +27,30 @@ public class RequestHandler implements Runnable {
         serverNetworkController = new ServerNetworkController(this);
     }
 
-    public void linkRoom(String roomName) {
-        room = roomManager.getRoom(roomName);
+    public void linkRoom(Room room) {
+        this.room = room;
         room.addListener(handlerListener);
+        room.memberList.add(user);
     }
 
     public void unlinkRoom() {
         room.removeListener(handlerListener);
+        room.memberList.remove(user);
+        if (user.isManager) {
+            room.removeManager();
+        }
     }
 
     public void sendCurrentViewAndTitle() {
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.SET_QUEUE, room.actionQueue));
         serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHANGE_BOARD_NAME, null, room.boardName));
+    }
+
+    public void sendChatHistory(boolean toAll) {
+        if (toAll)
+            room.sendChatHistory();
+        else
+            serverNetworkController.sendPackage(new NetworkPackage(room.chatHistory));
     }
 
     public void closeRoom() {
@@ -52,8 +63,12 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.DRAW, user, drawAction));
         }
 
-        public void sendAmountOfMember(int amountOfMembers) {
-            serverNetworkController.sendPackage(amountOfMembers);
+        public void sendMemberUpdate(ArrayList<User> memberList) {
+            serverNetworkController.sendPackage(new NetworkPackage(memberList));
+        }
+
+        public void sendChatHistory(ChatHistory chatHistory) {
+            serverNetworkController.sendPackage(new NetworkPackage(chatHistory));
         }
 
         public void changeBoardName(String name) {
@@ -68,8 +83,20 @@ public class RequestHandler implements Runnable {
             serverNetworkController.sendPackage(new NetworkPackage(ActionType.NEW_BOARD));
         }
 
-        public User getUsername() {
+        public void addChat(User user, String chatMessage) {
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.CHAT, user, chatMessage));
+        }
+
+        public User getUser() {
             return user;
+        }
+
+        public void askForAcceptFromManager(User user) {
+            serverNetworkController.sendPackage(new NetworkPackage(ActionType.ACCEPT_USER, user));
+        }
+
+        public Thread kicked() {
+            return serverNetworkController.sendPackage(new NetworkPackage(ActionType.KICKED));
         }
 
         public Thread closeRoom() {
